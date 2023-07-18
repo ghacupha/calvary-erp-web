@@ -1,0 +1,32 @@
+{
+  "changelogDate": "20230718134338",
+  "dto": "mapstruct",
+  "entityTableName": "transaction_entry",
+  "fields": [
+    {
+      "fieldName": "entryAmount",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "transactionEntryType",
+      "fieldType": "TransactionEntryTypes",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "DEBIT,CREDIT"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TransactionEntry",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "accountName",
+      "otherEntityName": "transactionAccount",
+      "relationshipName": "transactionAccount",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceImpl"
+}

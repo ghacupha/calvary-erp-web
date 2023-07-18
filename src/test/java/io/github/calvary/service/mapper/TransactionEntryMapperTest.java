@@ -5,12 +5,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TransactionAccountMapperTest {
+class TransactionEntryMapperTest {
 
-    private TransactionAccountMapper transactionAccountMapper;
+    private TransactionEntryMapper transactionEntryMapper;
 
     @BeforeEach
     public void setUp() {
-        transactionAccountMapper = new TransactionAccountMapperImpl();
+        transactionEntryMapper = new TransactionEntryMapperImpl();
     }
 }
