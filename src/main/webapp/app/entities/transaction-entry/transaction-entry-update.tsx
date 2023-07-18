@@ -117,6 +117,7 @@ export const TransactionEntryUpdate = () => {
                   </option>
                 ))}
               </ValidatedField>
+              <ValidatedField label="Description" id="transaction-entry-description" name="description" data-cy="description" type="text" />
               <ValidatedField
                 id="transaction-entry-transactionAccount"
                 name="transactionAccount"

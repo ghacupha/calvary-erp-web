@@ -14,7 +14,13 @@
       "fieldValidateRules": ["unique"]
     },
     {
-      "fieldName": "accountBalance",
+      "fieldName": "transactionAccountType",
+      "fieldType": "TransactionAccountType",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "ASSET,LIABILITY,INCOME,EXPENSE,EQUITY"
+    },
+    {
+      "fieldName": "openingBalance",
       "fieldType": "BigDecimal"
     }
   ],

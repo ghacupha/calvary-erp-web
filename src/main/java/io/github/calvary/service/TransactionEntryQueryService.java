@@ -105,6 +105,9 @@ public class TransactionEntryQueryService extends QueryService<TransactionEntry>
                 specification =
                     specification.and(buildSpecification(criteria.getTransactionEntryType(), TransactionEntry_.transactionEntryType));
             }
+            if (criteria.getDescription() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDescription(), TransactionEntry_.description));
+            }
             if (criteria.getTransactionAccountId() != null) {
                 specification =
                     specification.and(

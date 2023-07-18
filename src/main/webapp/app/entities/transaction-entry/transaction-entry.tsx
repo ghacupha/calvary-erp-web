@@ -180,6 +180,10 @@ export const TransactionEntry = () => {
                   <Translate contentKey="calvaryErpApp.transactionEntry.transactionEntryType">Transaction Entry Type</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('transactionEntryType')} />
                 </th>
+                <th className="hand" onClick={sort('description')}>
+                  <Translate contentKey="calvaryErpApp.transactionEntry.description">Description</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
+                </th>
                 <th>
                   <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
@@ -197,6 +201,7 @@ export const TransactionEntry = () => {
                   </td>
                   <td>{transactionEntry.entryAmount}</td>
                   <td>{transactionEntry.transactionEntryType}</td>
+                  <td>{transactionEntry.description}</td>
                   <td>
                     {transactionEntry.transactionAccount ? (
                       <Link to={`/transaction-account/${transactionEntry.transactionAccount.id}`}>

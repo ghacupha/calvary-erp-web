@@ -12,6 +12,10 @@
       "fieldType": "TransactionEntryTypes",
       "fieldValidateRules": ["required"],
       "fieldValues": "DEBIT,CREDIT"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
     }
   ],
   "jpaMetamodelFiltering": true,

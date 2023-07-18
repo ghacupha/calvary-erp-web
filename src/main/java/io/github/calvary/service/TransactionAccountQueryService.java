@@ -104,9 +104,13 @@ public class TransactionAccountQueryService extends QueryService<TransactionAcco
             if (criteria.getAccountNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAccountNumber(), TransactionAccount_.accountNumber));
             }
-            if (criteria.getAccountBalance() != null) {
+            if (criteria.getTransactionAccountType() != null) {
                 specification =
-                    specification.and(buildRangeSpecification(criteria.getAccountBalance(), TransactionAccount_.accountBalance));
+                    specification.and(buildSpecification(criteria.getTransactionAccountType(), TransactionAccount_.transactionAccountType));
+            }
+            if (criteria.getOpeningBalance() != null) {
+                specification =
+                    specification.and(buildRangeSpecification(criteria.getOpeningBalance(), TransactionAccount_.openingBalance));
             }
             if (criteria.getParentAccountId() != null) {
                 specification =

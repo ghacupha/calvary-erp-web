@@ -20,7 +20,10 @@
             <column name="account_number" type="varchar(255)">
                 <constraints nullable="true" unique="true" uniqueConstraintName="ux_transaction_account__account_number" />
             </column>
-            <column name="account_balance" type="decimal(21,2)">
+            <column name="transaction_account_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="opening_balance" type="decimal(21,2)">
                 <constraints nullable="true" />
             </column>
             <column name="parent_account_id" type="bigint">
@@ -49,7 +52,8 @@
             <column name="id" type="numeric"/>
             <column name="account_name" type="string"/>
             <column name="account_number" type="string"/>
-            <column name="account_balance" type="numeric"/>
+            <column name="transaction_account_type" type="string"/>
+            <column name="opening_balance" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

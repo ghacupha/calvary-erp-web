@@ -44,6 +44,12 @@ export const TransactionEntryDetail = () => {
           </dt>
           <dd>{transactionEntryEntity.transactionEntryType}</dd>
           <dt>
+            <span id="description">
+              <Translate contentKey="calvaryErpApp.transactionEntry.description">Description</Translate>
+            </span>
+          </dt>
+          <dd>{transactionEntryEntity.description}</dd>
+          <dt>
             <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>
           </dt>
           <dd>{transactionEntryEntity.transactionAccount ? transactionEntryEntity.transactionAccount.accountName : ''}</dd>

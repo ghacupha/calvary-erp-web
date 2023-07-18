@@ -1,6 +1,7 @@
 package io.github.calvary.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.github.calvary.domain.enumeration.TransactionAccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -35,8 +36,14 @@ public class TransactionAccount implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String accountNumber;
 
-    @Column(name = "account_balance", precision = 21, scale = 2)
-    private BigDecimal accountBalance;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transaction_account_type", nullable = false)
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Keyword)
+    private TransactionAccountType transactionAccountType;
+
+    @Column(name = "opening_balance", precision = 21, scale = 2)
+    private BigDecimal openingBalance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = { "parentAccount" }, allowSetters = true)
@@ -83,17 +90,30 @@ public class TransactionAccount implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public BigDecimal getAccountBalance() {
-        return this.accountBalance;
+    public TransactionAccountType getTransactionAccountType() {
+        return this.transactionAccountType;
     }
 
-    public TransactionAccount accountBalance(BigDecimal accountBalance) {
-        this.setAccountBalance(accountBalance);
+    public TransactionAccount transactionAccountType(TransactionAccountType transactionAccountType) {
+        this.setTransactionAccountType(transactionAccountType);
         return this;
     }
 
-    public void setAccountBalance(BigDecimal accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setTransactionAccountType(TransactionAccountType transactionAccountType) {
+        this.transactionAccountType = transactionAccountType;
+    }
+
+    public BigDecimal getOpeningBalance() {
+        return this.openingBalance;
+    }
+
+    public TransactionAccount openingBalance(BigDecimal openingBalance) {
+        this.setOpeningBalance(openingBalance);
+        return this;
+    }
+
+    public void setOpeningBalance(BigDecimal openingBalance) {
+        this.openingBalance = openingBalance;
     }
 
     public TransactionAccount getParentAccount() {
@@ -135,7 +155,8 @@ public class TransactionAccount implements Serializable {
             "id=" + getId() +
             ", accountName='" + getAccountName() + "'" +
             ", accountNumber='" + getAccountNumber() + "'" +
-            ", accountBalance=" + getAccountBalance() +
+            ", transactionAccountType='" + getTransactionAccountType() + "'" +
+            ", openingBalance=" + getOpeningBalance() +
             "}";
     }
 }

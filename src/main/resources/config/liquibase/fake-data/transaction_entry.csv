@@ -1,11 +1,11 @@
-id;entry_amount;transaction_entry_type;transaction_account_id
-1;32025;CREDIT;1
-2;30874;DEBIT;2
-3;7272;DEBIT;3
-4;29617;CREDIT;4
-5;25291;CREDIT;5
-6;24636;CREDIT;6
-7;29502;DEBIT;7
-8;14661;DEBIT;8
-9;10693;CREDIT;9
-10;7294;DEBIT;10
+id;entry_amount;transaction_entry_type;description;transaction_account_id
+1;32025;CREDIT;Union Bicycle Sedan;1
+2;814;DEBIT;scale;2
+3;7294;DEBIT;Venezuelan Arizona Northwest;3
+4;17955;CREDIT;Cab off;4
+5;23941;CREDIT;female female Wagon;5
+6;15113;CREDIT;green expedite;6
+7;23560;CREDIT;Bicycle which;7
+8;22698;DEBIT;whoa;8
+9;13577;CREDIT;Human;9
+10;31947;CREDIT;Account connect;10

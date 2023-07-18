@@ -5,6 +5,7 @@ export interface ITransactionEntry {
   id?: number;
   entryAmount?: number | null;
   transactionEntryType?: keyof typeof TransactionEntryTypes;
+  description?: string | null;
   transactionAccount?: ITransactionAccount;
 }
 

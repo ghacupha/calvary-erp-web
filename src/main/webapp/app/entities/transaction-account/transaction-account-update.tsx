@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntities as getTransactionAccounts } from 'app/entities/transaction-account/transaction-account.reducer';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
+import { TransactionAccountType } from 'app/shared/model/enumerations/transaction-account-type.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-account.reducer';
 
 export const TransactionAccountUpdate = () => {
@@ -25,6 +26,7 @@ export const TransactionAccountUpdate = () => {
   const loading = useAppSelector(state => state.transactionAccount.loading);
   const updating = useAppSelector(state => state.transactionAccount.updating);
   const updateSuccess = useAppSelector(state => state.transactionAccount.updateSuccess);
+  const transactionAccountTypeValues = Object.keys(TransactionAccountType);
 
   const handleClose = () => {
     navigate('/transaction-account' + location.search);
@@ -64,6 +66,7 @@ export const TransactionAccountUpdate = () => {
     isNew
       ? {}
       : {
+          transactionAccountType: 'ASSET',
           ...transactionAccountEntity,
           parentAccount: transactionAccountEntity?.parentAccount?.id,
         };
@@ -112,10 +115,23 @@ export const TransactionAccountUpdate = () => {
                 validate={{}}
               />
               <ValidatedField
-                label="Account Balance"
-                id="transaction-account-accountBalance"
-                name="accountBalance"
-                data-cy="accountBalance"
+                label="Transaction Account Type"
+                id="transaction-account-transactionAccountType"
+                name="transactionAccountType"
+                data-cy="transactionAccountType"
+                type="select"
+              >
+                {transactionAccountTypeValues.map(transactionAccountType => (
+                  <option value={transactionAccountType} key={transactionAccountType}>
+                    {transactionAccountType}
+                  </option>
+                ))}
+              </ValidatedField>
+              <ValidatedField
+                label="Opening Balance"
+                id="transaction-account-openingBalance"
+                name="openingBalance"
+                data-cy="openingBalance"
                 type="text"
               />
               <ValidatedField

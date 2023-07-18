@@ -1,5 +1,6 @@
 package io.github.calvary.service.criteria;
 
+import io.github.calvary.domain.enumeration.TransactionAccountType;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,6 +20,23 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class TransactionAccountCriteria implements Serializable, Criteria {
 
+    /**
+     * Class for filtering TransactionAccountType
+     */
+    public static class TransactionAccountTypeFilter extends Filter<TransactionAccountType> {
+
+        public TransactionAccountTypeFilter() {}
+
+        public TransactionAccountTypeFilter(TransactionAccountTypeFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public TransactionAccountTypeFilter copy() {
+            return new TransactionAccountTypeFilter(this);
+        }
+    }
+
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
@@ -27,7 +45,9 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
 
     private StringFilter accountNumber;
 
-    private BigDecimalFilter accountBalance;
+    private TransactionAccountTypeFilter transactionAccountType;
+
+    private BigDecimalFilter openingBalance;
 
     private LongFilter parentAccountId;
 
@@ -39,7 +59,8 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.accountName = other.accountName == null ? null : other.accountName.copy();
         this.accountNumber = other.accountNumber == null ? null : other.accountNumber.copy();
-        this.accountBalance = other.accountBalance == null ? null : other.accountBalance.copy();
+        this.transactionAccountType = other.transactionAccountType == null ? null : other.transactionAccountType.copy();
+        this.openingBalance = other.openingBalance == null ? null : other.openingBalance.copy();
         this.parentAccountId = other.parentAccountId == null ? null : other.parentAccountId.copy();
         this.distinct = other.distinct;
     }
@@ -94,19 +115,34 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.accountNumber = accountNumber;
     }
 
-    public BigDecimalFilter getAccountBalance() {
-        return accountBalance;
+    public TransactionAccountTypeFilter getTransactionAccountType() {
+        return transactionAccountType;
     }
 
-    public BigDecimalFilter accountBalance() {
-        if (accountBalance == null) {
-            accountBalance = new BigDecimalFilter();
+    public TransactionAccountTypeFilter transactionAccountType() {
+        if (transactionAccountType == null) {
+            transactionAccountType = new TransactionAccountTypeFilter();
         }
-        return accountBalance;
+        return transactionAccountType;
     }
 
-    public void setAccountBalance(BigDecimalFilter accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setTransactionAccountType(TransactionAccountTypeFilter transactionAccountType) {
+        this.transactionAccountType = transactionAccountType;
+    }
+
+    public BigDecimalFilter getOpeningBalance() {
+        return openingBalance;
+    }
+
+    public BigDecimalFilter openingBalance() {
+        if (openingBalance == null) {
+            openingBalance = new BigDecimalFilter();
+        }
+        return openingBalance;
+    }
+
+    public void setOpeningBalance(BigDecimalFilter openingBalance) {
+        this.openingBalance = openingBalance;
     }
 
     public LongFilter getParentAccountId() {
@@ -145,7 +181,8 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(accountName, that.accountName) &&
             Objects.equals(accountNumber, that.accountNumber) &&
-            Objects.equals(accountBalance, that.accountBalance) &&
+            Objects.equals(transactionAccountType, that.transactionAccountType) &&
+            Objects.equals(openingBalance, that.openingBalance) &&
             Objects.equals(parentAccountId, that.parentAccountId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -153,7 +190,7 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountName, accountNumber, accountBalance, parentAccountId, distinct);
+        return Objects.hash(id, accountName, accountNumber, transactionAccountType, openingBalance, parentAccountId, distinct);
     }
 
     // prettier-ignore
@@ -163,7 +200,8 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (accountName != null ? "accountName=" + accountName + ", " : "") +
             (accountNumber != null ? "accountNumber=" + accountNumber + ", " : "") +
-            (accountBalance != null ? "accountBalance=" + accountBalance + ", " : "") +
+            (transactionAccountType != null ? "transactionAccountType=" + transactionAccountType + ", " : "") +
+            (openingBalance != null ? "openingBalance=" + openingBalance + ", " : "") +
             (parentAccountId != null ? "parentAccountId=" + parentAccountId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

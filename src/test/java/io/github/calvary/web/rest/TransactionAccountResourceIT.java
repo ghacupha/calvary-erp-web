@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.domain.TransactionAccount;
+import io.github.calvary.domain.enumeration.TransactionAccountType;
 import io.github.calvary.repository.TransactionAccountRepository;
 import io.github.calvary.repository.search.TransactionAccountSearchRepository;
 import io.github.calvary.service.TransactionAccountService;
@@ -58,9 +59,12 @@ class TransactionAccountResourceIT {
     private static final String DEFAULT_ACCOUNT_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_ACCOUNT_NUMBER = "BBBBBBBBBB";
 
-    private static final BigDecimal DEFAULT_ACCOUNT_BALANCE = new BigDecimal(1);
-    private static final BigDecimal UPDATED_ACCOUNT_BALANCE = new BigDecimal(2);
-    private static final BigDecimal SMALLER_ACCOUNT_BALANCE = new BigDecimal(1 - 1);
+    private static final TransactionAccountType DEFAULT_TRANSACTION_ACCOUNT_TYPE = TransactionAccountType.ASSET;
+    private static final TransactionAccountType UPDATED_TRANSACTION_ACCOUNT_TYPE = TransactionAccountType.LIABILITY;
+
+    private static final BigDecimal DEFAULT_OPENING_BALANCE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_OPENING_BALANCE = new BigDecimal(2);
+    private static final BigDecimal SMALLER_OPENING_BALANCE = new BigDecimal(1 - 1);
 
     private static final String ENTITY_API_URL = "/api/transaction-accounts";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -102,7 +106,8 @@ class TransactionAccountResourceIT {
         TransactionAccount transactionAccount = new TransactionAccount()
             .accountName(DEFAULT_ACCOUNT_NAME)
             .accountNumber(DEFAULT_ACCOUNT_NUMBER)
-            .accountBalance(DEFAULT_ACCOUNT_BALANCE);
+            .transactionAccountType(DEFAULT_TRANSACTION_ACCOUNT_TYPE)
+            .openingBalance(DEFAULT_OPENING_BALANCE);
         return transactionAccount;
     }
 
@@ -116,7 +121,8 @@ class TransactionAccountResourceIT {
         TransactionAccount transactionAccount = new TransactionAccount()
             .accountName(UPDATED_ACCOUNT_NAME)
             .accountNumber(UPDATED_ACCOUNT_NUMBER)
-            .accountBalance(UPDATED_ACCOUNT_BALANCE);
+            .transactionAccountType(UPDATED_TRANSACTION_ACCOUNT_TYPE)
+            .openingBalance(UPDATED_OPENING_BALANCE);
         return transactionAccount;
     }
 
@@ -158,7 +164,8 @@ class TransactionAccountResourceIT {
         TransactionAccount testTransactionAccount = transactionAccountList.get(transactionAccountList.size() - 1);
         assertThat(testTransactionAccount.getAccountName()).isEqualTo(DEFAULT_ACCOUNT_NAME);
         assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
-        assertThat(testTransactionAccount.getAccountBalance()).isEqualByComparingTo(DEFAULT_ACCOUNT_BALANCE);
+        assertThat(testTransactionAccount.getTransactionAccountType()).isEqualTo(DEFAULT_TRANSACTION_ACCOUNT_TYPE);
+        assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(DEFAULT_OPENING_BALANCE);
     }
 
     @Test
@@ -214,6 +221,31 @@ class TransactionAccountResourceIT {
 
     @Test
     @Transactional
+    void checkTransactionAccountTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionAccountRepository.findAll().size();
+        int searchDatabaseSizeBefore = IterableUtil.sizeOf(transactionAccountSearchRepository.findAll());
+        // set the field null
+        transactionAccount.setTransactionAccountType(null);
+
+        // Create the TransactionAccount, which fails.
+        TransactionAccountDTO transactionAccountDTO = transactionAccountMapper.toDto(transactionAccount);
+
+        restTransactionAccountMockMvc
+            .perform(
+                post(ENTITY_API_URL)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(transactionAccountDTO))
+            )
+            .andExpect(status().isBadRequest());
+
+        List<TransactionAccount> transactionAccountList = transactionAccountRepository.findAll();
+        assertThat(transactionAccountList).hasSize(databaseSizeBeforeTest);
+        int searchDatabaseSizeAfter = IterableUtil.sizeOf(transactionAccountSearchRepository.findAll());
+        assertThat(searchDatabaseSizeAfter).isEqualTo(searchDatabaseSizeBefore);
+    }
+
+    @Test
+    @Transactional
     void getAllTransactionAccounts() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
@@ -226,7 +258,8 @@ class TransactionAccountResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionAccount.getId().intValue())))
             .andExpect(jsonPath("$.[*].accountName").value(hasItem(DEFAULT_ACCOUNT_NAME)))
             .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
-            .andExpect(jsonPath("$.[*].accountBalance").value(hasItem(sameNumber(DEFAULT_ACCOUNT_BALANCE))));
+            .andExpect(jsonPath("$.[*].transactionAccountType").value(hasItem(DEFAULT_TRANSACTION_ACCOUNT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].openingBalance").value(hasItem(sameNumber(DEFAULT_OPENING_BALANCE))));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -260,7 +293,8 @@ class TransactionAccountResourceIT {
             .andExpect(jsonPath("$.id").value(transactionAccount.getId().intValue()))
             .andExpect(jsonPath("$.accountName").value(DEFAULT_ACCOUNT_NAME))
             .andExpect(jsonPath("$.accountNumber").value(DEFAULT_ACCOUNT_NUMBER))
-            .andExpect(jsonPath("$.accountBalance").value(sameNumber(DEFAULT_ACCOUNT_BALANCE)));
+            .andExpect(jsonPath("$.transactionAccountType").value(DEFAULT_TRANSACTION_ACCOUNT_TYPE.toString()))
+            .andExpect(jsonPath("$.openingBalance").value(sameNumber(DEFAULT_OPENING_BALANCE)));
     }
 
     @Test
@@ -413,96 +447,137 @@ class TransactionAccountResourceIT {
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsEqualToSomething() throws Exception {
+    void getAllTransactionAccountsByTransactionAccountTypeIsEqualToSomething() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance equals to DEFAULT_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldBeFound("accountBalance.equals=" + DEFAULT_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where transactionAccountType equals to DEFAULT_TRANSACTION_ACCOUNT_TYPE
+        defaultTransactionAccountShouldBeFound("transactionAccountType.equals=" + DEFAULT_TRANSACTION_ACCOUNT_TYPE);
 
-        // Get all the transactionAccountList where accountBalance equals to UPDATED_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldNotBeFound("accountBalance.equals=" + UPDATED_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where transactionAccountType equals to UPDATED_TRANSACTION_ACCOUNT_TYPE
+        defaultTransactionAccountShouldNotBeFound("transactionAccountType.equals=" + UPDATED_TRANSACTION_ACCOUNT_TYPE);
     }
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsInShouldWork() throws Exception {
+    void getAllTransactionAccountsByTransactionAccountTypeIsInShouldWork() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance in DEFAULT_ACCOUNT_BALANCE or UPDATED_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldBeFound("accountBalance.in=" + DEFAULT_ACCOUNT_BALANCE + "," + UPDATED_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where transactionAccountType in DEFAULT_TRANSACTION_ACCOUNT_TYPE or UPDATED_TRANSACTION_ACCOUNT_TYPE
+        defaultTransactionAccountShouldBeFound(
+            "transactionAccountType.in=" + DEFAULT_TRANSACTION_ACCOUNT_TYPE + "," + UPDATED_TRANSACTION_ACCOUNT_TYPE
+        );
 
-        // Get all the transactionAccountList where accountBalance equals to UPDATED_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldNotBeFound("accountBalance.in=" + UPDATED_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where transactionAccountType equals to UPDATED_TRANSACTION_ACCOUNT_TYPE
+        defaultTransactionAccountShouldNotBeFound("transactionAccountType.in=" + UPDATED_TRANSACTION_ACCOUNT_TYPE);
     }
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsNullOrNotNull() throws Exception {
+    void getAllTransactionAccountsByTransactionAccountTypeIsNullOrNotNull() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance is not null
-        defaultTransactionAccountShouldBeFound("accountBalance.specified=true");
+        // Get all the transactionAccountList where transactionAccountType is not null
+        defaultTransactionAccountShouldBeFound("transactionAccountType.specified=true");
 
-        // Get all the transactionAccountList where accountBalance is null
-        defaultTransactionAccountShouldNotBeFound("accountBalance.specified=false");
+        // Get all the transactionAccountList where transactionAccountType is null
+        defaultTransactionAccountShouldNotBeFound("transactionAccountType.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsGreaterThanOrEqualToSomething() throws Exception {
+    void getAllTransactionAccountsByOpeningBalanceIsEqualToSomething() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance is greater than or equal to DEFAULT_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldBeFound("accountBalance.greaterThanOrEqual=" + DEFAULT_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance equals to DEFAULT_OPENING_BALANCE
+        defaultTransactionAccountShouldBeFound("openingBalance.equals=" + DEFAULT_OPENING_BALANCE);
 
-        // Get all the transactionAccountList where accountBalance is greater than or equal to UPDATED_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldNotBeFound("accountBalance.greaterThanOrEqual=" + UPDATED_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance equals to UPDATED_OPENING_BALANCE
+        defaultTransactionAccountShouldNotBeFound("openingBalance.equals=" + UPDATED_OPENING_BALANCE);
     }
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsLessThanOrEqualToSomething() throws Exception {
+    void getAllTransactionAccountsByOpeningBalanceIsInShouldWork() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance is less than or equal to DEFAULT_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldBeFound("accountBalance.lessThanOrEqual=" + DEFAULT_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance in DEFAULT_OPENING_BALANCE or UPDATED_OPENING_BALANCE
+        defaultTransactionAccountShouldBeFound("openingBalance.in=" + DEFAULT_OPENING_BALANCE + "," + UPDATED_OPENING_BALANCE);
 
-        // Get all the transactionAccountList where accountBalance is less than or equal to SMALLER_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldNotBeFound("accountBalance.lessThanOrEqual=" + SMALLER_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance equals to UPDATED_OPENING_BALANCE
+        defaultTransactionAccountShouldNotBeFound("openingBalance.in=" + UPDATED_OPENING_BALANCE);
     }
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsLessThanSomething() throws Exception {
+    void getAllTransactionAccountsByOpeningBalanceIsNullOrNotNull() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance is less than DEFAULT_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldNotBeFound("accountBalance.lessThan=" + DEFAULT_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance is not null
+        defaultTransactionAccountShouldBeFound("openingBalance.specified=true");
 
-        // Get all the transactionAccountList where accountBalance is less than UPDATED_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldBeFound("accountBalance.lessThan=" + UPDATED_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance is null
+        defaultTransactionAccountShouldNotBeFound("openingBalance.specified=false");
     }
 
     @Test
     @Transactional
-    void getAllTransactionAccountsByAccountBalanceIsGreaterThanSomething() throws Exception {
+    void getAllTransactionAccountsByOpeningBalanceIsGreaterThanOrEqualToSomething() throws Exception {
         // Initialize the database
         transactionAccountRepository.saveAndFlush(transactionAccount);
 
-        // Get all the transactionAccountList where accountBalance is greater than DEFAULT_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldNotBeFound("accountBalance.greaterThan=" + DEFAULT_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance is greater than or equal to DEFAULT_OPENING_BALANCE
+        defaultTransactionAccountShouldBeFound("openingBalance.greaterThanOrEqual=" + DEFAULT_OPENING_BALANCE);
 
-        // Get all the transactionAccountList where accountBalance is greater than SMALLER_ACCOUNT_BALANCE
-        defaultTransactionAccountShouldBeFound("accountBalance.greaterThan=" + SMALLER_ACCOUNT_BALANCE);
+        // Get all the transactionAccountList where openingBalance is greater than or equal to UPDATED_OPENING_BALANCE
+        defaultTransactionAccountShouldNotBeFound("openingBalance.greaterThanOrEqual=" + UPDATED_OPENING_BALANCE);
     }
 
-    // @Test
+    @Test
+    @Transactional
+    void getAllTransactionAccountsByOpeningBalanceIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionAccountRepository.saveAndFlush(transactionAccount);
+
+        // Get all the transactionAccountList where openingBalance is less than or equal to DEFAULT_OPENING_BALANCE
+        defaultTransactionAccountShouldBeFound("openingBalance.lessThanOrEqual=" + DEFAULT_OPENING_BALANCE);
+
+        // Get all the transactionAccountList where openingBalance is less than or equal to SMALLER_OPENING_BALANCE
+        defaultTransactionAccountShouldNotBeFound("openingBalance.lessThanOrEqual=" + SMALLER_OPENING_BALANCE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionAccountsByOpeningBalanceIsLessThanSomething() throws Exception {
+        // Initialize the database
+        transactionAccountRepository.saveAndFlush(transactionAccount);
+
+        // Get all the transactionAccountList where openingBalance is less than DEFAULT_OPENING_BALANCE
+        defaultTransactionAccountShouldNotBeFound("openingBalance.lessThan=" + DEFAULT_OPENING_BALANCE);
+
+        // Get all the transactionAccountList where openingBalance is less than UPDATED_OPENING_BALANCE
+        defaultTransactionAccountShouldBeFound("openingBalance.lessThan=" + UPDATED_OPENING_BALANCE);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionAccountsByOpeningBalanceIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        transactionAccountRepository.saveAndFlush(transactionAccount);
+
+        // Get all the transactionAccountList where openingBalance is greater than DEFAULT_OPENING_BALANCE
+        defaultTransactionAccountShouldNotBeFound("openingBalance.greaterThan=" + DEFAULT_OPENING_BALANCE);
+
+        // Get all the transactionAccountList where openingBalance is greater than SMALLER_OPENING_BALANCE
+        defaultTransactionAccountShouldBeFound("openingBalance.greaterThan=" + SMALLER_OPENING_BALANCE);
+    }
+
+    @Test
     @Transactional
     void getAllTransactionAccountsByParentAccountIsEqualToSomething() throws Exception {
         TransactionAccount parentAccount;
@@ -535,7 +610,8 @@ class TransactionAccountResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionAccount.getId().intValue())))
             .andExpect(jsonPath("$.[*].accountName").value(hasItem(DEFAULT_ACCOUNT_NAME)))
             .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
-            .andExpect(jsonPath("$.[*].accountBalance").value(hasItem(sameNumber(DEFAULT_ACCOUNT_BALANCE))));
+            .andExpect(jsonPath("$.[*].transactionAccountType").value(hasItem(DEFAULT_TRANSACTION_ACCOUNT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].openingBalance").value(hasItem(sameNumber(DEFAULT_OPENING_BALANCE))));
 
         // Check, that the count call also returns 1
         restTransactionAccountMockMvc
@@ -588,7 +664,8 @@ class TransactionAccountResourceIT {
         updatedTransactionAccount
             .accountName(UPDATED_ACCOUNT_NAME)
             .accountNumber(UPDATED_ACCOUNT_NUMBER)
-            .accountBalance(UPDATED_ACCOUNT_BALANCE);
+            .transactionAccountType(UPDATED_TRANSACTION_ACCOUNT_TYPE)
+            .openingBalance(UPDATED_OPENING_BALANCE);
         TransactionAccountDTO transactionAccountDTO = transactionAccountMapper.toDto(updatedTransactionAccount);
 
         restTransactionAccountMockMvc
@@ -605,7 +682,8 @@ class TransactionAccountResourceIT {
         TransactionAccount testTransactionAccount = transactionAccountList.get(transactionAccountList.size() - 1);
         assertThat(testTransactionAccount.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
         assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testTransactionAccount.getAccountBalance()).isEqualByComparingTo(UPDATED_ACCOUNT_BALANCE);
+        assertThat(testTransactionAccount.getTransactionAccountType()).isEqualTo(UPDATED_TRANSACTION_ACCOUNT_TYPE);
+        assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(UPDATED_OPENING_BALANCE);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -615,7 +693,8 @@ class TransactionAccountResourceIT {
                 TransactionAccount testTransactionAccountSearch = transactionAccountSearchList.get(searchDatabaseSizeAfter - 1);
                 assertThat(testTransactionAccountSearch.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
                 assertThat(testTransactionAccountSearch.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-                assertThat(testTransactionAccountSearch.getAccountBalance()).isEqualByComparingTo(UPDATED_ACCOUNT_BALANCE);
+                assertThat(testTransactionAccountSearch.getTransactionAccountType()).isEqualTo(UPDATED_TRANSACTION_ACCOUNT_TYPE);
+                assertThat(testTransactionAccountSearch.getOpeningBalance()).isEqualByComparingTo(UPDATED_OPENING_BALANCE);
             });
     }
 
@@ -709,7 +788,7 @@ class TransactionAccountResourceIT {
         TransactionAccount partialUpdatedTransactionAccount = new TransactionAccount();
         partialUpdatedTransactionAccount.setId(transactionAccount.getId());
 
-        partialUpdatedTransactionAccount.accountNumber(UPDATED_ACCOUNT_NUMBER);
+        partialUpdatedTransactionAccount.openingBalance(UPDATED_OPENING_BALANCE);
 
         restTransactionAccountMockMvc
             .perform(
@@ -724,8 +803,9 @@ class TransactionAccountResourceIT {
         assertThat(transactionAccountList).hasSize(databaseSizeBeforeUpdate);
         TransactionAccount testTransactionAccount = transactionAccountList.get(transactionAccountList.size() - 1);
         assertThat(testTransactionAccount.getAccountName()).isEqualTo(DEFAULT_ACCOUNT_NAME);
-        assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testTransactionAccount.getAccountBalance()).isEqualByComparingTo(DEFAULT_ACCOUNT_BALANCE);
+        assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
+        assertThat(testTransactionAccount.getTransactionAccountType()).isEqualTo(DEFAULT_TRANSACTION_ACCOUNT_TYPE);
+        assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(UPDATED_OPENING_BALANCE);
     }
 
     @Test
@@ -743,7 +823,8 @@ class TransactionAccountResourceIT {
         partialUpdatedTransactionAccount
             .accountName(UPDATED_ACCOUNT_NAME)
             .accountNumber(UPDATED_ACCOUNT_NUMBER)
-            .accountBalance(UPDATED_ACCOUNT_BALANCE);
+            .transactionAccountType(UPDATED_TRANSACTION_ACCOUNT_TYPE)
+            .openingBalance(UPDATED_OPENING_BALANCE);
 
         restTransactionAccountMockMvc
             .perform(
@@ -759,7 +840,8 @@ class TransactionAccountResourceIT {
         TransactionAccount testTransactionAccount = transactionAccountList.get(transactionAccountList.size() - 1);
         assertThat(testTransactionAccount.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
         assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(UPDATED_ACCOUNT_NUMBER);
-        assertThat(testTransactionAccount.getAccountBalance()).isEqualByComparingTo(UPDATED_ACCOUNT_BALANCE);
+        assertThat(testTransactionAccount.getTransactionAccountType()).isEqualTo(UPDATED_TRANSACTION_ACCOUNT_TYPE);
+        assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(UPDATED_OPENING_BALANCE);
     }
 
     @Test
@@ -879,6 +961,7 @@ class TransactionAccountResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionAccount.getId().intValue())))
             .andExpect(jsonPath("$.[*].accountName").value(hasItem(DEFAULT_ACCOUNT_NAME)))
             .andExpect(jsonPath("$.[*].accountNumber").value(hasItem(DEFAULT_ACCOUNT_NUMBER)))
-            .andExpect(jsonPath("$.[*].accountBalance").value(hasItem(sameNumber(DEFAULT_ACCOUNT_BALANCE))));
+            .andExpect(jsonPath("$.[*].transactionAccountType").value(hasItem(DEFAULT_TRANSACTION_ACCOUNT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].openingBalance").value(hasItem(sameNumber(DEFAULT_OPENING_BALANCE))));
     }
 }

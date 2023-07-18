@@ -60,6 +60,9 @@ class TransactionEntryResourceIT {
     private static final TransactionEntryTypes DEFAULT_TRANSACTION_ENTRY_TYPE = TransactionEntryTypes.DEBIT;
     private static final TransactionEntryTypes UPDATED_TRANSACTION_ENTRY_TYPE = TransactionEntryTypes.CREDIT;
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/transaction-entries";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/transaction-entries";
@@ -99,7 +102,8 @@ class TransactionEntryResourceIT {
     public static TransactionEntry createEntity(EntityManager em) {
         TransactionEntry transactionEntry = new TransactionEntry()
             .entryAmount(DEFAULT_ENTRY_AMOUNT)
-            .transactionEntryType(DEFAULT_TRANSACTION_ENTRY_TYPE);
+            .transactionEntryType(DEFAULT_TRANSACTION_ENTRY_TYPE)
+            .description(DEFAULT_DESCRIPTION);
         // Add required entity
         TransactionAccount transactionAccount;
         if (TestUtil.findAll(em, TransactionAccount.class).isEmpty()) {
@@ -122,7 +126,8 @@ class TransactionEntryResourceIT {
     public static TransactionEntry createUpdatedEntity(EntityManager em) {
         TransactionEntry transactionEntry = new TransactionEntry()
             .entryAmount(UPDATED_ENTRY_AMOUNT)
-            .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE);
+            .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
+            .description(UPDATED_DESCRIPTION);
         // Add required entity
         TransactionAccount transactionAccount;
         if (TestUtil.findAll(em, TransactionAccount.class).isEmpty()) {
@@ -172,6 +177,7 @@ class TransactionEntryResourceIT {
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test
@@ -234,7 +240,8 @@ class TransactionEntryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionEntry.getId().intValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(sameNumber(DEFAULT_ENTRY_AMOUNT))))
-            .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -267,7 +274,8 @@ class TransactionEntryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(transactionEntry.getId().intValue()))
             .andExpect(jsonPath("$.entryAmount").value(sameNumber(DEFAULT_ENTRY_AMOUNT)))
-            .andExpect(jsonPath("$.transactionEntryType").value(DEFAULT_TRANSACTION_ENTRY_TYPE.toString()));
+            .andExpect(jsonPath("$.transactionEntryType").value(DEFAULT_TRANSACTION_ENTRY_TYPE.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
     @Test
@@ -422,6 +430,71 @@ class TransactionEntryResourceIT {
 
     @Test
     @Transactional
+    void getAllTransactionEntriesByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where description equals to DEFAULT_DESCRIPTION
+        defaultTransactionEntryShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the transactionEntryList where description equals to UPDATED_DESCRIPTION
+        defaultTransactionEntryShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
+        defaultTransactionEntryShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
+
+        // Get all the transactionEntryList where description equals to UPDATED_DESCRIPTION
+        defaultTransactionEntryShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where description is not null
+        defaultTransactionEntryShouldBeFound("description.specified=true");
+
+        // Get all the transactionEntryList where description is null
+        defaultTransactionEntryShouldNotBeFound("description.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where description contains DEFAULT_DESCRIPTION
+        defaultTransactionEntryShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
+
+        // Get all the transactionEntryList where description contains UPDATED_DESCRIPTION
+        defaultTransactionEntryShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByDescriptionNotContainsSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where description does not contain DEFAULT_DESCRIPTION
+        defaultTransactionEntryShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
+
+        // Get all the transactionEntryList where description does not contain UPDATED_DESCRIPTION
+        defaultTransactionEntryShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
     void getAllTransactionEntriesByTransactionAccountIsEqualToSomething() throws Exception {
         TransactionAccount transactionAccount;
         if (TestUtil.findAll(em, TransactionAccount.class).isEmpty()) {
@@ -452,7 +525,8 @@ class TransactionEntryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionEntry.getId().intValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(sameNumber(DEFAULT_ENTRY_AMOUNT))))
-            .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
 
         // Check, that the count call also returns 1
         restTransactionEntryMockMvc
@@ -502,7 +576,10 @@ class TransactionEntryResourceIT {
         TransactionEntry updatedTransactionEntry = transactionEntryRepository.findById(transactionEntry.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedTransactionEntry are not directly saved in db
         em.detach(updatedTransactionEntry);
-        updatedTransactionEntry.entryAmount(UPDATED_ENTRY_AMOUNT).transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE);
+        updatedTransactionEntry
+            .entryAmount(UPDATED_ENTRY_AMOUNT)
+            .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
+            .description(UPDATED_DESCRIPTION);
         TransactionEntryDTO transactionEntryDTO = transactionEntryMapper.toDto(updatedTransactionEntry);
 
         restTransactionEntryMockMvc
@@ -519,6 +596,7 @@ class TransactionEntryResourceIT {
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -528,6 +606,7 @@ class TransactionEntryResourceIT {
                 TransactionEntry testTransactionEntrySearch = transactionEntrySearchList.get(searchDatabaseSizeAfter - 1);
                 assertThat(testTransactionEntrySearch.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
                 assertThat(testTransactionEntrySearch.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+                assertThat(testTransactionEntrySearch.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
             });
     }
 
@@ -619,7 +698,7 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
-        partialUpdatedTransactionEntry.transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE);
+        partialUpdatedTransactionEntry.description(UPDATED_DESCRIPTION);
 
         restTransactionEntryMockMvc
             .perform(
@@ -634,7 +713,8 @@ class TransactionEntryResourceIT {
         assertThat(transactionEntryList).hasSize(databaseSizeBeforeUpdate);
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
-        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test
@@ -649,7 +729,10 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
-        partialUpdatedTransactionEntry.entryAmount(UPDATED_ENTRY_AMOUNT).transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE);
+        partialUpdatedTransactionEntry
+            .entryAmount(UPDATED_ENTRY_AMOUNT)
+            .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
+            .description(UPDATED_DESCRIPTION);
 
         restTransactionEntryMockMvc
             .perform(
@@ -665,6 +748,7 @@ class TransactionEntryResourceIT {
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
     }
 
     @Test
@@ -783,6 +867,7 @@ class TransactionEntryResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionEntry.getId().intValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(sameNumber(DEFAULT_ENTRY_AMOUNT))))
-            .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 }

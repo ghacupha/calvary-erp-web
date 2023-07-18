@@ -19,6 +19,8 @@ public class TransactionEntryDTO implements Serializable {
     @NotNull
     private TransactionEntryTypes transactionEntryType;
 
+    private String description;
+
     private TransactionAccountDTO transactionAccount;
 
     public Long getId() {
@@ -43,6 +45,14 @@ public class TransactionEntryDTO implements Serializable {
 
     public void setTransactionEntryType(TransactionEntryTypes transactionEntryType) {
         this.transactionEntryType = transactionEntryType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public TransactionAccountDTO getTransactionAccount() {
@@ -81,6 +91,7 @@ public class TransactionEntryDTO implements Serializable {
             "id=" + getId() +
             ", entryAmount=" + getEntryAmount() +
             ", transactionEntryType='" + getTransactionEntryType() + "'" +
+            ", description='" + getDescription() + "'" +
             ", transactionAccount=" + getTransactionAccount() +
             "}";
     }

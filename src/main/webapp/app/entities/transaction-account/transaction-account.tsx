@@ -185,9 +185,13 @@ export const TransactionAccount = () => {
                   <Translate contentKey="calvaryErpApp.transactionAccount.accountNumber">Account Number</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('accountNumber')} />
                 </th>
-                <th className="hand" onClick={sort('accountBalance')}>
-                  <Translate contentKey="calvaryErpApp.transactionAccount.accountBalance">Account Balance</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('accountBalance')} />
+                <th className="hand" onClick={sort('transactionAccountType')}>
+                  <Translate contentKey="calvaryErpApp.transactionAccount.transactionAccountType">Transaction Account Type</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('transactionAccountType')} />
+                </th>
+                <th className="hand" onClick={sort('openingBalance')}>
+                  <Translate contentKey="calvaryErpApp.transactionAccount.openingBalance">Opening Balance</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('openingBalance')} />
                 </th>
                 <th>
                   <Translate contentKey="calvaryErpApp.transactionAccount.parentAccount">Parent Account</Translate>{' '}
@@ -206,7 +210,8 @@ export const TransactionAccount = () => {
                   </td>
                   <td>{transactionAccount.accountName}</td>
                   <td>{transactionAccount.accountNumber}</td>
-                  <td>{transactionAccount.accountBalance}</td>
+                  <td>{transactionAccount.transactionAccountType}</td>
+                  <td>{transactionAccount.openingBalance}</td>
                   <td>
                     {transactionAccount.parentAccount ? (
                       <Link to={`/transaction-account/${transactionAccount.parentAccount.id}`}>

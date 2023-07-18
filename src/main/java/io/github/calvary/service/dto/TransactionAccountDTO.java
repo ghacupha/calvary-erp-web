@@ -1,5 +1,6 @@
 package io.github.calvary.service.dto;
 
+import io.github.calvary.domain.enumeration.TransactionAccountType;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,7 +19,10 @@ public class TransactionAccountDTO implements Serializable {
 
     private String accountNumber;
 
-    private BigDecimal accountBalance;
+    @NotNull
+    private TransactionAccountType transactionAccountType;
+
+    private BigDecimal openingBalance;
 
     private TransactionAccountDTO parentAccount;
 
@@ -46,12 +50,20 @@ public class TransactionAccountDTO implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public BigDecimal getAccountBalance() {
-        return accountBalance;
+    public TransactionAccountType getTransactionAccountType() {
+        return transactionAccountType;
     }
 
-    public void setAccountBalance(BigDecimal accountBalance) {
-        this.accountBalance = accountBalance;
+    public void setTransactionAccountType(TransactionAccountType transactionAccountType) {
+        this.transactionAccountType = transactionAccountType;
+    }
+
+    public BigDecimal getOpeningBalance() {
+        return openingBalance;
+    }
+
+    public void setOpeningBalance(BigDecimal openingBalance) {
+        this.openingBalance = openingBalance;
     }
 
     public TransactionAccountDTO getParentAccount() {
@@ -90,7 +102,8 @@ public class TransactionAccountDTO implements Serializable {
             "id=" + getId() +
             ", accountName='" + getAccountName() + "'" +
             ", accountNumber='" + getAccountNumber() + "'" +
-            ", accountBalance=" + getAccountBalance() +
+            ", transactionAccountType='" + getTransactionAccountType() + "'" +
+            ", openingBalance=" + getOpeningBalance() +
             ", parentAccount=" + getParentAccount() +
             "}";
     }

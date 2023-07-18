@@ -36,6 +36,10 @@ public class TransactionEntry implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Keyword)
     private TransactionEntryTypes transactionEntryType;
 
+    @Column(name = "description")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
+    private String description;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "parentAccount" }, allowSetters = true)
@@ -82,6 +86,19 @@ public class TransactionEntry implements Serializable {
         this.transactionEntryType = transactionEntryType;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public TransactionEntry description(String description) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public TransactionAccount getTransactionAccount() {
         return this.transactionAccount;
     }
@@ -121,6 +138,7 @@ public class TransactionEntry implements Serializable {
             "id=" + getId() +
             ", entryAmount=" + getEntryAmount() +
             ", transactionEntryType='" + getTransactionEntryType() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }
