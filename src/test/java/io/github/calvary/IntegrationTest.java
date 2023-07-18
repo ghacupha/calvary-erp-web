@@ -1,6 +1,5 @@
 package io.github.calvary;
 
-import io.github.calvary.CalvaryErpApp;
 import io.github.calvary.config.AsyncSyncConfiguration;
 import io.github.calvary.config.EmbeddedElasticsearch;
 import io.github.calvary.config.EmbeddedKafka;

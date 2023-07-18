@@ -14,7 +14,6 @@ import io.github.calvary.security.AuthoritiesConstants;
 import io.github.calvary.service.UserService;
 import io.github.calvary.service.dto.AdminUserDTO;
 import io.github.calvary.service.dto.PasswordChangeDTO;
-import io.github.calvary.service.dto.UserDTO;
 import io.github.calvary.web.rest.vm.KeyAndPasswordVM;
 import io.github.calvary.web.rest.vm.ManagedUserVM;
 import java.time.Instant;
