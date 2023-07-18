@@ -133,16 +133,16 @@ export const TransactionEntry = () => {
   return (
     <div>
       <h2 id="transaction-entry-heading" data-cy="TransactionEntryHeading">
-        <Translate contentKey="calvaryErpApp.transactionEntry.home.title">Transaction Entries</Translate>
+        Transaction Entries
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.refreshListLabel">Refresh List</Translate>
+            Refresh List
           </Button>
           <Link to="/transaction-entry/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.createLabel">Create new Transaction Entry</Translate>
+            Create new Transaction Entry
           </Link>
         </div>
       </h2>

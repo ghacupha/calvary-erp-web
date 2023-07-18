@@ -1,5 +1,7 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-name: calvary-erp
+
+version: '3.3'
+
 services:
   app:
     image: calvary-erp

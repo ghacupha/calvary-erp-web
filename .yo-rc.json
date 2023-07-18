@@ -16,7 +16,7 @@
     "enableGradleEnterprise": null,
     "enableHibernateCache": null,
     "enableSwaggerCodegen": false,
-    "enableTranslation": false,
+    "enableTranslation": true,
     "entities": ["TransactionAccount", "TransactionEntry", "AccountTransaction"],
     "entitySuffix": "",
     "gradleEnterpriseHost": null,

@@ -8,7 +8,7 @@ const Footer = () => (
   <div className="footer page-content">
     <Row>
       <Col md="12">
-        <p>This is your footer</p>
+        <p>Calvary Erp Ver 0.0.1-SNAPSHOT (ASA Series)</p>
       </Col>
     </Row>
   </div>

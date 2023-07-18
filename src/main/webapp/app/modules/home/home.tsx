@@ -30,9 +30,6 @@ export const Home = () => {
               <Link to="/login" className="alert-link">
                 sign in
               </Link>
-              , you can try the default accounts:
-              <br />- Administrator (login=&quot;admin&quot; and password=&quot;admin&quot;) <br />- User (login=&quot;user&quot; and
-              password=&quot;user&quot;).
             </Alert>
 
             <Alert color="warning">
