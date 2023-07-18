@@ -2,7 +2,7 @@ package io.github.calvary;
 
 import io.github.calvary.config.AsyncSyncConfiguration;
 import io.github.calvary.config.EmbeddedElasticsearch;
-import io.github.calvary.config.EmbeddedPulsar;
+import io.github.calvary.config.EmbeddedKafka;
 import io.github.calvary.config.EmbeddedSQL;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -20,7 +20,7 @@ import org.springframework.test.annotation.DirtiesContext;
 @EmbeddedElasticsearch
 @EmbeddedSQL
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-@EmbeddedPulsar
+@EmbeddedKafka
 public @interface IntegrationTest {
     // 5s is Spring's default https://github.com/spring-projects/spring-framework/blob/main/spring-test/src/main/java/org/springframework/test/web/reactive/server/DefaultWebTestClient.java#L106
     String DEFAULT_TIMEOUT = "PT5S";

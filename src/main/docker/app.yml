@@ -10,8 +10,7 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://postgresql:5432/calvary-erp
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://postgresql:5432/calvary-erp
       - SPRING_ELASTICSEARCH_URIS=http://elasticsearch:9200
-      - SPRING_PULSAR_CLIENT_SERVICE_URL=pulsar://pulsar:6650
-      - SPRING_PULSAR_ADMINISTRATION_SERVICE_URL=http://pulsar:8080
+      - SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS=kafka:9092
     ports:
       - 127.0.0.1:8080:8080
     healthcheck:
@@ -36,7 +35,11 @@ services:
     extends:
       file: ./elasticsearch.yml
       service: elasticsearch
-  pulsar:
+  kafka:
     extends:
-      file: ./pulsar.yml
-      service: pulsar
+      file: ./kafka.yml
+      service: kafka
+  zookeeper:
+    extends:
+      file: ./kafka.yml
+      service: zookeeper

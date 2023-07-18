@@ -18,13 +18,23 @@ spring:
     name: calvary-erp
   cloud:
     function:
-      definition: testStringSupplier;testStringConsumer
+      definition: kafkaConsumer;kafkaProducer
     stream:
+      kafka:
+        binder:
+          replicationFactor: 1
+          auto-create-topics: true
       bindings:
-        testStringSupplier-out-0:
-          destination: calvary-erp
-        testStringConsumer-in-0:
-          destination: calvary-erp
+        binding-out-0:
+          content-type: text/plain
+          group: calvary-erp
+        kafkaConsumer-in-0:
+          destination: sse-topic
+          content-type: text/plain
+          group: calvary-erp
+        kafkaProducer-out-0:
+          content-type: text/plain
+          group: calvary-erp
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production
   liquibase:
     contexts: test

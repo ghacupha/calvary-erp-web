@@ -1,9 +1,9 @@
 // Override Bootstrap variables
 @import 'bootstrap-variables';
-@import 'bootswatch/dist/flatly/variables';
+@import 'bootswatch/dist/journal/variables';
 // Import Bootstrap source files from node_modules
 @import 'bootstrap/scss/bootstrap';
-@import 'bootswatch/dist/flatly/bootswatch';
+@import 'bootswatch/dist/journal/bootswatch';
 body {
   margin: 0;
 }

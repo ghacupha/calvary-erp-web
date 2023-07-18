@@ -9,7 +9,11 @@ services:
     extends:
       file: ./elasticsearch.yml
       service: elasticsearch
-  pulsar:
+  kafka:
     extends:
-      file: ./pulsar.yml
-      service: pulsar
+      file: ./kafka.yml
+      service: kafka
+  zookeeper:
+    extends:
+      file: ./kafka.yml
+      service: zookeeper
