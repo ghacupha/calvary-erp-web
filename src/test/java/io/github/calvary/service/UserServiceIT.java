@@ -1,18 +1,15 @@
 package io.github.calvary.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import io.github.calvary.IntegrationTest;
 import io.github.calvary.config.Constants;
 import io.github.calvary.domain.User;
 import io.github.calvary.repository.UserRepository;
 import io.github.calvary.repository.search.UserSearchRepository;
-import io.github.calvary.service.dto.AdminUserDTO;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -24,8 +21,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.domain.PageRequest;
-import reactor.core.publisher.Mono;
 import tech.jhipster.security.RandomUtil;
 
 /**

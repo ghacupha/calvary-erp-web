@@ -10,14 +10,12 @@ import io.github.calvary.web.rest.errors.*;
 import io.github.calvary.web.rest.vm.KeyAndPasswordVM;
 import io.github.calvary.web.rest.vm.ManagedUserVM;
 import jakarta.validation.Valid;
-import java.security.Principal;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 /**

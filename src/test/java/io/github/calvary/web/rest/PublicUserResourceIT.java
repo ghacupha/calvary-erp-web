@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 import io.github.calvary.IntegrationTest;
-import io.github.calvary.config.Constants;
 import io.github.calvary.domain.User;
 import io.github.calvary.repository.EntityManager;
 import io.github.calvary.repository.UserRepository;
@@ -18,7 +17,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
 /**
  * Integration tests for the {@link PublicUserResource} REST controller.

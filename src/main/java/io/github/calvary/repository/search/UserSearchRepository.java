@@ -1,10 +1,8 @@
 package io.github.calvary.repository.search;
 
-import static org.springframework.data.elasticsearch.client.elc.QueryBuilders.queryStringQuery;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.QueryStringQuery;
 import io.github.calvary.domain.User;
-import io.github.calvary.repository.UserRepository;
 import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.client.elc.ReactiveElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.SearchHit;

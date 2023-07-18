@@ -2,7 +2,6 @@ package io.github.calvary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.calvary.config.EmbeddedPulsar;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
