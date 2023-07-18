@@ -1,0 +1,15 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: calvary-erp
+services:
+  postgresql:
+    extends:
+      file: ./postgresql.yml
+      service: postgresql
+  elasticsearch:
+    extends:
+      file: ./elasticsearch.yml
+      service: elasticsearch
+  pulsar:
+    extends:
+      file: ./pulsar.yml
+      service: pulsar

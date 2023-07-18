@@ -1,0 +1,42 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: calvary-erp
+services:
+  app:
+    image: calvary-erp
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod,api-docs
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - SPRING_R2DBC_URL=r2dbc:postgresql://postgresql:5432/calvary-erp
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://postgresql:5432/calvary-erp
+      - SPRING_ELASTICSEARCH_URIS=http://elasticsearch:9200
+      - SPRING_PULSAR_CLIENT_SERVICE_URL=pulsar://pulsar:6650
+      - SPRING_PULSAR_ADMINISTRATION_SERVICE_URL=http://pulsar:8080
+    ports:
+      - 127.0.0.1:8080:8080
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:8080/management/health
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    depends_on:
+      postgresql:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+  postgresql:
+    extends:
+      file: ./postgresql.yml
+      service: postgresql
+  elasticsearch:
+    extends:
+      file: ./elasticsearch.yml
+      service: elasticsearch
+  pulsar:
+    extends:
+      file: ./pulsar.yml
+      service: pulsar
