@@ -5,8 +5,8 @@ import static io.github.calvary.security.SecurityUtils.JWT_ALGORITHM;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.github.calvary.web.rest.vm.LoginVM;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.security.Principal;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
@@ -16,17 +16,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 /**
  * Controller to authenticate users.
@@ -45,26 +44,26 @@ public class AuthenticateController {
     @Value("${jhipster.security.authentication.jwt.token-validity-in-seconds-for-remember-me:0}")
     private long tokenValidityInSecondsForRememberMe;
 
-    private final ReactiveAuthenticationManager authenticationManager;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public AuthenticateController(JwtEncoder jwtEncoder, ReactiveAuthenticationManager authenticationManager) {
+    public AuthenticateController(JwtEncoder jwtEncoder, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.jwtEncoder = jwtEncoder;
-        this.authenticationManager = authenticationManager;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
     @PostMapping("/authenticate")
-    public Mono<ResponseEntity<JWTToken>> authorize(@Valid @RequestBody Mono<LoginVM> loginVM) {
-        return loginVM
-            .flatMap(login ->
-                authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
-                    .flatMap(auth -> Mono.fromCallable(() -> this.createToken(auth, login.isRememberMe())))
-            )
-            .map(jwt -> {
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setBearerAuth(jwt);
-                return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
-            });
+    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody LoginVM loginVM) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+            loginVM.getUsername(),
+            loginVM.getPassword()
+        );
+
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = this.createToken(authentication, loginVM.isRememberMe());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setBearerAuth(jwt);
+        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
     /**
@@ -74,9 +73,9 @@ public class AuthenticateController {
      * @return the login if the user is authenticated.
      */
     @GetMapping("/authenticate")
-    public Mono<String> isAuthenticated(ServerWebExchange request) {
+    public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
-        return request.getPrincipal().map(Principal::getName);
+        return request.getRemoteUser();
     }
 
     public String createToken(Authentication authentication, boolean rememberMe) {

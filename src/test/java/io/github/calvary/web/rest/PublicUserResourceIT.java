@@ -1,27 +1,30 @@
 package io.github.calvary.web.rest;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasItems;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
 import io.github.calvary.domain.User;
-import io.github.calvary.repository.EntityManager;
 import io.github.calvary.repository.UserRepository;
 import io.github.calvary.repository.search.UserSearchRepository;
 import io.github.calvary.security.AuthoritiesConstants;
-import io.github.calvary.service.dto.UserDTO;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests for the {@link PublicUserResource} REST controller.
  */
-@AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_TIMEOUT)
+@AutoConfigureMockMvc
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @IntegrationTest
 class PublicUserResourceIT {
@@ -43,9 +46,18 @@ class PublicUserResourceIT {
     private EntityManager em;
 
     @Autowired
-    private WebTestClient webTestClient;
+    private CacheManager cacheManager;
+
+    @Autowired
+    private MockMvc restUserMockMvc;
 
     private User user;
+
+    @BeforeEach
+    public void setup() {
+        cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
+        cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
+    }
 
     @BeforeEach
     public void initTest() {
@@ -53,73 +65,44 @@ class PublicUserResourceIT {
     }
 
     @Test
-    void getAllPublicUsers() {
+    @Transactional
+    void getAllPublicUsers() throws Exception {
         // Initialize the database
-        userRepository.save(user).block();
+        userRepository.saveAndFlush(user);
 
         // Get all the users
-        UserDTO foundUser = webTestClient
-            .get()
-            .uri("/api/users?sort=id,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON)
-            .returnResult(UserDTO.class)
-            .getResponseBody()
-            .blockFirst();
-
-        assertThat(foundUser.getLogin()).isEqualTo(DEFAULT_LOGIN);
+        restUserMockMvc
+            .perform(get("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].login").value(hasItem(DEFAULT_LOGIN)))
+            .andExpect(jsonPath("$.[*].email").doesNotExist())
+            .andExpect(jsonPath("$.[*].imageUrl").doesNotExist())
+            .andExpect(jsonPath("$.[*].langKey").doesNotExist());
     }
 
     @Test
-    void getAllAuthorities() {
-        webTestClient
-            .get()
-            .uri("/api/authorities")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
-            .expectBody()
-            .jsonPath("$")
-            .isArray()
-            .jsonPath("$[?(@=='" + AuthoritiesConstants.ADMIN + "')]")
-            .hasJsonPath()
-            .jsonPath("$[?(@=='" + AuthoritiesConstants.USER + "')]")
-            .hasJsonPath();
+    @Transactional
+    void getAllAuthorities() throws Exception {
+        restUserMockMvc
+            .perform(get("/api/authorities").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").value(hasItems(AuthoritiesConstants.USER, AuthoritiesConstants.ADMIN)));
     }
 
     @Test
+    @Transactional
     void getAllUsersSortedByParameters() throws Exception {
         // Initialize the database
-        userRepository.save(user).block();
+        userRepository.saveAndFlush(user);
 
-        webTestClient
-            .get()
-            .uri("/api/users?sort=resetKey,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
-        webTestClient
-            .get()
-            .uri("/api/users?sort=password,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
-        webTestClient
-            .get()
-            .uri("/api/users?sort=resetKey,desc&sort=id,desc")
-            .accept(MediaType.APPLICATION_JSON)
-            .exchange()
-            .expectStatus()
-            .isBadRequest();
-        webTestClient.get().uri("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON).exchange().expectStatus().isOk();
+        restUserMockMvc.perform(get("/api/users?sort=resetKey,desc").accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+        restUserMockMvc.perform(get("/api/users?sort=password,desc").accept(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+        restUserMockMvc
+            .perform(get("/api/users?sort=resetKey,desc&sort=id,desc").accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+        restUserMockMvc.perform(get("/api/users?sort=id,desc").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 }

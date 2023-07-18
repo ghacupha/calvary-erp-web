@@ -1,35 +1,39 @@
 package io.github.calvary.web.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
 import io.github.calvary.config.EmbeddedKafka;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.cloud.stream.binder.test.InputDestination;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
-import org.springframework.http.MediaType;
+import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.MimeTypeUtils;
 
-@AutoConfigureWebTestClient(timeout = IntegrationTest.DEFAULT_TIMEOUT)
+@IntegrationTest
+@AutoConfigureMockMvc
 @WithMockUser
 @EmbeddedKafka
-@IntegrationTest
+@ImportAutoConfiguration(TestChannelBinderConfiguration.class)
 class CalvaryErpKafkaResourceIT {
 
-    private static String KAFKA_API = "/api/calvary-erp-kafka/{command}";
-
     @Autowired
-    private WebTestClient client;
+    private MockMvc restMockMvc;
 
     @Autowired
     private InputDestination input;
@@ -38,13 +42,8 @@ class CalvaryErpKafkaResourceIT {
     private OutputDestination output;
 
     @Test
-    void producesMessages() throws InterruptedException {
-        client
-            .post()
-            .uri(uriBuilder -> uriBuilder.path(KAFKA_API).queryParam("message", "value-produce").build("publish"))
-            .exchange()
-            .expectStatus()
-            .isNoContent();
+    void producesMessages() throws Exception {
+        restMockMvc.perform(post("/api/calvary-erp-kafka/publish?message=value-produce")).andExpect(status().isOk());
         assertThat(output.receive(1000, "binding-out-0").getPayload()).isEqualTo("value-produce".getBytes());
     }
 
@@ -54,24 +53,25 @@ class CalvaryErpKafkaResourceIT {
     }
 
     @Test
-    void consumesMessages() {
+    void consumesMessages() throws Exception {
         Map<String, Object> map = new HashMap<>();
         map.put(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.TEXT_PLAIN_VALUE);
         MessageHeaders headers = new MessageHeaders(map);
         Message<String> testMessage = new GenericMessage<>("value-consume", headers);
-        input.send(testMessage);
-        String value = client
-            .get()
-            .uri(KAFKA_API, "consume")
-            .accept(MediaType.TEXT_EVENT_STREAM)
-            .exchange()
-            .expectStatus()
-            .isOk()
-            .expectHeader()
-            .contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
-            .returnResult(String.class)
-            .getResponseBody()
-            .blockFirst(Duration.ofSeconds(10));
-        assertThat(value).isEqualTo("value-consume");
+        MvcResult mvcResult = restMockMvc
+            .perform(get("/api/calvary-erp-kafka/register"))
+            .andExpect(status().isOk())
+            .andExpect(request().asyncStarted())
+            .andReturn();
+        for (int i = 0; i < 100; i++) {
+            input.send(testMessage);
+            Thread.sleep(100);
+            String content = mvcResult.getResponse().getContentAsString();
+            if (content.contains("data:value-consume")) {
+                restMockMvc.perform(get("/api/calvary-erp-kafka/unregister"));
+                return;
+            }
+        }
+        fail("Expected content data:value-consume not received");
     }
 }

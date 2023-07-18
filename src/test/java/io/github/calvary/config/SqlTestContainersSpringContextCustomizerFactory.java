@@ -1,14 +1,18 @@
 package io.github.calvary.config;
 
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
+import tech.jhipster.config.JHipsterConstants;
 
 public class SqlTestContainersSpringContextCustomizerFactory implements ContextCustomizerFactory {
 
@@ -37,11 +41,9 @@ public class SqlTestContainersSpringContextCustomizerFactory implements ContextC
                         throw new RuntimeException(e);
                     }
                 }
-                testValues =
-                    testValues.and("spring.r2dbc.url=" + prodTestContainer.getTestContainer().getJdbcUrl().replace("jdbc", "r2dbc") + "");
-                testValues = testValues.and("spring.r2dbc.username=" + prodTestContainer.getTestContainer().getUsername());
-                testValues = testValues.and("spring.r2dbc.password=" + prodTestContainer.getTestContainer().getPassword());
-                testValues = testValues.and("spring.liquibase.url=" + prodTestContainer.getTestContainer().getJdbcUrl() + "");
+                testValues = testValues.and("spring.datasource.url=" + prodTestContainer.getTestContainer().getJdbcUrl() + "");
+                testValues = testValues.and("spring.datasource.username=" + prodTestContainer.getTestContainer().getUsername());
+                testValues = testValues.and("spring.datasource.password=" + prodTestContainer.getTestContainer().getPassword());
             }
             testValues.applyTo(context);
         };

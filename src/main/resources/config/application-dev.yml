@@ -35,12 +35,19 @@ spring:
   jackson:
     serialization:
       indent-output: true
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/calvary-erp
+    username: calvary-erp
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
   elasticsearch:
     uris: http://localhost:9200
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
-    url: jdbc:postgresql://localhost:5432/calvary-erp
   mail:
     host: localhost
     port: 25
@@ -48,10 +55,6 @@ spring:
     password:
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
-  r2dbc:
-    url: r2dbc:postgresql://localhost:5432/calvary-erp
-    username: calvary-erp
-    password:
   thymeleaf:
     cache: false
 
@@ -65,6 +68,10 @@ server:
 # ===================================================================
 
 jhipster:
+  cache: # Cache configuration
+    ehcache: # Ehcache configuration
+      time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
+      max-entries: 100 # Number of objects in each cache entry
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
