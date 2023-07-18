@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { getEntities as getTransactionAccounts } from 'app/entities/transaction-account/transaction-account.reducer';
+import { IAccountTransaction } from 'app/shared/model/account-transaction.model';
+import { getEntities as getAccountTransactions } from 'app/entities/account-transaction/account-transaction.reducer';
 import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';
@@ -23,6 +25,7 @@ export const TransactionEntryUpdate = () => {
   const isNew = id === undefined;
 
   const transactionAccounts = useAppSelector(state => state.transactionAccount.entities);
+  const accountTransactions = useAppSelector(state => state.accountTransaction.entities);
   const transactionEntryEntity = useAppSelector(state => state.transactionEntry.entity);
   const loading = useAppSelector(state => state.transactionEntry.loading);
   const updating = useAppSelector(state => state.transactionEntry.updating);
@@ -41,6 +44,7 @@ export const TransactionEntryUpdate = () => {
     }
 
     dispatch(getTransactionAccounts({}));
+    dispatch(getAccountTransactions({}));
   }, []);
 
   useEffect(() => {
@@ -54,6 +58,7 @@ export const TransactionEntryUpdate = () => {
       ...transactionEntryEntity,
       ...values,
       transactionAccount: transactionAccounts.find(it => it.id.toString() === values.transactionAccount.toString()),
+      accountTransaction: accountTransactions.find(it => it.id.toString() === values.accountTransaction.toString()),
     };
 
     if (isNew) {
@@ -70,6 +75,7 @@ export const TransactionEntryUpdate = () => {
           transactionEntryType: 'DEBIT',
           ...transactionEntryEntity,
           transactionAccount: transactionEntryEntity?.transactionAccount?.id,
+          accountTransaction: transactionEntryEntity?.accountTransaction?.id,
         };
 
   return (
@@ -138,6 +144,22 @@ export const TransactionEntryUpdate = () => {
               <FormText>
                 <Translate contentKey="entity.validation.required">This field is required.</Translate>
               </FormText>
+              <ValidatedField
+                id="transaction-entry-accountTransaction"
+                name="accountTransaction"
+                data-cy="accountTransaction"
+                label="Account Transaction"
+                type="select"
+              >
+                <option value="" key="0" />
+                {accountTransactions
+                  ? accountTransactions.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.referenceNumber}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-entry" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

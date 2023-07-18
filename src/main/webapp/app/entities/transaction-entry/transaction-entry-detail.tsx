@@ -53,6 +53,10 @@ export const TransactionEntryDetail = () => {
             <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>
           </dt>
           <dd>{transactionEntryEntity.transactionAccount ? transactionEntryEntity.transactionAccount.accountName : ''}</dd>
+          <dt>
+            <Translate contentKey="calvaryErpApp.transactionEntry.accountTransaction">Account Transaction</Translate>
+          </dt>
+          <dd>{transactionEntryEntity.accountTransaction ? transactionEntryEntity.accountTransaction.referenceNumber : ''}</dd>
         </dl>
         <Button tag={Link} to="/transaction-entry" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

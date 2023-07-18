@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
+import io.github.calvary.domain.AccountTransaction;
 import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.domain.TransactionEntry;
 import io.github.calvary.domain.enumeration.TransactionEntryTypes;
@@ -512,6 +513,28 @@ class TransactionEntryResourceIT {
         defaultTransactionEntryShouldNotBeFound("transactionAccountId.equals=" + (transactionAccountId + 1));
     }
 
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByAccountTransactionIsEqualToSomething() throws Exception {
+        AccountTransaction accountTransaction;
+        if (TestUtil.findAll(em, AccountTransaction.class).isEmpty()) {
+            transactionEntryRepository.saveAndFlush(transactionEntry);
+            accountTransaction = AccountTransactionResourceIT.createEntity(em);
+        } else {
+            accountTransaction = TestUtil.findAll(em, AccountTransaction.class).get(0);
+        }
+        em.persist(accountTransaction);
+        em.flush();
+        transactionEntry.setAccountTransaction(accountTransaction);
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+        Long accountTransactionId = accountTransaction.getId();
+        // Get all the transactionEntryList where accountTransaction equals to accountTransactionId
+        defaultTransactionEntryShouldBeFound("accountTransactionId.equals=" + accountTransactionId);
+
+        // Get all the transactionEntryList where accountTransaction equals to (accountTransactionId + 1)
+        defaultTransactionEntryShouldNotBeFound("accountTransactionId.equals=" + (accountTransactionId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -695,8 +718,6 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
-        partialUpdatedTransactionEntry.description(UPDATED_DESCRIPTION);
-
         restTransactionEntryMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionEntry.getId())
@@ -711,7 +732,7 @@ class TransactionEntryResourceIT {
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
-        assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 
     @Test

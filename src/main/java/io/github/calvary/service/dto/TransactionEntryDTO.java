@@ -23,6 +23,8 @@ public class TransactionEntryDTO implements Serializable {
 
     private TransactionAccountDTO transactionAccount;
 
+    private AccountTransactionDTO accountTransaction;
+
     public Long getId() {
         return id;
     }
@@ -63,6 +65,14 @@ public class TransactionEntryDTO implements Serializable {
         this.transactionAccount = transactionAccount;
     }
 
+    public AccountTransactionDTO getAccountTransaction() {
+        return accountTransaction;
+    }
+
+    public void setAccountTransaction(AccountTransactionDTO accountTransaction) {
+        this.accountTransaction = accountTransaction;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -93,6 +103,7 @@ public class TransactionEntryDTO implements Serializable {
             ", transactionEntryType='" + getTransactionEntryType() + "'" +
             ", description='" + getDescription() + "'" +
             ", transactionAccount=" + getTransactionAccount() +
+            ", accountTransaction=" + getAccountTransaction() +
             "}";
     }
 }

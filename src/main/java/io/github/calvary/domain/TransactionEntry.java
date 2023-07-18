@@ -45,6 +45,10 @@ public class TransactionEntry implements Serializable {
     @JsonIgnoreProperties(value = { "parentAccount" }, allowSetters = true)
     private TransactionAccount transactionAccount;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "transactionEntries" }, allowSetters = true)
+    private AccountTransaction accountTransaction;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -109,6 +113,19 @@ public class TransactionEntry implements Serializable {
 
     public TransactionEntry transactionAccount(TransactionAccount transactionAccount) {
         this.setTransactionAccount(transactionAccount);
+        return this;
+    }
+
+    public AccountTransaction getAccountTransaction() {
+        return this.accountTransaction;
+    }
+
+    public void setAccountTransaction(AccountTransaction accountTransaction) {
+        this.accountTransaction = accountTransaction;
+    }
+
+    public TransactionEntry accountTransaction(AccountTransaction accountTransaction) {
+        this.setAccountTransaction(accountTransaction);
         return this;
     }
 

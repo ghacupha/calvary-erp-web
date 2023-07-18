@@ -30,6 +30,13 @@
       "relationshipSide": "left",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "referenceNumber",
+      "otherEntityName": "accountTransaction",
+      "relationshipName": "accountTransaction",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

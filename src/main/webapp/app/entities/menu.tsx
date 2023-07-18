@@ -12,6 +12,9 @@ const EntitiesMenu = () => {
       <MenuItem icon="asterisk" to="/transaction-entry">
         Transaction Entry
       </MenuItem>
+      <MenuItem icon="asterisk" to="/account-transaction">
+        Account Transaction
+      </MenuItem>
       {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
     </>
   );

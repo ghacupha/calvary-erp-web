@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { Translate, translate, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Translate, translate, TextFormat, getPaginationState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons';
+import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.constants';
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { searchEntities, getEntities } from './transaction-entry.reducer';
+import { searchEntities, getEntities } from './account-transaction.reducer';
 
-export const TransactionEntry = () => {
+export const AccountTransaction = () => {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
@@ -21,9 +22,9 @@ export const TransactionEntry = () => {
     overridePaginationStateWithQueryParams(getPaginationState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
-  const transactionEntryList = useAppSelector(state => state.transactionEntry.entities);
-  const loading = useAppSelector(state => state.transactionEntry.loading);
-  const totalItems = useAppSelector(state => state.transactionEntry.totalItems);
+  const accountTransactionList = useAppSelector(state => state.accountTransaction.entities);
+  const loading = useAppSelector(state => state.accountTransaction.loading);
+  const totalItems = useAppSelector(state => state.accountTransaction.totalItems);
 
   const getAllEntities = () => {
     if (search) {
@@ -132,17 +133,22 @@ export const TransactionEntry = () => {
 
   return (
     <div>
-      <h2 id="transaction-entry-heading" data-cy="TransactionEntryHeading">
-        <Translate contentKey="calvaryErpApp.transactionEntry.home.title">Transaction Entries</Translate>
+      <h2 id="account-transaction-heading" data-cy="AccountTransactionHeading">
+        <Translate contentKey="calvaryErpApp.accountTransaction.home.title">Account Transactions</Translate>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.refreshListLabel">Refresh List</Translate>
+            <Translate contentKey="calvaryErpApp.accountTransaction.home.refreshListLabel">Refresh List</Translate>
           </Button>
-          <Link to="/transaction-entry/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <Link
+            to="/account-transaction/new"
+            className="btn btn-primary jh-create-entity"
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+          >
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.createLabel">Create new Transaction Entry</Translate>
+            <Translate contentKey="calvaryErpApp.accountTransaction.home.createLabel">Create new Account Transaction</Translate>
           </Link>
         </div>
       </h2>
@@ -164,71 +170,49 @@ export const TransactionEntry = () => {
         </Col>
       </Row>
       <div className="table-responsive">
-        {transactionEntryList && transactionEntryList.length > 0 ? (
+        {accountTransactionList && accountTransactionList.length > 0 ? (
           <Table responsive>
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.id">ID</Translate>{' '}
+                  <Translate contentKey="calvaryErpApp.accountTransaction.id">ID</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('id')} />
                 </th>
-                <th className="hand" onClick={sort('entryAmount')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.entryAmount">Entry Amount</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('entryAmount')} />
-                </th>
-                <th className="hand" onClick={sort('transactionEntryType')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.transactionEntryType">Transaction Entry Type</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('transactionEntryType')} />
+                <th className="hand" onClick={sort('transactionDate')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.transactionDate">Transaction Date</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('transactionDate')} />
                 </th>
                 <th className="hand" onClick={sort('description')}>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.description">Description</Translate>{' '}
+                  <Translate contentKey="calvaryErpApp.accountTransaction.description">Description</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
                 </th>
-                <th>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  <Translate contentKey="calvaryErpApp.transactionEntry.accountTransaction">Account Transaction</Translate>{' '}
-                  <FontAwesomeIcon icon="sort" />
+                <th className="hand" onClick={sort('referenceNumber')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.referenceNumber">Reference Number</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('referenceNumber')} />
                 </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {transactionEntryList.map((transactionEntry, i) => (
+              {accountTransactionList.map((accountTransaction, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/transaction-entry/${transactionEntry.id}`} color="link" size="sm">
-                      {transactionEntry.id}
+                    <Button tag={Link} to={`/account-transaction/${accountTransaction.id}`} color="link" size="sm">
+                      {accountTransaction.id}
                     </Button>
                   </td>
-                  <td>{transactionEntry.entryAmount}</td>
-                  <td>{transactionEntry.transactionEntryType}</td>
-                  <td>{transactionEntry.description}</td>
                   <td>
-                    {transactionEntry.transactionAccount ? (
-                      <Link to={`/transaction-account/${transactionEntry.transactionAccount.id}`}>
-                        {transactionEntry.transactionAccount.accountName}
-                      </Link>
-                    ) : (
-                      ''
-                    )}
+                    {accountTransaction.transactionDate ? (
+                      <TextFormat type="date" value={accountTransaction.transactionDate} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
                   </td>
-                  <td>
-                    {transactionEntry.accountTransaction ? (
-                      <Link to={`/account-transaction/${transactionEntry.accountTransaction.id}`}>
-                        {transactionEntry.accountTransaction.referenceNumber}
-                      </Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
+                  <td>{accountTransaction.description}</td>
+                  <td>{accountTransaction.referenceNumber}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button
                         tag={Link}
-                        to={`/transaction-entry/${transactionEntry.id}`}
+                        to={`/account-transaction/${accountTransaction.id}`}
                         color="info"
                         size="sm"
                         data-cy="entityDetailsButton"
@@ -240,7 +224,7 @@ export const TransactionEntry = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/transaction-entry/${transactionEntry.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/account-transaction/${accountTransaction.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
                         data-cy="entityEditButton"
@@ -252,7 +236,7 @@ export const TransactionEntry = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/transaction-entry/${transactionEntry.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/account-transaction/${accountTransaction.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="danger"
                         size="sm"
                         data-cy="entityDeleteButton"
@@ -271,13 +255,13 @@ export const TransactionEntry = () => {
         ) : (
           !loading && (
             <div className="alert alert-warning">
-              <Translate contentKey="calvaryErpApp.transactionEntry.home.notFound">No Transaction Entries found</Translate>
+              <Translate contentKey="calvaryErpApp.accountTransaction.home.notFound">No Account Transactions found</Translate>
             </div>
           )
         )}
       </div>
       {totalItems ? (
-        <div className={transactionEntryList && transactionEntryList.length > 0 ? '' : 'd-none'}>
+        <div className={accountTransactionList && accountTransactionList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
@@ -298,4 +282,4 @@ export const TransactionEntry = () => {
   );
 };
 
-export default TransactionEntry;
+export default AccountTransaction;

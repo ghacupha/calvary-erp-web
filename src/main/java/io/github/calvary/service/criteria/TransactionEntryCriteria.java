@@ -49,6 +49,8 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
 
     private LongFilter transactionAccountId;
 
+    private LongFilter accountTransactionId;
+
     private Boolean distinct;
 
     public TransactionEntryCriteria() {}
@@ -59,6 +61,7 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
         this.transactionEntryType = other.transactionEntryType == null ? null : other.transactionEntryType.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.transactionAccountId = other.transactionAccountId == null ? null : other.transactionAccountId.copy();
+        this.accountTransactionId = other.accountTransactionId == null ? null : other.accountTransactionId.copy();
         this.distinct = other.distinct;
     }
 
@@ -142,6 +145,21 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
         this.transactionAccountId = transactionAccountId;
     }
 
+    public LongFilter getAccountTransactionId() {
+        return accountTransactionId;
+    }
+
+    public LongFilter accountTransactionId() {
+        if (accountTransactionId == null) {
+            accountTransactionId = new LongFilter();
+        }
+        return accountTransactionId;
+    }
+
+    public void setAccountTransactionId(LongFilter accountTransactionId) {
+        this.accountTransactionId = accountTransactionId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -165,13 +183,14 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
             Objects.equals(transactionEntryType, that.transactionEntryType) &&
             Objects.equals(description, that.description) &&
             Objects.equals(transactionAccountId, that.transactionAccountId) &&
+            Objects.equals(accountTransactionId, that.accountTransactionId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, entryAmount, transactionEntryType, description, transactionAccountId, distinct);
+        return Objects.hash(id, entryAmount, transactionEntryType, description, transactionAccountId, accountTransactionId, distinct);
     }
 
     // prettier-ignore
@@ -183,6 +202,7 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
             (transactionEntryType != null ? "transactionEntryType=" + transactionEntryType + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (transactionAccountId != null ? "transactionAccountId=" + transactionAccountId + ", " : "") +
+            (accountTransactionId != null ? "accountTransactionId=" + accountTransactionId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

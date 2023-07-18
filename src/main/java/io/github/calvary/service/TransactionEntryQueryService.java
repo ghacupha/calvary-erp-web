@@ -117,6 +117,15 @@ public class TransactionEntryQueryService extends QueryService<TransactionEntry>
                         )
                     );
             }
+            if (criteria.getAccountTransactionId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getAccountTransactionId(),
+                            root -> root.join(TransactionEntry_.accountTransaction, JoinType.LEFT).get(AccountTransaction_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }
