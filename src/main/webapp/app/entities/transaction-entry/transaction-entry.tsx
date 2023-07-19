@@ -190,6 +190,22 @@ export const TransactionEntry = () => {
                   <Translate contentKey="calvaryErpApp.transactionEntry.description">Description</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('description')} />
                 </th>
+                <th className="hand" onClick={sort('wasProposed')}>
+                  <Translate contentKey="calvaryErpApp.transactionEntry.wasProposed">Was Proposed</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasProposed')} />
+                </th>
+                <th className="hand" onClick={sort('wasPosted')}>
+                  <Translate contentKey="calvaryErpApp.transactionEntry.wasPosted">Was Posted</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasPosted')} />
+                </th>
+                <th className="hand" onClick={sort('wasDeleted')}>
+                  <Translate contentKey="calvaryErpApp.transactionEntry.wasDeleted">Was Deleted</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasDeleted')} />
+                </th>
+                <th className="hand" onClick={sort('wasApproved')}>
+                  <Translate contentKey="calvaryErpApp.transactionEntry.wasApproved">Was Approved</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasApproved')} />
+                </th>
                 <th>
                   <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
@@ -214,6 +230,10 @@ export const TransactionEntry = () => {
                     <Translate contentKey={`calvaryErpApp.TransactionEntryTypes.${transactionEntry.transactionEntryType}`} />
                   </td>
                   <td>{transactionEntry.description}</td>
+                  <td>{transactionEntry.wasProposed ? 'true' : 'false'}</td>
+                  <td>{transactionEntry.wasPosted ? 'true' : 'false'}</td>
+                  <td>{transactionEntry.wasDeleted ? 'true' : 'false'}</td>
+                  <td>{transactionEntry.wasApproved ? 'true' : 'false'}</td>
                   <td>
                     {transactionEntry.transactionAccount ? (
                       <Link to={`/transaction-account/${transactionEntry.transactionAccount.id}`}>

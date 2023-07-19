@@ -20,7 +20,13 @@ public class AccountTransactionDTO implements Serializable {
 
     private String referenceNumber;
 
-    private Boolean posted;
+    private Boolean wasProposed;
+
+    private Boolean wasPosted;
+
+    private Boolean wasDeleted;
+
+    private Boolean wasApproved;
 
     public Long getId() {
         return id;
@@ -54,12 +60,36 @@ public class AccountTransactionDTO implements Serializable {
         this.referenceNumber = referenceNumber;
     }
 
-    public Boolean getPosted() {
-        return posted;
+    public Boolean getWasProposed() {
+        return wasProposed;
     }
 
-    public void setPosted(Boolean posted) {
-        this.posted = posted;
+    public void setWasProposed(Boolean wasProposed) {
+        this.wasProposed = wasProposed;
+    }
+
+    public Boolean getWasPosted() {
+        return wasPosted;
+    }
+
+    public void setWasPosted(Boolean wasPosted) {
+        this.wasPosted = wasPosted;
+    }
+
+    public Boolean getWasDeleted() {
+        return wasDeleted;
+    }
+
+    public void setWasDeleted(Boolean wasDeleted) {
+        this.wasDeleted = wasDeleted;
+    }
+
+    public Boolean getWasApproved() {
+        return wasApproved;
+    }
+
+    public void setWasApproved(Boolean wasApproved) {
+        this.wasApproved = wasApproved;
     }
 
     @Override
@@ -91,7 +121,10 @@ public class AccountTransactionDTO implements Serializable {
             ", transactionDate='" + getTransactionDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", referenceNumber='" + getReferenceNumber() + "'" +
-            ", posted='" + getPosted() + "'" +
+            ", wasProposed='" + getWasProposed() + "'" +
+            ", wasPosted='" + getWasPosted() + "'" +
+            ", wasDeleted='" + getWasDeleted() + "'" +
+            ", wasApproved='" + getWasApproved() + "'" +
             "}";
     }
 }

@@ -113,10 +113,34 @@ export const AccountTransactionUpdate = () => {
                 validate={{}}
               />
               <ValidatedField
-                label={translate('calvaryErpApp.accountTransaction.posted')}
-                id="account-transaction-posted"
-                name="posted"
-                data-cy="posted"
+                label={translate('calvaryErpApp.accountTransaction.wasProposed')}
+                id="account-transaction-wasProposed"
+                name="wasProposed"
+                data-cy="wasProposed"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label={translate('calvaryErpApp.accountTransaction.wasPosted')}
+                id="account-transaction-wasPosted"
+                name="wasPosted"
+                data-cy="wasPosted"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label={translate('calvaryErpApp.accountTransaction.wasDeleted')}
+                id="account-transaction-wasDeleted"
+                name="wasDeleted"
+                data-cy="wasDeleted"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label={translate('calvaryErpApp.accountTransaction.wasApproved')}
+                id="account-transaction-wasApproved"
+                name="wasApproved"
+                data-cy="wasApproved"
                 check
                 type="checkbox"
               />

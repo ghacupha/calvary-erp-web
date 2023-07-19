@@ -50,6 +50,30 @@ export const TransactionEntryDetail = () => {
           </dt>
           <dd>{transactionEntryEntity.description}</dd>
           <dt>
+            <span id="wasProposed">
+              <Translate contentKey="calvaryErpApp.transactionEntry.wasProposed">Was Proposed</Translate>
+            </span>
+          </dt>
+          <dd>{transactionEntryEntity.wasProposed ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="wasPosted">
+              <Translate contentKey="calvaryErpApp.transactionEntry.wasPosted">Was Posted</Translate>
+            </span>
+          </dt>
+          <dd>{transactionEntryEntity.wasPosted ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="wasDeleted">
+              <Translate contentKey="calvaryErpApp.transactionEntry.wasDeleted">Was Deleted</Translate>
+            </span>
+          </dt>
+          <dd>{transactionEntryEntity.wasDeleted ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="wasApproved">
+              <Translate contentKey="calvaryErpApp.transactionEntry.wasApproved">Was Approved</Translate>
+            </span>
+          </dt>
+          <dd>{transactionEntryEntity.wasApproved ? 'true' : 'false'}</dd>
+          <dt>
             <Translate contentKey="calvaryErpApp.transactionEntry.transactionAccount">Transaction Account</Translate>
           </dt>
           <dd>{transactionEntryEntity.transactionAccount ? transactionEntryEntity.transactionAccount.accountName : ''}</dd>

@@ -22,6 +22,10 @@
       "entryAmount": "Entry Amount",
       "transactionEntryType": "Transaction Entry Type",
       "description": "Description",
+      "wasProposed": "Was Proposed",
+      "wasPosted": "Was Posted",
+      "wasDeleted": "Was Deleted",
+      "wasApproved": "Was Approved",
       "transactionAccount": "Transaction Account",
       "accountTransaction": "Account Transaction"
     }

@@ -22,7 +22,10 @@
       "transactionDate": "Transaction Date",
       "description": "Description",
       "referenceNumber": "Reference Number",
-      "posted": "Posted",
+      "wasProposed": "Was Proposed",
+      "wasPosted": "Was Posted",
+      "wasDeleted": "Was Deleted",
+      "wasApproved": "Was Approved",
       "transactionEntry": "Transaction Entry"
     }
   }

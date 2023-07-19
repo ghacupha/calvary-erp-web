@@ -131,6 +131,38 @@ export const TransactionEntryUpdate = () => {
                 type="text"
               />
               <ValidatedField
+                label={translate('calvaryErpApp.transactionEntry.wasProposed')}
+                id="transaction-entry-wasProposed"
+                name="wasProposed"
+                data-cy="wasProposed"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label={translate('calvaryErpApp.transactionEntry.wasPosted')}
+                id="transaction-entry-wasPosted"
+                name="wasPosted"
+                data-cy="wasPosted"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label={translate('calvaryErpApp.transactionEntry.wasDeleted')}
+                id="transaction-entry-wasDeleted"
+                name="wasDeleted"
+                data-cy="wasDeleted"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label={translate('calvaryErpApp.transactionEntry.wasApproved')}
+                id="transaction-entry-wasApproved"
+                name="wasApproved"
+                data-cy="wasApproved"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
                 id="transaction-entry-transactionAccount"
                 name="transactionAccount"
                 data-cy="transactionAccount"

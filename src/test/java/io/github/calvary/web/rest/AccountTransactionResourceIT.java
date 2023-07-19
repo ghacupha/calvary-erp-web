@@ -51,8 +51,17 @@ class AccountTransactionResourceIT {
     private static final String DEFAULT_REFERENCE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_REFERENCE_NUMBER = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_POSTED = false;
-    private static final Boolean UPDATED_POSTED = true;
+    private static final Boolean DEFAULT_WAS_PROPOSED = false;
+    private static final Boolean UPDATED_WAS_PROPOSED = true;
+
+    private static final Boolean DEFAULT_WAS_POSTED = false;
+    private static final Boolean UPDATED_WAS_POSTED = true;
+
+    private static final Boolean DEFAULT_WAS_DELETED = false;
+    private static final Boolean UPDATED_WAS_DELETED = true;
+
+    private static final Boolean DEFAULT_WAS_APPROVED = false;
+    private static final Boolean UPDATED_WAS_APPROVED = true;
 
     private static final String ENTITY_API_URL = "/api/account-transactions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -89,7 +98,10 @@ class AccountTransactionResourceIT {
             .transactionDate(DEFAULT_TRANSACTION_DATE)
             .description(DEFAULT_DESCRIPTION)
             .referenceNumber(DEFAULT_REFERENCE_NUMBER)
-            .posted(DEFAULT_POSTED);
+            .wasProposed(DEFAULT_WAS_PROPOSED)
+            .wasPosted(DEFAULT_WAS_POSTED)
+            .wasDeleted(DEFAULT_WAS_DELETED)
+            .wasApproved(DEFAULT_WAS_APPROVED);
         return accountTransaction;
     }
 
@@ -104,7 +116,10 @@ class AccountTransactionResourceIT {
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .description(UPDATED_DESCRIPTION)
             .referenceNumber(UPDATED_REFERENCE_NUMBER)
-            .posted(UPDATED_POSTED);
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasApproved(UPDATED_WAS_APPROVED);
         return accountTransaction;
     }
 
@@ -147,7 +162,10 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(DEFAULT_REFERENCE_NUMBER);
-        assertThat(testAccountTransaction.getPosted()).isEqualTo(DEFAULT_POSTED);
+        assertThat(testAccountTransaction.getWasProposed()).isEqualTo(DEFAULT_WAS_PROPOSED);
+        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
+        assertThat(testAccountTransaction.getWasApproved()).isEqualTo(DEFAULT_WAS_APPROVED);
     }
 
     @Test
@@ -216,7 +234,10 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)))
-            .andExpect(jsonPath("$.[*].posted").value(hasItem(DEFAULT_POSTED.booleanValue())));
+            .andExpect(jsonPath("$.[*].wasProposed").value(hasItem(DEFAULT_WAS_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasPosted").value(hasItem(DEFAULT_WAS_POSTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasDeleted").value(hasItem(DEFAULT_WAS_DELETED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasApproved").value(hasItem(DEFAULT_WAS_APPROVED.booleanValue())));
     }
 
     @Test
@@ -234,7 +255,10 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.transactionDate").value(DEFAULT_TRANSACTION_DATE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.referenceNumber").value(DEFAULT_REFERENCE_NUMBER))
-            .andExpect(jsonPath("$.posted").value(DEFAULT_POSTED.booleanValue()));
+            .andExpect(jsonPath("$.wasProposed").value(DEFAULT_WAS_PROPOSED.booleanValue()))
+            .andExpect(jsonPath("$.wasPosted").value(DEFAULT_WAS_POSTED.booleanValue()))
+            .andExpect(jsonPath("$.wasDeleted").value(DEFAULT_WAS_DELETED.booleanValue()))
+            .andExpect(jsonPath("$.wasApproved").value(DEFAULT_WAS_APPROVED.booleanValue()));
     }
 
     @Test
@@ -478,41 +502,158 @@ class AccountTransactionResourceIT {
 
     @Test
     @Transactional
-    void getAllAccountTransactionsByPostedIsEqualToSomething() throws Exception {
+    void getAllAccountTransactionsByWasProposedIsEqualToSomething() throws Exception {
         // Initialize the database
         accountTransactionRepository.saveAndFlush(accountTransaction);
 
-        // Get all the accountTransactionList where posted equals to DEFAULT_POSTED
-        defaultAccountTransactionShouldBeFound("posted.equals=" + DEFAULT_POSTED);
+        // Get all the accountTransactionList where wasProposed equals to DEFAULT_WAS_PROPOSED
+        defaultAccountTransactionShouldBeFound("wasProposed.equals=" + DEFAULT_WAS_PROPOSED);
 
-        // Get all the accountTransactionList where posted equals to UPDATED_POSTED
-        defaultAccountTransactionShouldNotBeFound("posted.equals=" + UPDATED_POSTED);
+        // Get all the accountTransactionList where wasProposed equals to UPDATED_WAS_PROPOSED
+        defaultAccountTransactionShouldNotBeFound("wasProposed.equals=" + UPDATED_WAS_PROPOSED);
     }
 
     @Test
     @Transactional
-    void getAllAccountTransactionsByPostedIsInShouldWork() throws Exception {
+    void getAllAccountTransactionsByWasProposedIsInShouldWork() throws Exception {
         // Initialize the database
         accountTransactionRepository.saveAndFlush(accountTransaction);
 
-        // Get all the accountTransactionList where posted in DEFAULT_POSTED or UPDATED_POSTED
-        defaultAccountTransactionShouldBeFound("posted.in=" + DEFAULT_POSTED + "," + UPDATED_POSTED);
+        // Get all the accountTransactionList where wasProposed in DEFAULT_WAS_PROPOSED or UPDATED_WAS_PROPOSED
+        defaultAccountTransactionShouldBeFound("wasProposed.in=" + DEFAULT_WAS_PROPOSED + "," + UPDATED_WAS_PROPOSED);
 
-        // Get all the accountTransactionList where posted equals to UPDATED_POSTED
-        defaultAccountTransactionShouldNotBeFound("posted.in=" + UPDATED_POSTED);
+        // Get all the accountTransactionList where wasProposed equals to UPDATED_WAS_PROPOSED
+        defaultAccountTransactionShouldNotBeFound("wasProposed.in=" + UPDATED_WAS_PROPOSED);
     }
 
     @Test
     @Transactional
-    void getAllAccountTransactionsByPostedIsNullOrNotNull() throws Exception {
+    void getAllAccountTransactionsByWasProposedIsNullOrNotNull() throws Exception {
         // Initialize the database
         accountTransactionRepository.saveAndFlush(accountTransaction);
 
-        // Get all the accountTransactionList where posted is not null
-        defaultAccountTransactionShouldBeFound("posted.specified=true");
+        // Get all the accountTransactionList where wasProposed is not null
+        defaultAccountTransactionShouldBeFound("wasProposed.specified=true");
 
-        // Get all the accountTransactionList where posted is null
-        defaultAccountTransactionShouldNotBeFound("posted.specified=false");
+        // Get all the accountTransactionList where wasProposed is null
+        defaultAccountTransactionShouldNotBeFound("wasProposed.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasPostedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasPosted equals to DEFAULT_WAS_POSTED
+        defaultAccountTransactionShouldBeFound("wasPosted.equals=" + DEFAULT_WAS_POSTED);
+
+        // Get all the accountTransactionList where wasPosted equals to UPDATED_WAS_POSTED
+        defaultAccountTransactionShouldNotBeFound("wasPosted.equals=" + UPDATED_WAS_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasPostedIsInShouldWork() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasPosted in DEFAULT_WAS_POSTED or UPDATED_WAS_POSTED
+        defaultAccountTransactionShouldBeFound("wasPosted.in=" + DEFAULT_WAS_POSTED + "," + UPDATED_WAS_POSTED);
+
+        // Get all the accountTransactionList where wasPosted equals to UPDATED_WAS_POSTED
+        defaultAccountTransactionShouldNotBeFound("wasPosted.in=" + UPDATED_WAS_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasPostedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasPosted is not null
+        defaultAccountTransactionShouldBeFound("wasPosted.specified=true");
+
+        // Get all the accountTransactionList where wasPosted is null
+        defaultAccountTransactionShouldNotBeFound("wasPosted.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasDeletedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasDeleted equals to DEFAULT_WAS_DELETED
+        defaultAccountTransactionShouldBeFound("wasDeleted.equals=" + DEFAULT_WAS_DELETED);
+
+        // Get all the accountTransactionList where wasDeleted equals to UPDATED_WAS_DELETED
+        defaultAccountTransactionShouldNotBeFound("wasDeleted.equals=" + UPDATED_WAS_DELETED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasDeletedIsInShouldWork() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasDeleted in DEFAULT_WAS_DELETED or UPDATED_WAS_DELETED
+        defaultAccountTransactionShouldBeFound("wasDeleted.in=" + DEFAULT_WAS_DELETED + "," + UPDATED_WAS_DELETED);
+
+        // Get all the accountTransactionList where wasDeleted equals to UPDATED_WAS_DELETED
+        defaultAccountTransactionShouldNotBeFound("wasDeleted.in=" + UPDATED_WAS_DELETED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasDeletedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasDeleted is not null
+        defaultAccountTransactionShouldBeFound("wasDeleted.specified=true");
+
+        // Get all the accountTransactionList where wasDeleted is null
+        defaultAccountTransactionShouldNotBeFound("wasDeleted.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasApprovedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasApproved equals to DEFAULT_WAS_APPROVED
+        defaultAccountTransactionShouldBeFound("wasApproved.equals=" + DEFAULT_WAS_APPROVED);
+
+        // Get all the accountTransactionList where wasApproved equals to UPDATED_WAS_APPROVED
+        defaultAccountTransactionShouldNotBeFound("wasApproved.equals=" + UPDATED_WAS_APPROVED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasApprovedIsInShouldWork() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasApproved in DEFAULT_WAS_APPROVED or UPDATED_WAS_APPROVED
+        defaultAccountTransactionShouldBeFound("wasApproved.in=" + DEFAULT_WAS_APPROVED + "," + UPDATED_WAS_APPROVED);
+
+        // Get all the accountTransactionList where wasApproved equals to UPDATED_WAS_APPROVED
+        defaultAccountTransactionShouldNotBeFound("wasApproved.in=" + UPDATED_WAS_APPROVED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByWasApprovedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where wasApproved is not null
+        defaultAccountTransactionShouldBeFound("wasApproved.specified=true");
+
+        // Get all the accountTransactionList where wasApproved is null
+        defaultAccountTransactionShouldNotBeFound("wasApproved.specified=false");
     }
 
     @Test
@@ -549,7 +690,10 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)))
-            .andExpect(jsonPath("$.[*].posted").value(hasItem(DEFAULT_POSTED.booleanValue())));
+            .andExpect(jsonPath("$.[*].wasProposed").value(hasItem(DEFAULT_WAS_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasPosted").value(hasItem(DEFAULT_WAS_POSTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasDeleted").value(hasItem(DEFAULT_WAS_DELETED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasApproved").value(hasItem(DEFAULT_WAS_APPROVED.booleanValue())));
 
         // Check, that the count call also returns 1
         restAccountTransactionMockMvc
@@ -603,7 +747,10 @@ class AccountTransactionResourceIT {
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .description(UPDATED_DESCRIPTION)
             .referenceNumber(UPDATED_REFERENCE_NUMBER)
-            .posted(UPDATED_POSTED);
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasApproved(UPDATED_WAS_APPROVED);
         AccountTransactionDTO accountTransactionDTO = accountTransactionMapper.toDto(updatedAccountTransaction);
 
         restAccountTransactionMockMvc
@@ -621,7 +768,10 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
-        assertThat(testAccountTransaction.getPosted()).isEqualTo(UPDATED_POSTED);
+        assertThat(testAccountTransaction.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+        assertThat(testAccountTransaction.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -632,7 +782,10 @@ class AccountTransactionResourceIT {
                 assertThat(testAccountTransactionSearch.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
                 assertThat(testAccountTransactionSearch.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
                 assertThat(testAccountTransactionSearch.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
-                assertThat(testAccountTransactionSearch.getPosted()).isEqualTo(UPDATED_POSTED);
+                assertThat(testAccountTransactionSearch.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+                assertThat(testAccountTransactionSearch.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+                assertThat(testAccountTransactionSearch.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+                assertThat(testAccountTransactionSearch.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
             });
     }
 
@@ -726,7 +879,11 @@ class AccountTransactionResourceIT {
         AccountTransaction partialUpdatedAccountTransaction = new AccountTransaction();
         partialUpdatedAccountTransaction.setId(accountTransaction.getId());
 
-        partialUpdatedAccountTransaction.description(UPDATED_DESCRIPTION).referenceNumber(UPDATED_REFERENCE_NUMBER).posted(UPDATED_POSTED);
+        partialUpdatedAccountTransaction
+            .description(UPDATED_DESCRIPTION)
+            .referenceNumber(UPDATED_REFERENCE_NUMBER)
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasApproved(UPDATED_WAS_APPROVED);
 
         restAccountTransactionMockMvc
             .perform(
@@ -743,7 +900,10 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
-        assertThat(testAccountTransaction.getPosted()).isEqualTo(UPDATED_POSTED);
+        assertThat(testAccountTransaction.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
+        assertThat(testAccountTransaction.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 
     @Test
@@ -762,7 +922,10 @@ class AccountTransactionResourceIT {
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .description(UPDATED_DESCRIPTION)
             .referenceNumber(UPDATED_REFERENCE_NUMBER)
-            .posted(UPDATED_POSTED);
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasApproved(UPDATED_WAS_APPROVED);
 
         restAccountTransactionMockMvc
             .perform(
@@ -779,7 +942,10 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
-        assertThat(testAccountTransaction.getPosted()).isEqualTo(UPDATED_POSTED);
+        assertThat(testAccountTransaction.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testAccountTransaction.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+        assertThat(testAccountTransaction.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+        assertThat(testAccountTransaction.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 
     @Test
@@ -900,6 +1066,9 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)))
-            .andExpect(jsonPath("$.[*].posted").value(hasItem(DEFAULT_POSTED.booleanValue())));
+            .andExpect(jsonPath("$.[*].wasProposed").value(hasItem(DEFAULT_WAS_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasPosted").value(hasItem(DEFAULT_WAS_POSTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasDeleted").value(hasItem(DEFAULT_WAS_DELETED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasApproved").value(hasItem(DEFAULT_WAS_APPROVED.booleanValue())));
     }
 }

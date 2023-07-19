@@ -196,9 +196,21 @@ export const AccountTransaction = () => {
                   <Translate contentKey="calvaryErpApp.accountTransaction.referenceNumber">Reference Number</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('referenceNumber')} />
                 </th>
-                <th className="hand" onClick={sort('posted')}>
-                  <Translate contentKey="calvaryErpApp.accountTransaction.posted">Posted</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('posted')} />
+                <th className="hand" onClick={sort('wasProposed')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.wasProposed">Was Proposed</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasProposed')} />
+                </th>
+                <th className="hand" onClick={sort('wasPosted')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.wasPosted">Was Posted</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasPosted')} />
+                </th>
+                <th className="hand" onClick={sort('wasDeleted')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.wasDeleted">Was Deleted</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasDeleted')} />
+                </th>
+                <th className="hand" onClick={sort('wasApproved')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.wasApproved">Was Approved</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('wasApproved')} />
                 </th>
                 <th />
               </tr>
@@ -218,7 +230,10 @@ export const AccountTransaction = () => {
                   </td>
                   <td>{accountTransaction.description}</td>
                   <td>{accountTransaction.referenceNumber}</td>
-                  <td>{accountTransaction.posted ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasProposed ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasPosted ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasDeleted ? 'true' : 'false'}</td>
+                  <td>{accountTransaction.wasApproved ? 'true' : 'false'}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button

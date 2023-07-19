@@ -23,6 +23,18 @@
             <column name="description" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="was_proposed" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="was_posted" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="was_deleted" type="boolean">
+                <constraints nullable="true" />
+            </column>
+            <column name="was_approved" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="transaction_account_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -53,6 +65,10 @@
             <column name="entry_amount" type="numeric"/>
             <column name="transaction_entry_type" type="string"/>
             <column name="description" type="string"/>
+            <column name="was_proposed" type="boolean"/>
+            <column name="was_posted" type="boolean"/>
+            <column name="was_deleted" type="boolean"/>
+            <column name="was_approved" type="boolean"/>
             <column name="transaction_account_id" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>

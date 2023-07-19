@@ -47,6 +47,14 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
 
     private StringFilter description;
 
+    private BooleanFilter wasProposed;
+
+    private BooleanFilter wasPosted;
+
+    private BooleanFilter wasDeleted;
+
+    private BooleanFilter wasApproved;
+
     private LongFilter transactionAccountId;
 
     private LongFilter accountTransactionId;
@@ -60,6 +68,10 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
         this.entryAmount = other.entryAmount == null ? null : other.entryAmount.copy();
         this.transactionEntryType = other.transactionEntryType == null ? null : other.transactionEntryType.copy();
         this.description = other.description == null ? null : other.description.copy();
+        this.wasProposed = other.wasProposed == null ? null : other.wasProposed.copy();
+        this.wasPosted = other.wasPosted == null ? null : other.wasPosted.copy();
+        this.wasDeleted = other.wasDeleted == null ? null : other.wasDeleted.copy();
+        this.wasApproved = other.wasApproved == null ? null : other.wasApproved.copy();
         this.transactionAccountId = other.transactionAccountId == null ? null : other.transactionAccountId.copy();
         this.accountTransactionId = other.accountTransactionId == null ? null : other.accountTransactionId.copy();
         this.distinct = other.distinct;
@@ -130,6 +142,66 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
         this.description = description;
     }
 
+    public BooleanFilter getWasProposed() {
+        return wasProposed;
+    }
+
+    public BooleanFilter wasProposed() {
+        if (wasProposed == null) {
+            wasProposed = new BooleanFilter();
+        }
+        return wasProposed;
+    }
+
+    public void setWasProposed(BooleanFilter wasProposed) {
+        this.wasProposed = wasProposed;
+    }
+
+    public BooleanFilter getWasPosted() {
+        return wasPosted;
+    }
+
+    public BooleanFilter wasPosted() {
+        if (wasPosted == null) {
+            wasPosted = new BooleanFilter();
+        }
+        return wasPosted;
+    }
+
+    public void setWasPosted(BooleanFilter wasPosted) {
+        this.wasPosted = wasPosted;
+    }
+
+    public BooleanFilter getWasDeleted() {
+        return wasDeleted;
+    }
+
+    public BooleanFilter wasDeleted() {
+        if (wasDeleted == null) {
+            wasDeleted = new BooleanFilter();
+        }
+        return wasDeleted;
+    }
+
+    public void setWasDeleted(BooleanFilter wasDeleted) {
+        this.wasDeleted = wasDeleted;
+    }
+
+    public BooleanFilter getWasApproved() {
+        return wasApproved;
+    }
+
+    public BooleanFilter wasApproved() {
+        if (wasApproved == null) {
+            wasApproved = new BooleanFilter();
+        }
+        return wasApproved;
+    }
+
+    public void setWasApproved(BooleanFilter wasApproved) {
+        this.wasApproved = wasApproved;
+    }
+
     public LongFilter getTransactionAccountId() {
         return transactionAccountId;
     }
@@ -182,6 +254,10 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
             Objects.equals(entryAmount, that.entryAmount) &&
             Objects.equals(transactionEntryType, that.transactionEntryType) &&
             Objects.equals(description, that.description) &&
+            Objects.equals(wasProposed, that.wasProposed) &&
+            Objects.equals(wasPosted, that.wasPosted) &&
+            Objects.equals(wasDeleted, that.wasDeleted) &&
+            Objects.equals(wasApproved, that.wasApproved) &&
             Objects.equals(transactionAccountId, that.transactionAccountId) &&
             Objects.equals(accountTransactionId, that.accountTransactionId) &&
             Objects.equals(distinct, that.distinct)
@@ -190,7 +266,19 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, entryAmount, transactionEntryType, description, transactionAccountId, accountTransactionId, distinct);
+        return Objects.hash(
+            id,
+            entryAmount,
+            transactionEntryType,
+            description,
+            wasProposed,
+            wasPosted,
+            wasDeleted,
+            wasApproved,
+            transactionAccountId,
+            accountTransactionId,
+            distinct
+        );
     }
 
     // prettier-ignore
@@ -201,6 +289,10 @@ public class TransactionEntryCriteria implements Serializable, Criteria {
             (entryAmount != null ? "entryAmount=" + entryAmount + ", " : "") +
             (transactionEntryType != null ? "transactionEntryType=" + transactionEntryType + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
+            (wasProposed != null ? "wasProposed=" + wasProposed + ", " : "") +
+            (wasPosted != null ? "wasPosted=" + wasPosted + ", " : "") +
+            (wasDeleted != null ? "wasDeleted=" + wasDeleted + ", " : "") +
+            (wasApproved != null ? "wasApproved=" + wasApproved + ", " : "") +
             (transactionAccountId != null ? "transactionAccountId=" + transactionAccountId + ", " : "") +
             (accountTransactionId != null ? "accountTransactionId=" + accountTransactionId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +

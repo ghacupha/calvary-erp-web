@@ -40,9 +40,21 @@ public class AccountTransaction implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String referenceNumber;
 
-    @Column(name = "posted")
+    @Column(name = "was_proposed")
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
-    private Boolean posted;
+    private Boolean wasProposed;
+
+    @Column(name = "was_posted")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasPosted;
+
+    @Column(name = "was_deleted")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasDeleted;
+
+    @Column(name = "was_approved")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasApproved;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "accountTransaction")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -104,17 +116,56 @@ public class AccountTransaction implements Serializable {
         this.referenceNumber = referenceNumber;
     }
 
-    public Boolean getPosted() {
-        return this.posted;
+    public Boolean getWasProposed() {
+        return this.wasProposed;
     }
 
-    public AccountTransaction posted(Boolean posted) {
-        this.setPosted(posted);
+    public AccountTransaction wasProposed(Boolean wasProposed) {
+        this.setWasProposed(wasProposed);
         return this;
     }
 
-    public void setPosted(Boolean posted) {
-        this.posted = posted;
+    public void setWasProposed(Boolean wasProposed) {
+        this.wasProposed = wasProposed;
+    }
+
+    public Boolean getWasPosted() {
+        return this.wasPosted;
+    }
+
+    public AccountTransaction wasPosted(Boolean wasPosted) {
+        this.setWasPosted(wasPosted);
+        return this;
+    }
+
+    public void setWasPosted(Boolean wasPosted) {
+        this.wasPosted = wasPosted;
+    }
+
+    public Boolean getWasDeleted() {
+        return this.wasDeleted;
+    }
+
+    public AccountTransaction wasDeleted(Boolean wasDeleted) {
+        this.setWasDeleted(wasDeleted);
+        return this;
+    }
+
+    public void setWasDeleted(Boolean wasDeleted) {
+        this.wasDeleted = wasDeleted;
+    }
+
+    public Boolean getWasApproved() {
+        return this.wasApproved;
+    }
+
+    public AccountTransaction wasApproved(Boolean wasApproved) {
+        this.setWasApproved(wasApproved);
+        return this;
+    }
+
+    public void setWasApproved(Boolean wasApproved) {
+        this.wasApproved = wasApproved;
     }
 
     public Set<TransactionEntry> getTransactionEntries() {
@@ -175,7 +226,10 @@ public class AccountTransaction implements Serializable {
             ", transactionDate='" + getTransactionDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", referenceNumber='" + getReferenceNumber() + "'" +
-            ", posted='" + getPosted() + "'" +
+            ", wasProposed='" + getWasProposed() + "'" +
+            ", wasPosted='" + getWasPosted() + "'" +
+            ", wasDeleted='" + getWasDeleted() + "'" +
+            ", wasApproved='" + getWasApproved() + "'" +
             "}";
     }
 }

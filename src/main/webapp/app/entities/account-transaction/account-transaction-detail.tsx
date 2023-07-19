@@ -55,11 +55,29 @@ export const AccountTransactionDetail = () => {
           </dt>
           <dd>{accountTransactionEntity.referenceNumber}</dd>
           <dt>
-            <span id="posted">
-              <Translate contentKey="calvaryErpApp.accountTransaction.posted">Posted</Translate>
+            <span id="wasProposed">
+              <Translate contentKey="calvaryErpApp.accountTransaction.wasProposed">Was Proposed</Translate>
             </span>
           </dt>
-          <dd>{accountTransactionEntity.posted ? 'true' : 'false'}</dd>
+          <dd>{accountTransactionEntity.wasProposed ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="wasPosted">
+              <Translate contentKey="calvaryErpApp.accountTransaction.wasPosted">Was Posted</Translate>
+            </span>
+          </dt>
+          <dd>{accountTransactionEntity.wasPosted ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="wasDeleted">
+              <Translate contentKey="calvaryErpApp.accountTransaction.wasDeleted">Was Deleted</Translate>
+            </span>
+          </dt>
+          <dd>{accountTransactionEntity.wasDeleted ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="wasApproved">
+              <Translate contentKey="calvaryErpApp.accountTransaction.wasApproved">Was Approved</Translate>
+            </span>
+          </dt>
+          <dd>{accountTransactionEntity.wasApproved ? 'true' : 'false'}</dd>
         </dl>
         <Button tag={Link} to="/account-transaction" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

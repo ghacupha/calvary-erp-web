@@ -6,10 +6,16 @@ export interface IAccountTransaction {
   transactionDate?: string;
   description?: string | null;
   referenceNumber?: string | null;
-  posted?: boolean | null;
+  wasProposed?: boolean | null;
+  wasPosted?: boolean | null;
+  wasDeleted?: boolean | null;
+  wasApproved?: boolean | null;
   transactionEntries?: ITransactionEntry[] | null;
 }
 
 export const defaultValue: Readonly<IAccountTransaction> = {
-  posted: false,
+  wasProposed: false,
+  wasPosted: false,
+  wasDeleted: false,
+  wasApproved: false,
 };

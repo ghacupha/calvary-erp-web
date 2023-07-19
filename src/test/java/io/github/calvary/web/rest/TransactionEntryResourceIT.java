@@ -61,6 +61,18 @@ class TransactionEntryResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_WAS_PROPOSED = false;
+    private static final Boolean UPDATED_WAS_PROPOSED = true;
+
+    private static final Boolean DEFAULT_WAS_POSTED = false;
+    private static final Boolean UPDATED_WAS_POSTED = true;
+
+    private static final Boolean DEFAULT_WAS_DELETED = false;
+    private static final Boolean UPDATED_WAS_DELETED = true;
+
+    private static final Boolean DEFAULT_WAS_APPROVED = false;
+    private static final Boolean UPDATED_WAS_APPROVED = true;
+
     private static final String ENTITY_API_URL = "/api/transaction-entries";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/transaction-entries";
@@ -101,7 +113,11 @@ class TransactionEntryResourceIT {
         TransactionEntry transactionEntry = new TransactionEntry()
             .entryAmount(DEFAULT_ENTRY_AMOUNT)
             .transactionEntryType(DEFAULT_TRANSACTION_ENTRY_TYPE)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .wasProposed(DEFAULT_WAS_PROPOSED)
+            .wasPosted(DEFAULT_WAS_POSTED)
+            .wasDeleted(DEFAULT_WAS_DELETED)
+            .wasApproved(DEFAULT_WAS_APPROVED);
         // Add required entity
         TransactionAccount transactionAccount;
         if (TestUtil.findAll(em, TransactionAccount.class).isEmpty()) {
@@ -125,7 +141,11 @@ class TransactionEntryResourceIT {
         TransactionEntry transactionEntry = new TransactionEntry()
             .entryAmount(UPDATED_ENTRY_AMOUNT)
             .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasApproved(UPDATED_WAS_APPROVED);
         // Add required entity
         TransactionAccount transactionAccount;
         if (TestUtil.findAll(em, TransactionAccount.class).isEmpty()) {
@@ -176,6 +196,10 @@ class TransactionEntryResourceIT {
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(DEFAULT_WAS_PROPOSED);
+        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
+        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(DEFAULT_WAS_APPROVED);
     }
 
     @Test
@@ -239,7 +263,11 @@ class TransactionEntryResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionEntry.getId().intValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(sameNumber(DEFAULT_ENTRY_AMOUNT))))
             .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].wasProposed").value(hasItem(DEFAULT_WAS_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasPosted").value(hasItem(DEFAULT_WAS_POSTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasDeleted").value(hasItem(DEFAULT_WAS_DELETED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasApproved").value(hasItem(DEFAULT_WAS_APPROVED.booleanValue())));
     }
 
     @SuppressWarnings({ "unchecked" })
@@ -273,7 +301,11 @@ class TransactionEntryResourceIT {
             .andExpect(jsonPath("$.id").value(transactionEntry.getId().intValue()))
             .andExpect(jsonPath("$.entryAmount").value(sameNumber(DEFAULT_ENTRY_AMOUNT)))
             .andExpect(jsonPath("$.transactionEntryType").value(DEFAULT_TRANSACTION_ENTRY_TYPE.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.wasProposed").value(DEFAULT_WAS_PROPOSED.booleanValue()))
+            .andExpect(jsonPath("$.wasPosted").value(DEFAULT_WAS_POSTED.booleanValue()))
+            .andExpect(jsonPath("$.wasDeleted").value(DEFAULT_WAS_DELETED.booleanValue()))
+            .andExpect(jsonPath("$.wasApproved").value(DEFAULT_WAS_APPROVED.booleanValue()));
     }
 
     @Test
@@ -493,6 +525,162 @@ class TransactionEntryResourceIT {
 
     @Test
     @Transactional
+    void getAllTransactionEntriesByWasProposedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasProposed equals to DEFAULT_WAS_PROPOSED
+        defaultTransactionEntryShouldBeFound("wasProposed.equals=" + DEFAULT_WAS_PROPOSED);
+
+        // Get all the transactionEntryList where wasProposed equals to UPDATED_WAS_PROPOSED
+        defaultTransactionEntryShouldNotBeFound("wasProposed.equals=" + UPDATED_WAS_PROPOSED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasProposedIsInShouldWork() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasProposed in DEFAULT_WAS_PROPOSED or UPDATED_WAS_PROPOSED
+        defaultTransactionEntryShouldBeFound("wasProposed.in=" + DEFAULT_WAS_PROPOSED + "," + UPDATED_WAS_PROPOSED);
+
+        // Get all the transactionEntryList where wasProposed equals to UPDATED_WAS_PROPOSED
+        defaultTransactionEntryShouldNotBeFound("wasProposed.in=" + UPDATED_WAS_PROPOSED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasProposedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasProposed is not null
+        defaultTransactionEntryShouldBeFound("wasProposed.specified=true");
+
+        // Get all the transactionEntryList where wasProposed is null
+        defaultTransactionEntryShouldNotBeFound("wasProposed.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasPostedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasPosted equals to DEFAULT_WAS_POSTED
+        defaultTransactionEntryShouldBeFound("wasPosted.equals=" + DEFAULT_WAS_POSTED);
+
+        // Get all the transactionEntryList where wasPosted equals to UPDATED_WAS_POSTED
+        defaultTransactionEntryShouldNotBeFound("wasPosted.equals=" + UPDATED_WAS_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasPostedIsInShouldWork() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasPosted in DEFAULT_WAS_POSTED or UPDATED_WAS_POSTED
+        defaultTransactionEntryShouldBeFound("wasPosted.in=" + DEFAULT_WAS_POSTED + "," + UPDATED_WAS_POSTED);
+
+        // Get all the transactionEntryList where wasPosted equals to UPDATED_WAS_POSTED
+        defaultTransactionEntryShouldNotBeFound("wasPosted.in=" + UPDATED_WAS_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasPostedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasPosted is not null
+        defaultTransactionEntryShouldBeFound("wasPosted.specified=true");
+
+        // Get all the transactionEntryList where wasPosted is null
+        defaultTransactionEntryShouldNotBeFound("wasPosted.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasDeletedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasDeleted equals to DEFAULT_WAS_DELETED
+        defaultTransactionEntryShouldBeFound("wasDeleted.equals=" + DEFAULT_WAS_DELETED);
+
+        // Get all the transactionEntryList where wasDeleted equals to UPDATED_WAS_DELETED
+        defaultTransactionEntryShouldNotBeFound("wasDeleted.equals=" + UPDATED_WAS_DELETED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasDeletedIsInShouldWork() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasDeleted in DEFAULT_WAS_DELETED or UPDATED_WAS_DELETED
+        defaultTransactionEntryShouldBeFound("wasDeleted.in=" + DEFAULT_WAS_DELETED + "," + UPDATED_WAS_DELETED);
+
+        // Get all the transactionEntryList where wasDeleted equals to UPDATED_WAS_DELETED
+        defaultTransactionEntryShouldNotBeFound("wasDeleted.in=" + UPDATED_WAS_DELETED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasDeletedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasDeleted is not null
+        defaultTransactionEntryShouldBeFound("wasDeleted.specified=true");
+
+        // Get all the transactionEntryList where wasDeleted is null
+        defaultTransactionEntryShouldNotBeFound("wasDeleted.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasApprovedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasApproved equals to DEFAULT_WAS_APPROVED
+        defaultTransactionEntryShouldBeFound("wasApproved.equals=" + DEFAULT_WAS_APPROVED);
+
+        // Get all the transactionEntryList where wasApproved equals to UPDATED_WAS_APPROVED
+        defaultTransactionEntryShouldNotBeFound("wasApproved.equals=" + UPDATED_WAS_APPROVED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasApprovedIsInShouldWork() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasApproved in DEFAULT_WAS_APPROVED or UPDATED_WAS_APPROVED
+        defaultTransactionEntryShouldBeFound("wasApproved.in=" + DEFAULT_WAS_APPROVED + "," + UPDATED_WAS_APPROVED);
+
+        // Get all the transactionEntryList where wasApproved equals to UPDATED_WAS_APPROVED
+        defaultTransactionEntryShouldNotBeFound("wasApproved.in=" + UPDATED_WAS_APPROVED);
+    }
+
+    @Test
+    @Transactional
+    void getAllTransactionEntriesByWasApprovedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        transactionEntryRepository.saveAndFlush(transactionEntry);
+
+        // Get all the transactionEntryList where wasApproved is not null
+        defaultTransactionEntryShouldBeFound("wasApproved.specified=true");
+
+        // Get all the transactionEntryList where wasApproved is null
+        defaultTransactionEntryShouldNotBeFound("wasApproved.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllTransactionEntriesByTransactionAccountIsEqualToSomething() throws Exception {
         TransactionAccount transactionAccount;
         if (TestUtil.findAll(em, TransactionAccount.class).isEmpty()) {
@@ -546,7 +734,11 @@ class TransactionEntryResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionEntry.getId().intValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(sameNumber(DEFAULT_ENTRY_AMOUNT))))
             .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].wasProposed").value(hasItem(DEFAULT_WAS_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasPosted").value(hasItem(DEFAULT_WAS_POSTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasDeleted").value(hasItem(DEFAULT_WAS_DELETED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasApproved").value(hasItem(DEFAULT_WAS_APPROVED.booleanValue())));
 
         // Check, that the count call also returns 1
         restTransactionEntryMockMvc
@@ -599,7 +791,11 @@ class TransactionEntryResourceIT {
         updatedTransactionEntry
             .entryAmount(UPDATED_ENTRY_AMOUNT)
             .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasApproved(UPDATED_WAS_APPROVED);
         TransactionEntryDTO transactionEntryDTO = transactionEntryMapper.toDto(updatedTransactionEntry);
 
         restTransactionEntryMockMvc
@@ -617,6 +813,10 @@ class TransactionEntryResourceIT {
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+        assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -627,6 +827,10 @@ class TransactionEntryResourceIT {
                 assertThat(testTransactionEntrySearch.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
                 assertThat(testTransactionEntrySearch.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
                 assertThat(testTransactionEntrySearch.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+                assertThat(testTransactionEntrySearch.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+                assertThat(testTransactionEntrySearch.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+                assertThat(testTransactionEntrySearch.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+                assertThat(testTransactionEntrySearch.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
             });
     }
 
@@ -718,6 +922,8 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
+        partialUpdatedTransactionEntry.wasProposed(UPDATED_WAS_PROPOSED).wasApproved(UPDATED_WAS_APPROVED);
+
         restTransactionEntryMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionEntry.getId())
@@ -733,6 +939,10 @@ class TransactionEntryResourceIT {
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
+        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 
     @Test
@@ -750,7 +960,11 @@ class TransactionEntryResourceIT {
         partialUpdatedTransactionEntry
             .entryAmount(UPDATED_ENTRY_AMOUNT)
             .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED)
+            .wasApproved(UPDATED_WAS_APPROVED);
 
         restTransactionEntryMockMvc
             .perform(
@@ -767,6 +981,10 @@ class TransactionEntryResourceIT {
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
+        assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
+        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 
     @Test
@@ -886,6 +1104,10 @@ class TransactionEntryResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(transactionEntry.getId().intValue())))
             .andExpect(jsonPath("$.[*].entryAmount").value(hasItem(sameNumber(DEFAULT_ENTRY_AMOUNT))))
             .andExpect(jsonPath("$.[*].transactionEntryType").value(hasItem(DEFAULT_TRANSACTION_ENTRY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].wasProposed").value(hasItem(DEFAULT_WAS_PROPOSED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasPosted").value(hasItem(DEFAULT_WAS_POSTED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasDeleted").value(hasItem(DEFAULT_WAS_DELETED.booleanValue())))
+            .andExpect(jsonPath("$.[*].wasApproved").value(hasItem(DEFAULT_WAS_APPROVED.booleanValue())));
     }
 }

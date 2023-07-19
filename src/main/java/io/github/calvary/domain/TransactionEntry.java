@@ -40,6 +40,22 @@ public class TransactionEntry implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String description;
 
+    @Column(name = "was_proposed")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasProposed;
+
+    @Column(name = "was_posted")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasPosted;
+
+    @Column(name = "was_deleted")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasDeleted;
+
+    @Column(name = "was_approved")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean wasApproved;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties(value = { "parentAccount", "transactionAccountType", "transactionCurrency" }, allowSetters = true)
@@ -103,6 +119,58 @@ public class TransactionEntry implements Serializable {
         this.description = description;
     }
 
+    public Boolean getWasProposed() {
+        return this.wasProposed;
+    }
+
+    public TransactionEntry wasProposed(Boolean wasProposed) {
+        this.setWasProposed(wasProposed);
+        return this;
+    }
+
+    public void setWasProposed(Boolean wasProposed) {
+        this.wasProposed = wasProposed;
+    }
+
+    public Boolean getWasPosted() {
+        return this.wasPosted;
+    }
+
+    public TransactionEntry wasPosted(Boolean wasPosted) {
+        this.setWasPosted(wasPosted);
+        return this;
+    }
+
+    public void setWasPosted(Boolean wasPosted) {
+        this.wasPosted = wasPosted;
+    }
+
+    public Boolean getWasDeleted() {
+        return this.wasDeleted;
+    }
+
+    public TransactionEntry wasDeleted(Boolean wasDeleted) {
+        this.setWasDeleted(wasDeleted);
+        return this;
+    }
+
+    public void setWasDeleted(Boolean wasDeleted) {
+        this.wasDeleted = wasDeleted;
+    }
+
+    public Boolean getWasApproved() {
+        return this.wasApproved;
+    }
+
+    public TransactionEntry wasApproved(Boolean wasApproved) {
+        this.setWasApproved(wasApproved);
+        return this;
+    }
+
+    public void setWasApproved(Boolean wasApproved) {
+        this.wasApproved = wasApproved;
+    }
+
     public TransactionAccount getTransactionAccount() {
         return this.transactionAccount;
     }
@@ -156,6 +224,10 @@ public class TransactionEntry implements Serializable {
             ", entryAmount=" + getEntryAmount() +
             ", transactionEntryType='" + getTransactionEntryType() + "'" +
             ", description='" + getDescription() + "'" +
+            ", wasProposed='" + getWasProposed() + "'" +
+            ", wasPosted='" + getWasPosted() + "'" +
+            ", wasDeleted='" + getWasDeleted() + "'" +
+            ", wasApproved='" + getWasApproved() + "'" +
             "}";
     }
 }

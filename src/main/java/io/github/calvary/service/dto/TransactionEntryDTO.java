@@ -21,6 +21,14 @@ public class TransactionEntryDTO implements Serializable {
 
     private String description;
 
+    private Boolean wasProposed;
+
+    private Boolean wasPosted;
+
+    private Boolean wasDeleted;
+
+    private Boolean wasApproved;
+
     private TransactionAccountDTO transactionAccount;
 
     private AccountTransactionDTO accountTransaction;
@@ -55,6 +63,38 @@ public class TransactionEntryDTO implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getWasProposed() {
+        return wasProposed;
+    }
+
+    public void setWasProposed(Boolean wasProposed) {
+        this.wasProposed = wasProposed;
+    }
+
+    public Boolean getWasPosted() {
+        return wasPosted;
+    }
+
+    public void setWasPosted(Boolean wasPosted) {
+        this.wasPosted = wasPosted;
+    }
+
+    public Boolean getWasDeleted() {
+        return wasDeleted;
+    }
+
+    public void setWasDeleted(Boolean wasDeleted) {
+        this.wasDeleted = wasDeleted;
+    }
+
+    public Boolean getWasApproved() {
+        return wasApproved;
+    }
+
+    public void setWasApproved(Boolean wasApproved) {
+        this.wasApproved = wasApproved;
     }
 
     public TransactionAccountDTO getTransactionAccount() {
@@ -102,6 +142,10 @@ public class TransactionEntryDTO implements Serializable {
             ", entryAmount=" + getEntryAmount() +
             ", transactionEntryType='" + getTransactionEntryType() + "'" +
             ", description='" + getDescription() + "'" +
+            ", wasProposed='" + getWasProposed() + "'" +
+            ", wasPosted='" + getWasPosted() + "'" +
+            ", wasDeleted='" + getWasDeleted() + "'" +
+            ", wasApproved='" + getWasApproved() + "'" +
             ", transactionAccount=" + getTransactionAccount() +
             ", accountTransaction=" + getAccountTransaction() +
             "}";

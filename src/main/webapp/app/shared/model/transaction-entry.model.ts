@@ -7,8 +7,17 @@ export interface ITransactionEntry {
   entryAmount?: number | null;
   transactionEntryType?: keyof typeof TransactionEntryTypes;
   description?: string | null;
+  wasProposed?: boolean | null;
+  wasPosted?: boolean | null;
+  wasDeleted?: boolean | null;
+  wasApproved?: boolean | null;
   transactionAccount?: ITransactionAccount;
   accountTransaction?: IAccountTransaction | null;
 }
 
-export const defaultValue: Readonly<ITransactionEntry> = {};
+export const defaultValue: Readonly<ITransactionEntry> = {
+  wasProposed: false,
+  wasPosted: false,
+  wasDeleted: false,
+  wasApproved: false,
+};

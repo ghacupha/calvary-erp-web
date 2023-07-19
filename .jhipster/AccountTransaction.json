@@ -18,7 +18,19 @@
       "fieldValidateRules": ["unique"]
     },
     {
-      "fieldName": "posted",
+      "fieldName": "wasProposed",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "wasPosted",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "wasDeleted",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "wasApproved",
       "fieldType": "Boolean"
     }
   ],
