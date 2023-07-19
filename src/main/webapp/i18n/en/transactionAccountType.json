@@ -1,0 +1,12 @@
+{
+  "calvaryErpApp": {
+    "TransactionAccountType": {
+      "null": "",
+      "ASSET": "ASSET",
+      "LIABILITY": "LIABILITY",
+      "INCOME": "INCOME",
+      "EXPENSE": "EXPENSE",
+      "EQUITY": "EQUITY"
+    }
+  }
+}

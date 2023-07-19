@@ -1,7 +1,5 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-
-version: '3.3'
-
+name: calvary-erp
 services:
   postgresql:
     extends:

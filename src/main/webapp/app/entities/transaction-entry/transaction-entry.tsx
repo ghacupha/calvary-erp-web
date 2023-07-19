@@ -133,16 +133,16 @@ export const TransactionEntry = () => {
   return (
     <div>
       <h2 id="transaction-entry-heading" data-cy="TransactionEntryHeading">
-        Transaction Entries
+        <Translate contentKey="calvaryErpApp.transactionEntry.home.title">Transaction Entries</Translate>
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} />{' '}
-            Refresh List
+            <Translate contentKey="calvaryErpApp.transactionEntry.home.refreshListLabel">Refresh List</Translate>
           </Button>
           <Link to="/transaction-entry/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            Create new Transaction Entry
+            <Translate contentKey="calvaryErpApp.transactionEntry.home.createLabel">Create new Transaction Entry</Translate>
           </Link>
         </div>
       </h2>
@@ -151,7 +151,13 @@ export const TransactionEntry = () => {
           <Form onSubmit={startSearching}>
             <FormGroup>
               <InputGroup>
-                <Input type="text" name="search" defaultValue={search} onChange={handleSearch} placeholder="Search" />
+                <Input
+                  type="text"
+                  name="search"
+                  defaultValue={search}
+                  onChange={handleSearch}
+                  placeholder={translate('calvaryErpApp.transactionEntry.home.search')}
+                />
                 <Button className="input-group-addon">
                   <FontAwesomeIcon icon="search" />
                 </Button>
@@ -204,7 +210,9 @@ export const TransactionEntry = () => {
                     </Button>
                   </td>
                   <td>{transactionEntry.entryAmount}</td>
-                  <td>{transactionEntry.transactionEntryType}</td>
+                  <td>
+                    <Translate contentKey={`calvaryErpApp.TransactionEntryTypes.${transactionEntry.transactionEntryType}`} />
+                  </td>
                   <td>{transactionEntry.description}</td>
                   <td>
                     {transactionEntry.transactionAccount ? (
@@ -279,7 +287,7 @@ export const TransactionEntry = () => {
       {totalItems ? (
         <div className={transactionEntryList && transactionEntryList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
+            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} i18nEnabled />
           </div>
           <div className="justify-content-center d-flex">
             <JhiPagination

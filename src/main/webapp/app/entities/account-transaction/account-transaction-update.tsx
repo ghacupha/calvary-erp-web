@@ -88,7 +88,7 @@ export const AccountTransactionUpdate = () => {
                 />
               ) : null}
               <ValidatedField
-                label="Transaction Date"
+                label={translate('calvaryErpApp.accountTransaction.transactionDate')}
                 id="account-transaction-transactionDate"
                 name="transactionDate"
                 data-cy="transactionDate"
@@ -98,14 +98,14 @@ export const AccountTransactionUpdate = () => {
                 }}
               />
               <ValidatedField
-                label="Description"
+                label={translate('calvaryErpApp.accountTransaction.description')}
                 id="account-transaction-description"
                 name="description"
                 data-cy="description"
                 type="text"
               />
               <ValidatedField
-                label="Reference Number"
+                label={translate('calvaryErpApp.accountTransaction.referenceNumber')}
                 id="account-transaction-referenceNumber"
                 name="referenceNumber"
                 data-cy="referenceNumber"

@@ -97,7 +97,7 @@ export const TransactionAccountUpdate = () => {
                 />
               ) : null}
               <ValidatedField
-                label="Account Name"
+                label={translate('calvaryErpApp.transactionAccount.accountName')}
                 id="transaction-account-accountName"
                 name="accountName"
                 data-cy="accountName"
@@ -107,7 +107,7 @@ export const TransactionAccountUpdate = () => {
                 }}
               />
               <ValidatedField
-                label="Account Number"
+                label={translate('calvaryErpApp.transactionAccount.accountNumber')}
                 id="transaction-account-accountNumber"
                 name="accountNumber"
                 data-cy="accountNumber"
@@ -115,7 +115,7 @@ export const TransactionAccountUpdate = () => {
                 validate={{}}
               />
               <ValidatedField
-                label="Transaction Account Type"
+                label={translate('calvaryErpApp.transactionAccount.transactionAccountType')}
                 id="transaction-account-transactionAccountType"
                 name="transactionAccountType"
                 data-cy="transactionAccountType"
@@ -123,12 +123,12 @@ export const TransactionAccountUpdate = () => {
               >
                 {transactionAccountTypeValues.map(transactionAccountType => (
                   <option value={transactionAccountType} key={transactionAccountType}>
-                    {transactionAccountType}
+                    {translate('calvaryErpApp.TransactionAccountType.' + transactionAccountType)}
                   </option>
                 ))}
               </ValidatedField>
               <ValidatedField
-                label="Opening Balance"
+                label={translate('calvaryErpApp.transactionAccount.openingBalance')}
                 id="transaction-account-openingBalance"
                 name="openingBalance"
                 data-cy="openingBalance"
@@ -138,7 +138,7 @@ export const TransactionAccountUpdate = () => {
                 id="transaction-account-parentAccount"
                 name="parentAccount"
                 data-cy="parentAccount"
-                label="Parent Account"
+                label={translate('calvaryErpApp.transactionAccount.parentAccount')}
                 type="select"
               >
                 <option value="" key="0" />

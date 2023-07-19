@@ -104,14 +104,14 @@ export const TransactionEntryUpdate = () => {
                 />
               ) : null}
               <ValidatedField
-                label="Entry Amount"
+                label={translate('calvaryErpApp.transactionEntry.entryAmount')}
                 id="transaction-entry-entryAmount"
                 name="entryAmount"
                 data-cy="entryAmount"
                 type="text"
               />
               <ValidatedField
-                label="Transaction Entry Type"
+                label={translate('calvaryErpApp.transactionEntry.transactionEntryType')}
                 id="transaction-entry-transactionEntryType"
                 name="transactionEntryType"
                 data-cy="transactionEntryType"
@@ -119,16 +119,22 @@ export const TransactionEntryUpdate = () => {
               >
                 {transactionEntryTypesValues.map(transactionEntryTypes => (
                   <option value={transactionEntryTypes} key={transactionEntryTypes}>
-                    {transactionEntryTypes}
+                    {translate('calvaryErpApp.TransactionEntryTypes.' + transactionEntryTypes)}
                   </option>
                 ))}
               </ValidatedField>
-              <ValidatedField label="Description" id="transaction-entry-description" name="description" data-cy="description" type="text" />
+              <ValidatedField
+                label={translate('calvaryErpApp.transactionEntry.description')}
+                id="transaction-entry-description"
+                name="description"
+                data-cy="description"
+                type="text"
+              />
               <ValidatedField
                 id="transaction-entry-transactionAccount"
                 name="transactionAccount"
                 data-cy="transactionAccount"
-                label="Transaction Account"
+                label={translate('calvaryErpApp.transactionEntry.transactionAccount')}
                 type="select"
                 required
               >
@@ -148,7 +154,7 @@ export const TransactionEntryUpdate = () => {
                 id="transaction-entry-accountTransaction"
                 name="accountTransaction"
                 data-cy="accountTransaction"
-                label="Account Transaction"
+                label={translate('calvaryErpApp.transactionEntry.accountTransaction')}
                 type="select"
               >
                 <option value="" key="0" />

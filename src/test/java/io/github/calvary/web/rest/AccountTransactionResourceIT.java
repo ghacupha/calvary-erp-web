@@ -675,8 +675,6 @@ class AccountTransactionResourceIT {
         AccountTransaction partialUpdatedAccountTransaction = new AccountTransaction();
         partialUpdatedAccountTransaction.setId(accountTransaction.getId());
 
-        partialUpdatedAccountTransaction.description(UPDATED_DESCRIPTION).referenceNumber(UPDATED_REFERENCE_NUMBER);
-
         restAccountTransactionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAccountTransaction.getId())
@@ -690,8 +688,8 @@ class AccountTransactionResourceIT {
         assertThat(accountTransactionList).hasSize(databaseSizeBeforeUpdate);
         AccountTransaction testAccountTransaction = accountTransactionList.get(accountTransactionList.size() - 1);
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
-        assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-        assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
+        assertThat(testAccountTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(DEFAULT_REFERENCE_NUMBER);
     }
 
     @Test

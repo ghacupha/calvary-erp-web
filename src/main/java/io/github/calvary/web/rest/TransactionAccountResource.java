@@ -76,7 +76,7 @@ public class TransactionAccountResource {
         TransactionAccountDTO result = transactionAccountService.save(transactionAccountDTO);
         return ResponseEntity
             .created(new URI("/api/transaction-accounts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -110,7 +110,7 @@ public class TransactionAccountResource {
         TransactionAccountDTO result = transactionAccountService.update(transactionAccountDTO);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, transactionAccountDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transactionAccountDTO.getId().toString()))
             .body(result);
     }
 
@@ -146,7 +146,7 @@ public class TransactionAccountResource {
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, transactionAccountDTO.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, transactionAccountDTO.getId().toString())
         );
     }
 
@@ -206,7 +206,7 @@ public class TransactionAccountResource {
         transactionAccountService.delete(id);
         return ResponseEntity
             .noContent()
-            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString()))
+            .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
 
