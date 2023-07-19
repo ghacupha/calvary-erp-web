@@ -584,6 +584,8 @@ class AccountingEventResourceIT {
         AccountingEvent partialUpdatedAccountingEvent = new AccountingEvent();
         partialUpdatedAccountingEvent.setId(accountingEvent.getId());
 
+        partialUpdatedAccountingEvent.eventDate(UPDATED_EVENT_DATE);
+
         restAccountingEventMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAccountingEvent.getId())
@@ -596,7 +598,7 @@ class AccountingEventResourceIT {
         List<AccountingEvent> accountingEventList = accountingEventRepository.findAll();
         assertThat(accountingEventList).hasSize(databaseSizeBeforeUpdate);
         AccountingEvent testAccountingEvent = accountingEventList.get(accountingEventList.size() - 1);
-        assertThat(testAccountingEvent.getEventDate()).isEqualTo(DEFAULT_EVENT_DATE);
+        assertThat(testAccountingEvent.getEventDate()).isEqualTo(UPDATED_EVENT_DATE);
     }
 
     @Test

@@ -21,9 +21,10 @@
       "id": "ID",
       "accountName": "Account Name",
       "accountNumber": "Account Number",
-      "transactionAccountType": "Transaction Account Type",
       "openingBalance": "Opening Balance",
-      "parentAccount": "Parent Account"
+      "parentAccount": "Parent Account",
+      "transactionAccountType": "Transaction Account Type",
+      "transactionCurrency": "Transaction Currency"
     }
   }
 }

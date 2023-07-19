@@ -44,12 +44,6 @@ export const TransactionAccountDetail = () => {
           </dt>
           <dd>{transactionAccountEntity.accountNumber}</dd>
           <dt>
-            <span id="transactionAccountType">
-              <Translate contentKey="calvaryErpApp.transactionAccount.transactionAccountType">Transaction Account Type</Translate>
-            </span>
-          </dt>
-          <dd>{transactionAccountEntity.transactionAccountType}</dd>
-          <dt>
             <span id="openingBalance">
               <Translate contentKey="calvaryErpApp.transactionAccount.openingBalance">Opening Balance</Translate>
             </span>
@@ -59,6 +53,14 @@ export const TransactionAccountDetail = () => {
             <Translate contentKey="calvaryErpApp.transactionAccount.parentAccount">Parent Account</Translate>
           </dt>
           <dd>{transactionAccountEntity.parentAccount ? transactionAccountEntity.parentAccount.accountName : ''}</dd>
+          <dt>
+            <Translate contentKey="calvaryErpApp.transactionAccount.transactionAccountType">Transaction Account Type</Translate>
+          </dt>
+          <dd>{transactionAccountEntity.transactionAccountType ? transactionAccountEntity.transactionAccountType.name : ''}</dd>
+          <dt>
+            <Translate contentKey="calvaryErpApp.transactionAccount.transactionCurrency">Transaction Currency</Translate>
+          </dt>
+          <dd>{transactionAccountEntity.transactionCurrency ? transactionAccountEntity.transactionCurrency.code : ''}</dd>
         </dl>
         <Button tag={Link} to="/transaction-account" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

@@ -14,6 +14,8 @@
         "accountingEvent": "Accounting Event",
         "dealerType": "Dealer Type",
         "dealer": "Dealer",
+        "transactionAccountType": "Transaction Account Type",
+        "transactionCurrency": "Transaction Currency",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

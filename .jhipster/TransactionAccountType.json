@@ -1,0 +1,18 @@
+{
+  "changelogDate": "20230719161937",
+  "dto": "mapstruct",
+  "entityTableName": "transaction_account_type",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TransactionAccountType",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

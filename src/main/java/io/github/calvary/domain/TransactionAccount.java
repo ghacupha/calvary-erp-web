@@ -1,7 +1,6 @@
 package io.github.calvary.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import io.github.calvary.domain.enumeration.TransactionAccountType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
@@ -36,18 +35,20 @@ public class TransactionAccount implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String accountNumber;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_account_type", nullable = false)
-    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Keyword)
-    private TransactionAccountType transactionAccountType;
-
     @Column(name = "opening_balance", precision = 21, scale = 2)
     private BigDecimal openingBalance;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "parentAccount" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "parentAccount", "transactionAccountType", "transactionCurrency" }, allowSetters = true)
     private TransactionAccount parentAccount;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private TransactionAccountType transactionAccountType;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private TransactionCurrency transactionCurrency;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -90,19 +91,6 @@ public class TransactionAccount implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public TransactionAccountType getTransactionAccountType() {
-        return this.transactionAccountType;
-    }
-
-    public TransactionAccount transactionAccountType(TransactionAccountType transactionAccountType) {
-        this.setTransactionAccountType(transactionAccountType);
-        return this;
-    }
-
-    public void setTransactionAccountType(TransactionAccountType transactionAccountType) {
-        this.transactionAccountType = transactionAccountType;
-    }
-
     public BigDecimal getOpeningBalance() {
         return this.openingBalance;
     }
@@ -126,6 +114,32 @@ public class TransactionAccount implements Serializable {
 
     public TransactionAccount parentAccount(TransactionAccount transactionAccount) {
         this.setParentAccount(transactionAccount);
+        return this;
+    }
+
+    public TransactionAccountType getTransactionAccountType() {
+        return this.transactionAccountType;
+    }
+
+    public void setTransactionAccountType(TransactionAccountType transactionAccountType) {
+        this.transactionAccountType = transactionAccountType;
+    }
+
+    public TransactionAccount transactionAccountType(TransactionAccountType transactionAccountType) {
+        this.setTransactionAccountType(transactionAccountType);
+        return this;
+    }
+
+    public TransactionCurrency getTransactionCurrency() {
+        return this.transactionCurrency;
+    }
+
+    public void setTransactionCurrency(TransactionCurrency transactionCurrency) {
+        this.transactionCurrency = transactionCurrency;
+    }
+
+    public TransactionAccount transactionCurrency(TransactionCurrency transactionCurrency) {
+        this.setTransactionCurrency(transactionCurrency);
         return this;
     }
 
@@ -155,7 +169,6 @@ public class TransactionAccount implements Serializable {
             "id=" + getId() +
             ", accountName='" + getAccountName() + "'" +
             ", accountNumber='" + getAccountNumber() + "'" +
-            ", transactionAccountType='" + getTransactionAccountType() + "'" +
             ", openingBalance=" + getOpeningBalance() +
             "}";
     }

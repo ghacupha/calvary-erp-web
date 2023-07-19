@@ -14,12 +14,6 @@
       "fieldValidateRules": ["unique"]
     },
     {
-      "fieldName": "transactionAccountType",
-      "fieldType": "TransactionAccountType",
-      "fieldValidateRules": ["required"],
-      "fieldValues": "ASSET,LIABILITY,INCOME,EXPENSE,EQUITY"
-    },
-    {
       "fieldName": "openingBalance",
       "fieldType": "BigDecimal"
     }
@@ -35,6 +29,22 @@
       "relationshipName": "parentAccount",
       "relationshipSide": "left",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "transactionAccountType",
+      "relationshipName": "transactionAccountType",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "code",
+      "otherEntityName": "transactionCurrency",
+      "relationshipName": "transactionCurrency",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
     }
   ],
   "service": "serviceImpl"

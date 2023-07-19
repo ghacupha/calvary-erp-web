@@ -10,6 +10,8 @@ import EventType from './event-type';
 import AccountingEvent from './accounting-event';
 import DealerType from './dealer-type';
 import Dealer from './dealer';
+import TransactionAccountType from './transaction-account-type';
+import TransactionCurrency from './transaction-currency';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -24,6 +26,8 @@ export default () => {
         <Route path="accounting-event/*" element={<AccountingEvent />} />
         <Route path="dealer-type/*" element={<DealerType />} />
         <Route path="dealer/*" element={<Dealer />} />
+        <Route path="transaction-account-type/*" element={<TransactionAccountType />} />
+        <Route path="transaction-currency/*" element={<TransactionCurrency />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

@@ -28,16 +28,18 @@ public interface TransactionAccountRepository
     }
 
     @Query(
-        value = "select transactionAccount from TransactionAccount transactionAccount left join fetch transactionAccount.parentAccount",
+        value = "select transactionAccount from TransactionAccount transactionAccount left join fetch transactionAccount.parentAccount left join fetch transactionAccount.transactionAccountType left join fetch transactionAccount.transactionCurrency",
         countQuery = "select count(transactionAccount) from TransactionAccount transactionAccount"
     )
     Page<TransactionAccount> findAllWithToOneRelationships(Pageable pageable);
 
-    @Query("select transactionAccount from TransactionAccount transactionAccount left join fetch transactionAccount.parentAccount")
+    @Query(
+        "select transactionAccount from TransactionAccount transactionAccount left join fetch transactionAccount.parentAccount left join fetch transactionAccount.transactionAccountType left join fetch transactionAccount.transactionCurrency"
+    )
     List<TransactionAccount> findAllWithToOneRelationships();
 
     @Query(
-        "select transactionAccount from TransactionAccount transactionAccount left join fetch transactionAccount.parentAccount where transactionAccount.id =:id"
+        "select transactionAccount from TransactionAccount transactionAccount left join fetch transactionAccount.parentAccount left join fetch transactionAccount.transactionAccountType left join fetch transactionAccount.transactionCurrency where transactionAccount.id =:id"
     )
     Optional<TransactionAccount> findOneWithToOneRelationships(@Param("id") Long id);
 }

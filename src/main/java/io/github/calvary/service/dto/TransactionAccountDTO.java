@@ -1,6 +1,5 @@
 package io.github.calvary.service.dto;
 
-import io.github.calvary.domain.enumeration.TransactionAccountType;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,12 +18,13 @@ public class TransactionAccountDTO implements Serializable {
 
     private String accountNumber;
 
-    @NotNull
-    private TransactionAccountType transactionAccountType;
-
     private BigDecimal openingBalance;
 
     private TransactionAccountDTO parentAccount;
+
+    private TransactionAccountTypeDTO transactionAccountType;
+
+    private TransactionCurrencyDTO transactionCurrency;
 
     public Long getId() {
         return id;
@@ -50,14 +50,6 @@ public class TransactionAccountDTO implements Serializable {
         this.accountNumber = accountNumber;
     }
 
-    public TransactionAccountType getTransactionAccountType() {
-        return transactionAccountType;
-    }
-
-    public void setTransactionAccountType(TransactionAccountType transactionAccountType) {
-        this.transactionAccountType = transactionAccountType;
-    }
-
     public BigDecimal getOpeningBalance() {
         return openingBalance;
     }
@@ -72,6 +64,22 @@ public class TransactionAccountDTO implements Serializable {
 
     public void setParentAccount(TransactionAccountDTO parentAccount) {
         this.parentAccount = parentAccount;
+    }
+
+    public TransactionAccountTypeDTO getTransactionAccountType() {
+        return transactionAccountType;
+    }
+
+    public void setTransactionAccountType(TransactionAccountTypeDTO transactionAccountType) {
+        this.transactionAccountType = transactionAccountType;
+    }
+
+    public TransactionCurrencyDTO getTransactionCurrency() {
+        return transactionCurrency;
+    }
+
+    public void setTransactionCurrency(TransactionCurrencyDTO transactionCurrency) {
+        this.transactionCurrency = transactionCurrency;
     }
 
     @Override
@@ -102,9 +110,10 @@ public class TransactionAccountDTO implements Serializable {
             "id=" + getId() +
             ", accountName='" + getAccountName() + "'" +
             ", accountNumber='" + getAccountNumber() + "'" +
-            ", transactionAccountType='" + getTransactionAccountType() + "'" +
             ", openingBalance=" + getOpeningBalance() +
             ", parentAccount=" + getParentAccount() +
+            ", transactionAccountType=" + getTransactionAccountType() +
+            ", transactionCurrency=" + getTransactionCurrency() +
             "}";
     }
 }

@@ -9,8 +9,11 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { getEntities as getTransactionAccounts } from 'app/entities/transaction-account/transaction-account.reducer';
+import { ITransactionAccountType } from 'app/shared/model/transaction-account-type.model';
+import { getEntities as getTransactionAccountTypes } from 'app/entities/transaction-account-type/transaction-account-type.reducer';
+import { ITransactionCurrency } from 'app/shared/model/transaction-currency.model';
+import { getEntities as getTransactionCurrencies } from 'app/entities/transaction-currency/transaction-currency.reducer';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
-import { TransactionAccountType } from 'app/shared/model/enumerations/transaction-account-type.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-account.reducer';
 
 export const TransactionAccountUpdate = () => {
@@ -22,11 +25,12 @@ export const TransactionAccountUpdate = () => {
   const isNew = id === undefined;
 
   const transactionAccounts = useAppSelector(state => state.transactionAccount.entities);
+  const transactionAccountTypes = useAppSelector(state => state.transactionAccountType.entities);
+  const transactionCurrencies = useAppSelector(state => state.transactionCurrency.entities);
   const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity);
   const loading = useAppSelector(state => state.transactionAccount.loading);
   const updating = useAppSelector(state => state.transactionAccount.updating);
   const updateSuccess = useAppSelector(state => state.transactionAccount.updateSuccess);
-  const transactionAccountTypeValues = Object.keys(TransactionAccountType);
 
   const handleClose = () => {
     navigate('/transaction-account' + location.search);
@@ -40,6 +44,8 @@ export const TransactionAccountUpdate = () => {
     }
 
     dispatch(getTransactionAccounts({}));
+    dispatch(getTransactionAccountTypes({}));
+    dispatch(getTransactionCurrencies({}));
   }, []);
 
   useEffect(() => {
@@ -53,6 +59,8 @@ export const TransactionAccountUpdate = () => {
       ...transactionAccountEntity,
       ...values,
       parentAccount: transactionAccounts.find(it => it.id.toString() === values.parentAccount.toString()),
+      transactionAccountType: transactionAccountTypes.find(it => it.id.toString() === values.transactionAccountType.toString()),
+      transactionCurrency: transactionCurrencies.find(it => it.id.toString() === values.transactionCurrency.toString()),
     };
 
     if (isNew) {
@@ -66,9 +74,10 @@ export const TransactionAccountUpdate = () => {
     isNew
       ? {}
       : {
-          transactionAccountType: 'ASSET',
           ...transactionAccountEntity,
           parentAccount: transactionAccountEntity?.parentAccount?.id,
+          transactionAccountType: transactionAccountEntity?.transactionAccountType?.id,
+          transactionCurrency: transactionAccountEntity?.transactionCurrency?.id,
         };
 
   return (
@@ -115,19 +124,6 @@ export const TransactionAccountUpdate = () => {
                 validate={{}}
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionAccount.transactionAccountType')}
-                id="transaction-account-transactionAccountType"
-                name="transactionAccountType"
-                data-cy="transactionAccountType"
-                type="select"
-              >
-                {transactionAccountTypeValues.map(transactionAccountType => (
-                  <option value={transactionAccountType} key={transactionAccountType}>
-                    {translate('calvaryErpApp.TransactionAccountType.' + transactionAccountType)}
-                  </option>
-                ))}
-              </ValidatedField>
-              <ValidatedField
                 label={translate('calvaryErpApp.transactionAccount.openingBalance')}
                 id="transaction-account-openingBalance"
                 name="openingBalance"
@@ -150,6 +146,46 @@ export const TransactionAccountUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
+              <ValidatedField
+                id="transaction-account-transactionAccountType"
+                name="transactionAccountType"
+                data-cy="transactionAccountType"
+                label={translate('calvaryErpApp.transactionAccount.transactionAccountType')}
+                type="select"
+                required
+              >
+                <option value="" key="0" />
+                {transactionAccountTypes
+                  ? transactionAccountTypes.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.name}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>
+                <Translate contentKey="entity.validation.required">This field is required.</Translate>
+              </FormText>
+              <ValidatedField
+                id="transaction-account-transactionCurrency"
+                name="transactionCurrency"
+                data-cy="transactionCurrency"
+                label={translate('calvaryErpApp.transactionAccount.transactionCurrency')}
+                type="select"
+                required
+              >
+                <option value="" key="0" />
+                {transactionCurrencies
+                  ? transactionCurrencies.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.code}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>
+                <Translate contentKey="entity.validation.required">This field is required.</Translate>
+              </FormText>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-account" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

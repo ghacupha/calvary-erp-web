@@ -14,5 +14,19 @@
                                  referencedColumnNames="id"
                                  referencedTableName="transaction_account"
                                  />
+
+        <addForeignKeyConstraint baseColumnNames="transaction_account_type_id"
+                                 baseTableName="transaction_account"
+                                 constraintName="fk_transaction_account__transaction_account_type_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_account_type"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="transaction_currency_id"
+                                 baseTableName="transaction_account"
+                                 constraintName="fk_transaction_account__transaction_currency_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_currency"
+                                 />
     </changeSet>
 </databaseChangeLog>

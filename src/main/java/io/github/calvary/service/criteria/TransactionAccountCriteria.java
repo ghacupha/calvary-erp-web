@@ -1,6 +1,5 @@
 package io.github.calvary.service.criteria;
 
-import io.github.calvary.domain.enumeration.TransactionAccountType;
 import java.io.Serializable;
 import java.util.Objects;
 import org.springdoc.core.annotations.ParameterObject;
@@ -20,23 +19,6 @@ import tech.jhipster.service.filter.*;
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class TransactionAccountCriteria implements Serializable, Criteria {
 
-    /**
-     * Class for filtering TransactionAccountType
-     */
-    public static class TransactionAccountTypeFilter extends Filter<TransactionAccountType> {
-
-        public TransactionAccountTypeFilter() {}
-
-        public TransactionAccountTypeFilter(TransactionAccountTypeFilter filter) {
-            super(filter);
-        }
-
-        @Override
-        public TransactionAccountTypeFilter copy() {
-            return new TransactionAccountTypeFilter(this);
-        }
-    }
-
     private static final long serialVersionUID = 1L;
 
     private LongFilter id;
@@ -45,11 +27,13 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
 
     private StringFilter accountNumber;
 
-    private TransactionAccountTypeFilter transactionAccountType;
-
     private BigDecimalFilter openingBalance;
 
     private LongFilter parentAccountId;
+
+    private LongFilter transactionAccountTypeId;
+
+    private LongFilter transactionCurrencyId;
 
     private Boolean distinct;
 
@@ -59,9 +43,10 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.accountName = other.accountName == null ? null : other.accountName.copy();
         this.accountNumber = other.accountNumber == null ? null : other.accountNumber.copy();
-        this.transactionAccountType = other.transactionAccountType == null ? null : other.transactionAccountType.copy();
         this.openingBalance = other.openingBalance == null ? null : other.openingBalance.copy();
         this.parentAccountId = other.parentAccountId == null ? null : other.parentAccountId.copy();
+        this.transactionAccountTypeId = other.transactionAccountTypeId == null ? null : other.transactionAccountTypeId.copy();
+        this.transactionCurrencyId = other.transactionCurrencyId == null ? null : other.transactionCurrencyId.copy();
         this.distinct = other.distinct;
     }
 
@@ -115,21 +100,6 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.accountNumber = accountNumber;
     }
 
-    public TransactionAccountTypeFilter getTransactionAccountType() {
-        return transactionAccountType;
-    }
-
-    public TransactionAccountTypeFilter transactionAccountType() {
-        if (transactionAccountType == null) {
-            transactionAccountType = new TransactionAccountTypeFilter();
-        }
-        return transactionAccountType;
-    }
-
-    public void setTransactionAccountType(TransactionAccountTypeFilter transactionAccountType) {
-        this.transactionAccountType = transactionAccountType;
-    }
-
     public BigDecimalFilter getOpeningBalance() {
         return openingBalance;
     }
@@ -160,6 +130,36 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
         this.parentAccountId = parentAccountId;
     }
 
+    public LongFilter getTransactionAccountTypeId() {
+        return transactionAccountTypeId;
+    }
+
+    public LongFilter transactionAccountTypeId() {
+        if (transactionAccountTypeId == null) {
+            transactionAccountTypeId = new LongFilter();
+        }
+        return transactionAccountTypeId;
+    }
+
+    public void setTransactionAccountTypeId(LongFilter transactionAccountTypeId) {
+        this.transactionAccountTypeId = transactionAccountTypeId;
+    }
+
+    public LongFilter getTransactionCurrencyId() {
+        return transactionCurrencyId;
+    }
+
+    public LongFilter transactionCurrencyId() {
+        if (transactionCurrencyId == null) {
+            transactionCurrencyId = new LongFilter();
+        }
+        return transactionCurrencyId;
+    }
+
+    public void setTransactionCurrencyId(LongFilter transactionCurrencyId) {
+        this.transactionCurrencyId = transactionCurrencyId;
+    }
+
     public Boolean getDistinct() {
         return distinct;
     }
@@ -181,16 +181,26 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(accountName, that.accountName) &&
             Objects.equals(accountNumber, that.accountNumber) &&
-            Objects.equals(transactionAccountType, that.transactionAccountType) &&
             Objects.equals(openingBalance, that.openingBalance) &&
             Objects.equals(parentAccountId, that.parentAccountId) &&
+            Objects.equals(transactionAccountTypeId, that.transactionAccountTypeId) &&
+            Objects.equals(transactionCurrencyId, that.transactionCurrencyId) &&
             Objects.equals(distinct, that.distinct)
         );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountName, accountNumber, transactionAccountType, openingBalance, parentAccountId, distinct);
+        return Objects.hash(
+            id,
+            accountName,
+            accountNumber,
+            openingBalance,
+            parentAccountId,
+            transactionAccountTypeId,
+            transactionCurrencyId,
+            distinct
+        );
     }
 
     // prettier-ignore
@@ -200,9 +210,10 @@ public class TransactionAccountCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (accountName != null ? "accountName=" + accountName + ", " : "") +
             (accountNumber != null ? "accountNumber=" + accountNumber + ", " : "") +
-            (transactionAccountType != null ? "transactionAccountType=" + transactionAccountType + ", " : "") +
             (openingBalance != null ? "openingBalance=" + openingBalance + ", " : "") +
             (parentAccountId != null ? "parentAccountId=" + parentAccountId + ", " : "") +
+            (transactionAccountTypeId != null ? "transactionAccountTypeId=" + transactionAccountTypeId + ", " : "") +
+            (transactionCurrencyId != null ? "transactionCurrencyId=" + transactionCurrencyId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";
     }

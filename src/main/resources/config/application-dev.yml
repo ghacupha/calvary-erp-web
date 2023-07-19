@@ -38,7 +38,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     # url: jdbc:postgresql://localhost:5432/calvary-erp
-    url: ${LOCAL_PG_SERVER}/calvary-erp
+    url: ${LOCAL_PG_SERVER}/calvary-erp-dev
     username: ${PG_DATABASE_DEV_USER}
     password: ${PG_DATABASE_DEV_PASSWORD}
     hikari:

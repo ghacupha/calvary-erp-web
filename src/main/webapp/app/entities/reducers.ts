@@ -5,6 +5,8 @@ import eventType from 'app/entities/event-type/event-type.reducer';
 import accountingEvent from 'app/entities/accounting-event/accounting-event.reducer';
 import dealerType from 'app/entities/dealer-type/dealer-type.reducer';
 import dealer from 'app/entities/dealer/dealer.reducer';
+import transactionAccountType from 'app/entities/transaction-account-type/transaction-account-type.reducer';
+import transactionCurrency from 'app/entities/transaction-currency/transaction-currency.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const entitiesReducers = {
@@ -15,6 +17,8 @@ const entitiesReducers = {
   accountingEvent,
   dealerType,
   dealer,
+  transactionAccountType,
+  transactionCurrency,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
 };
 

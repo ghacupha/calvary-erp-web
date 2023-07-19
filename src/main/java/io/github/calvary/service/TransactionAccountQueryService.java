@@ -104,10 +104,6 @@ public class TransactionAccountQueryService extends QueryService<TransactionAcco
             if (criteria.getAccountNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getAccountNumber(), TransactionAccount_.accountNumber));
             }
-            if (criteria.getTransactionAccountType() != null) {
-                specification =
-                    specification.and(buildSpecification(criteria.getTransactionAccountType(), TransactionAccount_.transactionAccountType));
-            }
             if (criteria.getOpeningBalance() != null) {
                 specification =
                     specification.and(buildRangeSpecification(criteria.getOpeningBalance(), TransactionAccount_.openingBalance));
@@ -118,6 +114,24 @@ public class TransactionAccountQueryService extends QueryService<TransactionAcco
                         buildSpecification(
                             criteria.getParentAccountId(),
                             root -> root.join(TransactionAccount_.parentAccount, JoinType.LEFT).get(TransactionAccount_.id)
+                        )
+                    );
+            }
+            if (criteria.getTransactionAccountTypeId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTransactionAccountTypeId(),
+                            root -> root.join(TransactionAccount_.transactionAccountType, JoinType.LEFT).get(TransactionAccountType_.id)
+                        )
+                    );
+            }
+            if (criteria.getTransactionCurrencyId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getTransactionCurrencyId(),
+                            root -> root.join(TransactionAccount_.transactionCurrency, JoinType.LEFT).get(TransactionCurrency_.id)
                         )
                     );
             }

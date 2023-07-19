@@ -718,8 +718,6 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
-        partialUpdatedTransactionEntry.transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE);
-
         restTransactionEntryMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionEntry.getId())
@@ -733,7 +731,7 @@ class TransactionEntryResourceIT {
         assertThat(transactionEntryList).hasSize(databaseSizeBeforeUpdate);
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
-        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
     }
 

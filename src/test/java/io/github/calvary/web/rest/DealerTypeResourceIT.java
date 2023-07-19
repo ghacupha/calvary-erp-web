@@ -450,6 +450,8 @@ class DealerTypeResourceIT {
         DealerType partialUpdatedDealerType = new DealerType();
         partialUpdatedDealerType.setId(dealerType.getId());
 
+        partialUpdatedDealerType.name(UPDATED_NAME);
+
         restDealerTypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDealerType.getId())
@@ -462,7 +464,7 @@ class DealerTypeResourceIT {
         List<DealerType> dealerTypeList = dealerTypeRepository.findAll();
         assertThat(dealerTypeList).hasSize(databaseSizeBeforeUpdate);
         DealerType testDealerType = dealerTypeList.get(dealerTypeList.size() - 1);
-        assertThat(testDealerType.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testDealerType.getName()).isEqualTo(UPDATED_NAME);
     }
 
     @Test

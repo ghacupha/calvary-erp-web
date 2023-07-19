@@ -191,16 +191,20 @@ export const TransactionAccount = () => {
                   <Translate contentKey="calvaryErpApp.transactionAccount.accountNumber">Account Number</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('accountNumber')} />
                 </th>
-                <th className="hand" onClick={sort('transactionAccountType')}>
-                  <Translate contentKey="calvaryErpApp.transactionAccount.transactionAccountType">Transaction Account Type</Translate>{' '}
-                  <FontAwesomeIcon icon={getSortIconByFieldName('transactionAccountType')} />
-                </th>
                 <th className="hand" onClick={sort('openingBalance')}>
                   <Translate contentKey="calvaryErpApp.transactionAccount.openingBalance">Opening Balance</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('openingBalance')} />
                 </th>
                 <th>
                   <Translate contentKey="calvaryErpApp.transactionAccount.parentAccount">Parent Account</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="calvaryErpApp.transactionAccount.transactionAccountType">Transaction Account Type</Translate>{' '}
+                  <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  <Translate contentKey="calvaryErpApp.transactionAccount.transactionCurrency">Transaction Currency</Translate>{' '}
                   <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
@@ -216,14 +220,29 @@ export const TransactionAccount = () => {
                   </td>
                   <td>{transactionAccount.accountName}</td>
                   <td>{transactionAccount.accountNumber}</td>
-                  <td>
-                    <Translate contentKey={`calvaryErpApp.TransactionAccountType.${transactionAccount.transactionAccountType}`} />
-                  </td>
                   <td>{transactionAccount.openingBalance}</td>
                   <td>
                     {transactionAccount.parentAccount ? (
                       <Link to={`/transaction-account/${transactionAccount.parentAccount.id}`}>
                         {transactionAccount.parentAccount.accountName}
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                  <td>
+                    {transactionAccount.transactionAccountType ? (
+                      <Link to={`/transaction-account-type/${transactionAccount.transactionAccountType.id}`}>
+                        {transactionAccount.transactionAccountType.name}
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+                  <td>
+                    {transactionAccount.transactionCurrency ? (
+                      <Link to={`/transaction-currency/${transactionAccount.transactionCurrency.id}`}>
+                        {transactionAccount.transactionCurrency.code}
                       </Link>
                     ) : (
                       ''

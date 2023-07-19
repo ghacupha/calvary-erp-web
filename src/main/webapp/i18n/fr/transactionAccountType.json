@@ -1,12 +1,25 @@
 {
   "calvaryErpApp": {
-    "TransactionAccountType": {
-      "null": "",
-      "ASSET": "ASSET",
-      "LIABILITY": "LIABILITY",
-      "INCOME": "INCOME",
-      "EXPENSE": "EXPENSE",
-      "EQUITY": "EQUITY"
+    "transactionAccountType": {
+      "home": {
+        "title": "TransactionAccountTypes",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Transaction Account Type",
+        "createOrEditLabel": "Créer ou éditer un Transaction Account Type",
+        "search": "Recherche pour Transaction Account Type",
+        "notFound": "Aucun Transaction Account Type trouvé"
+      },
+      "created": "Un nouveau Transaction Account Type a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Transaction Account Type avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Transaction Account Type avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Êtes-vous certain de vouloir supprimer le Transaction Account Type {{ id }} ?"
+      },
+      "detail": {
+        "title": "Transaction Account Type"
+      },
+      "id": "ID",
+      "name": "Name"
     }
   }
 }
