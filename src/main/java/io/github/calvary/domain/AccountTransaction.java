@@ -40,6 +40,10 @@ public class AccountTransaction implements Serializable {
     @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Text)
     private String referenceNumber;
 
+    @Column(name = "posted")
+    @org.springframework.data.elasticsearch.annotations.Field(type = org.springframework.data.elasticsearch.annotations.FieldType.Boolean)
+    private Boolean posted;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "accountTransaction")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @org.springframework.data.annotation.Transient
@@ -100,6 +104,19 @@ public class AccountTransaction implements Serializable {
         this.referenceNumber = referenceNumber;
     }
 
+    public Boolean getPosted() {
+        return this.posted;
+    }
+
+    public AccountTransaction posted(Boolean posted) {
+        this.setPosted(posted);
+        return this;
+    }
+
+    public void setPosted(Boolean posted) {
+        this.posted = posted;
+    }
+
     public Set<TransactionEntry> getTransactionEntries() {
         return this.transactionEntries;
     }
@@ -158,6 +175,7 @@ public class AccountTransaction implements Serializable {
             ", transactionDate='" + getTransactionDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", referenceNumber='" + getReferenceNumber() + "'" +
+            ", posted='" + getPosted() + "'" +
             "}";
     }
 }

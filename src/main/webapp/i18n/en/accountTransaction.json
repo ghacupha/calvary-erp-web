@@ -22,6 +22,7 @@
       "transactionDate": "Transaction Date",
       "description": "Description",
       "referenceNumber": "Reference Number",
+      "posted": "Posted",
       "transactionEntry": "Transaction Entry"
     }
   }

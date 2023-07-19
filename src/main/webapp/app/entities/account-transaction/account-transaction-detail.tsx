@@ -54,6 +54,12 @@ export const AccountTransactionDetail = () => {
             </span>
           </dt>
           <dd>{accountTransactionEntity.referenceNumber}</dd>
+          <dt>
+            <span id="posted">
+              <Translate contentKey="calvaryErpApp.accountTransaction.posted">Posted</Translate>
+            </span>
+          </dt>
+          <dd>{accountTransactionEntity.posted ? 'true' : 'false'}</dd>
         </dl>
         <Button tag={Link} to="/account-transaction" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" />{' '}

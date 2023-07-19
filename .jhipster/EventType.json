@@ -1,0 +1,18 @@
+{
+  "changelogDate": "20230719132542",
+  "dto": "mapstruct",
+  "entityTableName": "event_type",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "EventType",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

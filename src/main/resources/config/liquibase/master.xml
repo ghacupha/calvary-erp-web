@@ -14,9 +14,15 @@
     <include file="config/liquibase/changelog/20230718095043_added_entity_TransactionAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230718134338_added_entity_TransactionEntry.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230718144045_added_entity_AccountTransaction.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719132542_added_entity_EventType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719133138_added_entity_AccountingEvent.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719133650_added_entity_DealerType.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719134221_added_entity_Dealer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20230718095043_added_entity_constraints_TransactionAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20230718134338_added_entity_constraints_TransactionEntry.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719133138_added_entity_constraints_AccountingEvent.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20230719134221_added_entity_constraints_Dealer.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

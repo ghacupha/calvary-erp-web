@@ -109,6 +109,9 @@ public class AccountTransactionQueryService extends QueryService<AccountTransact
                 specification =
                     specification.and(buildStringSpecification(criteria.getReferenceNumber(), AccountTransaction_.referenceNumber));
             }
+            if (criteria.getPosted() != null) {
+                specification = specification.and(buildSpecification(criteria.getPosted(), AccountTransaction_.posted));
+            }
             if (criteria.getTransactionEntryId() != null) {
                 specification =
                     specification.and(

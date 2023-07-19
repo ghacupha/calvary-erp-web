@@ -29,6 +29,8 @@ public class AccountTransactionCriteria implements Serializable, Criteria {
 
     private StringFilter referenceNumber;
 
+    private BooleanFilter posted;
+
     private LongFilter transactionEntryId;
 
     private Boolean distinct;
@@ -40,6 +42,7 @@ public class AccountTransactionCriteria implements Serializable, Criteria {
         this.transactionDate = other.transactionDate == null ? null : other.transactionDate.copy();
         this.description = other.description == null ? null : other.description.copy();
         this.referenceNumber = other.referenceNumber == null ? null : other.referenceNumber.copy();
+        this.posted = other.posted == null ? null : other.posted.copy();
         this.transactionEntryId = other.transactionEntryId == null ? null : other.transactionEntryId.copy();
         this.distinct = other.distinct;
     }
@@ -109,6 +112,21 @@ public class AccountTransactionCriteria implements Serializable, Criteria {
         this.referenceNumber = referenceNumber;
     }
 
+    public BooleanFilter getPosted() {
+        return posted;
+    }
+
+    public BooleanFilter posted() {
+        if (posted == null) {
+            posted = new BooleanFilter();
+        }
+        return posted;
+    }
+
+    public void setPosted(BooleanFilter posted) {
+        this.posted = posted;
+    }
+
     public LongFilter getTransactionEntryId() {
         return transactionEntryId;
     }
@@ -146,6 +164,7 @@ public class AccountTransactionCriteria implements Serializable, Criteria {
             Objects.equals(transactionDate, that.transactionDate) &&
             Objects.equals(description, that.description) &&
             Objects.equals(referenceNumber, that.referenceNumber) &&
+            Objects.equals(posted, that.posted) &&
             Objects.equals(transactionEntryId, that.transactionEntryId) &&
             Objects.equals(distinct, that.distinct)
         );
@@ -153,7 +172,7 @@ public class AccountTransactionCriteria implements Serializable, Criteria {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, transactionDate, description, referenceNumber, transactionEntryId, distinct);
+        return Objects.hash(id, transactionDate, description, referenceNumber, posted, transactionEntryId, distinct);
     }
 
     // prettier-ignore
@@ -164,6 +183,7 @@ public class AccountTransactionCriteria implements Serializable, Criteria {
             (transactionDate != null ? "transactionDate=" + transactionDate + ", " : "") +
             (description != null ? "description=" + description + ", " : "") +
             (referenceNumber != null ? "referenceNumber=" + referenceNumber + ", " : "") +
+            (posted != null ? "posted=" + posted + ", " : "") +
             (transactionEntryId != null ? "transactionEntryId=" + transactionEntryId + ", " : "") +
             (distinct != null ? "distinct=" + distinct + ", " : "") +
             "}";

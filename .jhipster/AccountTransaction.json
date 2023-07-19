@@ -16,6 +16,10 @@
       "fieldName": "referenceNumber",
       "fieldType": "String",
       "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "posted",
+      "fieldType": "Boolean"
     }
   ],
   "jpaMetamodelFiltering": true,

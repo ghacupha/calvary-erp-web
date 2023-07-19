@@ -1,0 +1,18 @@
+{
+  "changelogDate": "20230719133650",
+  "dto": "mapstruct",
+  "entityTableName": "dealer_type",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "DealerType",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

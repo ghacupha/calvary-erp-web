@@ -10,6 +10,10 @@
         "transactionAccount": "Transaction Account",
         "transactionEntry": "Transaction Entry",
         "accountTransaction": "Account Transaction",
+        "eventType": "Event Type",
+        "accountingEvent": "Accounting Event",
+        "dealerType": "Dealer Type",
+        "dealer": "Dealer",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

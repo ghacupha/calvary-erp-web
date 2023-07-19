@@ -1,0 +1,25 @@
+{
+  "calvaryErpApp": {
+    "dealerType": {
+      "home": {
+        "title": "Dealer Types",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Dealer Type",
+        "createOrEditLabel": "Create or edit a Dealer Type",
+        "search": "Search for Dealer Type",
+        "notFound": "No Dealer Types found"
+      },
+      "created": "A new Dealer Type is created with identifier {{ param }}",
+      "updated": "A Dealer Type is updated with identifier {{ param }}",
+      "deleted": "A Dealer Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Dealer Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Dealer Type"
+      },
+      "id": "ID",
+      "name": "Name"
+    }
+  }
+}

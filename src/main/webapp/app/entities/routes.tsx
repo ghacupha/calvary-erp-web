@@ -6,6 +6,10 @@ import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 import TransactionAccount from './transaction-account';
 import TransactionEntry from './transaction-entry';
 import AccountTransaction from './account-transaction';
+import EventType from './event-type';
+import AccountingEvent from './accounting-event';
+import DealerType from './dealer-type';
+import Dealer from './dealer';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -16,6 +20,10 @@ export default () => {
         <Route path="transaction-account/*" element={<TransactionAccount />} />
         <Route path="transaction-entry/*" element={<TransactionEntry />} />
         <Route path="account-transaction/*" element={<AccountTransaction />} />
+        <Route path="event-type/*" element={<EventType />} />
+        <Route path="accounting-event/*" element={<AccountingEvent />} />
+        <Route path="dealer-type/*" element={<DealerType />} />
+        <Route path="dealer/*" element={<Dealer />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

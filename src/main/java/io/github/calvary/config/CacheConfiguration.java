@@ -52,6 +52,10 @@ public class CacheConfiguration {
             createCache(cm, io.github.calvary.domain.TransactionEntry.class.getName());
             createCache(cm, io.github.calvary.domain.AccountTransaction.class.getName());
             createCache(cm, io.github.calvary.domain.AccountTransaction.class.getName() + ".transactionEntries");
+            createCache(cm, io.github.calvary.domain.EventType.class.getName());
+            createCache(cm, io.github.calvary.domain.AccountingEvent.class.getName());
+            createCache(cm, io.github.calvary.domain.DealerType.class.getName());
+            createCache(cm, io.github.calvary.domain.Dealer.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

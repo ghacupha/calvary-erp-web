@@ -51,6 +51,9 @@ class AccountTransactionResourceIT {
     private static final String DEFAULT_REFERENCE_NUMBER = "AAAAAAAAAA";
     private static final String UPDATED_REFERENCE_NUMBER = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_POSTED = false;
+    private static final Boolean UPDATED_POSTED = true;
+
     private static final String ENTITY_API_URL = "/api/account-transactions";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
     private static final String ENTITY_SEARCH_API_URL = "/api/_search/account-transactions";
@@ -85,7 +88,8 @@ class AccountTransactionResourceIT {
         AccountTransaction accountTransaction = new AccountTransaction()
             .transactionDate(DEFAULT_TRANSACTION_DATE)
             .description(DEFAULT_DESCRIPTION)
-            .referenceNumber(DEFAULT_REFERENCE_NUMBER);
+            .referenceNumber(DEFAULT_REFERENCE_NUMBER)
+            .posted(DEFAULT_POSTED);
         return accountTransaction;
     }
 
@@ -99,7 +103,8 @@ class AccountTransactionResourceIT {
         AccountTransaction accountTransaction = new AccountTransaction()
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .description(UPDATED_DESCRIPTION)
-            .referenceNumber(UPDATED_REFERENCE_NUMBER);
+            .referenceNumber(UPDATED_REFERENCE_NUMBER)
+            .posted(UPDATED_POSTED);
         return accountTransaction;
     }
 
@@ -142,6 +147,7 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(DEFAULT_REFERENCE_NUMBER);
+        assertThat(testAccountTransaction.getPosted()).isEqualTo(DEFAULT_POSTED);
     }
 
     @Test
@@ -209,7 +215,8 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(accountTransaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)));
+            .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)))
+            .andExpect(jsonPath("$.[*].posted").value(hasItem(DEFAULT_POSTED.booleanValue())));
     }
 
     @Test
@@ -226,7 +233,8 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.id").value(accountTransaction.getId().intValue()))
             .andExpect(jsonPath("$.transactionDate").value(DEFAULT_TRANSACTION_DATE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.referenceNumber").value(DEFAULT_REFERENCE_NUMBER));
+            .andExpect(jsonPath("$.referenceNumber").value(DEFAULT_REFERENCE_NUMBER))
+            .andExpect(jsonPath("$.posted").value(DEFAULT_POSTED.booleanValue()));
     }
 
     @Test
@@ -470,6 +478,45 @@ class AccountTransactionResourceIT {
 
     @Test
     @Transactional
+    void getAllAccountTransactionsByPostedIsEqualToSomething() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where posted equals to DEFAULT_POSTED
+        defaultAccountTransactionShouldBeFound("posted.equals=" + DEFAULT_POSTED);
+
+        // Get all the accountTransactionList where posted equals to UPDATED_POSTED
+        defaultAccountTransactionShouldNotBeFound("posted.equals=" + UPDATED_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByPostedIsInShouldWork() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where posted in DEFAULT_POSTED or UPDATED_POSTED
+        defaultAccountTransactionShouldBeFound("posted.in=" + DEFAULT_POSTED + "," + UPDATED_POSTED);
+
+        // Get all the accountTransactionList where posted equals to UPDATED_POSTED
+        defaultAccountTransactionShouldNotBeFound("posted.in=" + UPDATED_POSTED);
+    }
+
+    @Test
+    @Transactional
+    void getAllAccountTransactionsByPostedIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        accountTransactionRepository.saveAndFlush(accountTransaction);
+
+        // Get all the accountTransactionList where posted is not null
+        defaultAccountTransactionShouldBeFound("posted.specified=true");
+
+        // Get all the accountTransactionList where posted is null
+        defaultAccountTransactionShouldNotBeFound("posted.specified=false");
+    }
+
+    @Test
+    @Transactional
     void getAllAccountTransactionsByTransactionEntryIsEqualToSomething() throws Exception {
         TransactionEntry transactionEntry;
         if (TestUtil.findAll(em, TransactionEntry.class).isEmpty()) {
@@ -501,7 +548,8 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(accountTransaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)));
+            .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)))
+            .andExpect(jsonPath("$.[*].posted").value(hasItem(DEFAULT_POSTED.booleanValue())));
 
         // Check, that the count call also returns 1
         restAccountTransactionMockMvc
@@ -554,7 +602,8 @@ class AccountTransactionResourceIT {
         updatedAccountTransaction
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .description(UPDATED_DESCRIPTION)
-            .referenceNumber(UPDATED_REFERENCE_NUMBER);
+            .referenceNumber(UPDATED_REFERENCE_NUMBER)
+            .posted(UPDATED_POSTED);
         AccountTransactionDTO accountTransactionDTO = accountTransactionMapper.toDto(updatedAccountTransaction);
 
         restAccountTransactionMockMvc
@@ -572,6 +621,7 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
+        assertThat(testAccountTransaction.getPosted()).isEqualTo(UPDATED_POSTED);
         await()
             .atMost(5, TimeUnit.SECONDS)
             .untilAsserted(() -> {
@@ -582,6 +632,7 @@ class AccountTransactionResourceIT {
                 assertThat(testAccountTransactionSearch.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
                 assertThat(testAccountTransactionSearch.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
                 assertThat(testAccountTransactionSearch.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
+                assertThat(testAccountTransactionSearch.getPosted()).isEqualTo(UPDATED_POSTED);
             });
     }
 
@@ -675,6 +726,8 @@ class AccountTransactionResourceIT {
         AccountTransaction partialUpdatedAccountTransaction = new AccountTransaction();
         partialUpdatedAccountTransaction.setId(accountTransaction.getId());
 
+        partialUpdatedAccountTransaction.description(UPDATED_DESCRIPTION).referenceNumber(UPDATED_REFERENCE_NUMBER).posted(UPDATED_POSTED);
+
         restAccountTransactionMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedAccountTransaction.getId())
@@ -688,8 +741,9 @@ class AccountTransactionResourceIT {
         assertThat(accountTransactionList).hasSize(databaseSizeBeforeUpdate);
         AccountTransaction testAccountTransaction = accountTransactionList.get(accountTransactionList.size() - 1);
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(DEFAULT_TRANSACTION_DATE);
-        assertThat(testAccountTransaction.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(DEFAULT_REFERENCE_NUMBER);
+        assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
+        assertThat(testAccountTransaction.getPosted()).isEqualTo(UPDATED_POSTED);
     }
 
     @Test
@@ -707,7 +761,8 @@ class AccountTransactionResourceIT {
         partialUpdatedAccountTransaction
             .transactionDate(UPDATED_TRANSACTION_DATE)
             .description(UPDATED_DESCRIPTION)
-            .referenceNumber(UPDATED_REFERENCE_NUMBER);
+            .referenceNumber(UPDATED_REFERENCE_NUMBER)
+            .posted(UPDATED_POSTED);
 
         restAccountTransactionMockMvc
             .perform(
@@ -724,6 +779,7 @@ class AccountTransactionResourceIT {
         assertThat(testAccountTransaction.getTransactionDate()).isEqualTo(UPDATED_TRANSACTION_DATE);
         assertThat(testAccountTransaction.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAccountTransaction.getReferenceNumber()).isEqualTo(UPDATED_REFERENCE_NUMBER);
+        assertThat(testAccountTransaction.getPosted()).isEqualTo(UPDATED_POSTED);
     }
 
     @Test
@@ -843,6 +899,7 @@ class AccountTransactionResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(accountTransaction.getId().intValue())))
             .andExpect(jsonPath("$.[*].transactionDate").value(hasItem(DEFAULT_TRANSACTION_DATE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)));
+            .andExpect(jsonPath("$.[*].referenceNumber").value(hasItem(DEFAULT_REFERENCE_NUMBER)))
+            .andExpect(jsonPath("$.[*].posted").value(hasItem(DEFAULT_POSTED.booleanValue())));
     }
 }

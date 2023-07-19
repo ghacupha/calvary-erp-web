@@ -112,6 +112,14 @@ export const AccountTransactionUpdate = () => {
                 type="text"
                 validate={{}}
               />
+              <ValidatedField
+                label={translate('calvaryErpApp.accountTransaction.posted')}
+                id="account-transaction-posted"
+                name="posted"
+                data-cy="posted"
+                check
+                type="checkbox"
+              />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/account-transaction" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

@@ -196,6 +196,10 @@ export const AccountTransaction = () => {
                   <Translate contentKey="calvaryErpApp.accountTransaction.referenceNumber">Reference Number</Translate>{' '}
                   <FontAwesomeIcon icon={getSortIconByFieldName('referenceNumber')} />
                 </th>
+                <th className="hand" onClick={sort('posted')}>
+                  <Translate contentKey="calvaryErpApp.accountTransaction.posted">Posted</Translate>{' '}
+                  <FontAwesomeIcon icon={getSortIconByFieldName('posted')} />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -214,6 +218,7 @@ export const AccountTransaction = () => {
                   </td>
                   <td>{accountTransaction.description}</td>
                   <td>{accountTransaction.referenceNumber}</td>
+                  <td>{accountTransaction.posted ? 'true' : 'false'}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button

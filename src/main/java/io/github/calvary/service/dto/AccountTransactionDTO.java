@@ -20,6 +20,8 @@ public class AccountTransactionDTO implements Serializable {
 
     private String referenceNumber;
 
+    private Boolean posted;
+
     public Long getId() {
         return id;
     }
@@ -52,6 +54,14 @@ public class AccountTransactionDTO implements Serializable {
         this.referenceNumber = referenceNumber;
     }
 
+    public Boolean getPosted() {
+        return posted;
+    }
+
+    public void setPosted(Boolean posted) {
+        this.posted = posted;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -81,6 +91,7 @@ public class AccountTransactionDTO implements Serializable {
             ", transactionDate='" + getTransactionDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", referenceNumber='" + getReferenceNumber() + "'" +
+            ", posted='" + getPosted() + "'" +
             "}";
     }
 }
