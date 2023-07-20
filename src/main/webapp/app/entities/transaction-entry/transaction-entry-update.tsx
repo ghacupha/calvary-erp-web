@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { getEntities as getTransactionAccounts } from 'app/entities/transaction-account/transaction-account.reducer';
 import { IAccountTransaction } from 'app/shared/model/account-transaction.model';
-import { getEntities as getAccountTransactions } from 'app/entities/erp/account-transaction/account-transaction.reducer';
+import { getEntities as getAccountTransactions } from 'app/erp/account-transaction/account-transaction.reducer';
 import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';

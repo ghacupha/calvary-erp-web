@@ -10,6 +10,7 @@ import PasswordResetFinish from 'app/modules/account/password-reset/finish/passw
 import Logout from 'app/modules/login/logout';
 import Home from 'app/modules/home/home';
 import EntitiesRoutes from 'app/entities/routes';
+import ERPEntitiesRoutes from 'app/erp/erp-routes';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 import PageNotFound from 'app/shared/error/page-not-found';
@@ -63,6 +64,7 @@ const AppRoutes = () => {
           element={
             <PrivateRoute hasAnyAuthorities={[AUTHORITIES.USER]}>
               <EntitiesRoutes />
+              <ERPEntitiesRoutes />
             </PrivateRoute>
           }
         />
