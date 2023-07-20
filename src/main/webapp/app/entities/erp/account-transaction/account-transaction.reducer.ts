@@ -14,6 +14,7 @@ const initialState: EntityState<IAccountTransaction> = {
   updateSuccess: false,
 };
 
+const postingUrl = 'api/post/account-transactions';
 const apiUrl = 'api/account-transactions';
 const apiSearchUrl = 'api/_search/account-transactions';
 
@@ -52,6 +53,16 @@ export const updateEntity = createAsyncThunk(
   'accountTransaction/update_entity',
   async (entity: IAccountTransaction, thunkAPI) => {
     const result = await axios.put<IAccountTransaction>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
+    thunkAPI.dispatch(getEntities({}));
+    return result;
+  },
+  { serializeError: serializeAxiosError }
+);
+
+export const postTransaction = createAsyncThunk(
+  'accountTransaction/post_transaction',
+  async (entity: IAccountTransaction, thunkAPI) => {
+    const result = await axios.put<IAccountTransaction>(`${postingUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -105,7 +116,7 @@ export const AccountTransactionSlice = createEntitySlice({
           totalItems: parseInt(headers['x-total-count'], 10),
         };
       })
-      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity, postTransaction, partialUpdateEntity), (state, action) => {
         state.updating = false;
         state.loading = false;
         state.updateSuccess = true;

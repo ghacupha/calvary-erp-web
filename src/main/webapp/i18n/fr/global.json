@@ -107,7 +107,8 @@
       "open": "Ouvrir",
       "save": "Sauvegarder",
       "view": "Voir",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "post": "Post"
     },
     "detail": {
       "field": "Champs",
@@ -115,6 +116,9 @@
     },
     "delete": {
       "title": "Confirmation de suppression"
+    },
+    "post": {
+      "title": "Confirmation de operation"
     },
     "validation": {
       "required": "Ce champ est obligatoire.",

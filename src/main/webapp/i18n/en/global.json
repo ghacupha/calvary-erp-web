@@ -107,7 +107,8 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "show": "Show {{otherEntity}}"
+      "show": "Show {{otherEntity}}",
+      "post": "Post"
     },
     "detail": {
       "field": "Field",
@@ -115,6 +116,9 @@
     },
     "delete": {
       "title": "Confirm delete operation"
+    },
+    "post": {
+      "title": "Confirm posting operation"
     },
     "validation": {
       "required": "This field is required.",

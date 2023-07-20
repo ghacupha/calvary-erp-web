@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntity } from './account-transaction.reducer';
+import {getEntity, postTransaction} from './account-transaction.reducer';
 
 export const AccountTransactionDetail = () => {
   const dispatch = useAppDispatch();
@@ -17,6 +17,10 @@ export const AccountTransactionDetail = () => {
   useEffect(() => {
     dispatch(getEntity(id));
   }, []);
+
+  const postAction = () => {
+    dispatch(postTransaction(accountTransactionEntity));
+  };
 
   const accountTransactionEntity = useAppSelector(state => state.accountTransaction.entity);
   return (
@@ -90,6 +94,12 @@ export const AccountTransactionDetail = () => {
           <FontAwesomeIcon icon="pencil-alt" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.edit">Edit</Translate>
+          </span>
+        </Button>
+        <Button tag={Link} to={`/account-transaction/${accountTransactionEntity.id}/post`}replace color="primary">
+          <FontAwesomeIcon icon="pencil-alt" />{' '}
+          <span className="d-none d-md-inline">
+            <Translate contentKey="entity.action.post">Post</Translate>
           </span>
         </Button>
       </Col>

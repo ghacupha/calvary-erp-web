@@ -272,6 +272,18 @@ export const AccountTransaction = () => {
                           <Translate contentKey="entity.action.delete">Delete</Translate>
                         </span>
                       </Button>
+                      <Button
+                        tag={Link}
+                        to={`/account-transaction/${accountTransaction.id}/post?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                        data-cy="entityDeleteButton"
+                      >
+                        <FontAwesomeIcon icon="warning" />{' '}
+                        <span className="d-none d-md-inline">
+                          <Translate contentKey="entity.action.post">Delete</Translate>
+                        </span>
+                      </Button>
                     </div>
                   </td>
                 </tr>
