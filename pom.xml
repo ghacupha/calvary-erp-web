@@ -11,6 +11,7 @@
     <description>Description for Calvary Erp</description>
 
     <properties>
+        <docker.image.prefix>ghacupha</docker.image.prefix>
         <!--
             Build properties
             The spring-boot version should match the one managed by https://mvnrepository.com/artifact/tech.jhipster/jhipster-dependencies/${jhipster-dependencies.version}
@@ -455,7 +456,7 @@
                             </platforms>
                         </from>
                         <to>
-                            <image>calvary-erp:latest</image>
+                            <image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -464,7 +465,7 @@
                                 <arg>/entrypoint.sh</arg>
                             </entrypoint>
                             <ports>
-                                <port>8080</port>
+                                <port>${application.port}</port>
                             </ports>
                             <environment>
                                 <SPRING_OUTPUT_ANSI_ENABLED>ALWAYS</SPRING_OUTPUT_ANSI_ENABLED>
@@ -890,6 +891,8 @@
                 <liquibase-plugin.url>${env.LOCAL_PG_SERVER}/calvary-erp-dev</liquibase-plugin.url>
                 <liquibase-plugin.username>${env.PG_DATABASE_DEV_USER}</liquibase-plugin.username>
                 <liquibase-plugin.password>${env.PG_DATABASE_DEV_PASSWORD}</liquibase-plugin.password>
+                <!--<application.port>8181</application.port>-->
+                <application.port>${env.CALVARY_ERP_DEV_PORT}</application.port>
             </properties>
             <dependencies>
                 <dependency>
@@ -1000,7 +1003,8 @@
                 <liquibase-plugin.url>${env.LOCAL_PG_SERVER}/calvary-erp-dev</liquibase-plugin.url>
                 <liquibase-plugin.username>${env.PG_DATABASE_PROD_USER}</liquibase-plugin.username>
                 <liquibase-plugin.password>${env.PG_DATABASE_PROD_PASSWORD}</liquibase-plugin.password>
-                <liquibase-plugin.password/>
+                <!--<application.port>8383</application.port>-->
+                <application.port>${env.CALVARY_ERP_PROD_PORT}</application.port>
             </properties>
             <build>
                 <plugins>

@@ -1,9 +1,10 @@
-package io.github.calvary.service;
+package io.github.calvary.erp;
 
 import io.github.calvary.erp.errors.AccountCurrenciesDontMatchException;
 import io.github.calvary.domain.enumeration.TransactionEntryTypes;
 import io.github.calvary.erp.errors.TransactionHasNotBeenProposedException;
 import io.github.calvary.erp.errors.TransactionIsAlreadyDeletedException;
+import io.github.calvary.service.*;
 import io.github.calvary.service.criteria.TransactionEntryCriteria;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.service.dto.TransactionCurrencyDTO;

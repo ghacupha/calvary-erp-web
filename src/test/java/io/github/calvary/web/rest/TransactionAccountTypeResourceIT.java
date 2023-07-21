@@ -470,8 +470,6 @@ class TransactionAccountTypeResourceIT {
         TransactionAccountType partialUpdatedTransactionAccountType = new TransactionAccountType();
         partialUpdatedTransactionAccountType.setId(transactionAccountType.getId());
 
-        partialUpdatedTransactionAccountType.name(UPDATED_NAME);
-
         restTransactionAccountTypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedTransactionAccountType.getId())
@@ -484,7 +482,7 @@ class TransactionAccountTypeResourceIT {
         List<TransactionAccountType> transactionAccountTypeList = transactionAccountTypeRepository.findAll();
         assertThat(transactionAccountTypeList).hasSize(databaseSizeBeforeUpdate);
         TransactionAccountType testTransactionAccountType = transactionAccountTypeList.get(transactionAccountTypeList.size() - 1);
-        assertThat(testTransactionAccountType.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testTransactionAccountType.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test

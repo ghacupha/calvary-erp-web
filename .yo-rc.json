@@ -45,7 +45,7 @@
     "prodDatabaseType": "postgresql",
     "reactive": false,
     "searchEngine": "elasticsearch",
-    "serverPort": null,
+    "serverPort": 8181,
     "serverSideOptions": ["searchEngine:elasticsearch", "messageBroker:kafka"],
     "serviceDiscoveryType": false,
     "skipCheckLengthOfIdentifier": false,

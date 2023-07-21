@@ -922,7 +922,7 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
-        partialUpdatedTransactionEntry.wasProposed(UPDATED_WAS_PROPOSED).wasApproved(UPDATED_WAS_APPROVED);
+        partialUpdatedTransactionEntry.wasDeleted(UPDATED_WAS_DELETED).wasApproved(UPDATED_WAS_APPROVED);
 
         restTransactionEntryMockMvc
             .perform(
@@ -939,9 +939,9 @@ class TransactionEntryResourceIT {
         assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
         assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
         assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(DEFAULT_WAS_PROPOSED);
         assertThat(testTransactionEntry.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
-        assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(DEFAULT_WAS_DELETED);
+        assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
         assertThat(testTransactionEntry.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
     }
 

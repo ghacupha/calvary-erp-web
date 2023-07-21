@@ -2,7 +2,7 @@ package io.github.calvary.web.rest;
 
 import io.github.calvary.repository.AccountTransactionRepository;
 import io.github.calvary.service.AccountTransactionService;
-import io.github.calvary.service.PostingProcessor;
+import io.github.calvary.erp.PostingProcessor;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;

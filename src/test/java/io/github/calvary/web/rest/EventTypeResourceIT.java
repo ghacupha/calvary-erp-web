@@ -450,8 +450,6 @@ class EventTypeResourceIT {
         EventType partialUpdatedEventType = new EventType();
         partialUpdatedEventType.setId(eventType.getId());
 
-        partialUpdatedEventType.name(UPDATED_NAME);
-
         restEventTypeMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedEventType.getId())
@@ -464,7 +462,7 @@ class EventTypeResourceIT {
         List<EventType> eventTypeList = eventTypeRepository.findAll();
         assertThat(eventTypeList).hasSize(databaseSizeBeforeUpdate);
         EventType testEventType = eventTypeList.get(eventTypeList.size() - 1);
-        assertThat(testEventType.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testEventType.getName()).isEqualTo(DEFAULT_NAME);
     }
 
     @Test
