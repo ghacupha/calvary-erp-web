@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import io.github.calvary.IntegrationTest;
+import io.github.calvary.domain.BalanceSheetItemType;
 import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.domain.TransactionAccount;
 import io.github.calvary.domain.TransactionAccountType;
@@ -607,6 +608,29 @@ class TransactionAccountResourceIT {
         defaultTransactionAccountShouldNotBeFound("transactionCurrencyId.equals=" + (transactionCurrencyId + 1));
     }
 
+    @Test
+    @Transactional
+    void getAllTransactionAccountsByBalanceSheetItemTypeIsEqualToSomething() throws Exception {
+        BalanceSheetItemType balanceSheetItemType;
+        if (TestUtil.findAll(em, BalanceSheetItemType.class).isEmpty()) {
+            transactionAccountRepository.saveAndFlush(transactionAccount);
+            balanceSheetItemType = BalanceSheetItemTypeResourceIT.createEntity(em);
+        } else {
+            balanceSheetItemType = TestUtil.findAll(em, BalanceSheetItemType.class).get(0);
+        }
+        em.persist(balanceSheetItemType);
+        em.flush();
+        transactionAccount.setBalanceSheetItemType(balanceSheetItemType);
+        balanceSheetItemType.setTransactionAccount(transactionAccount);
+        transactionAccountRepository.saveAndFlush(transactionAccount);
+        Long balanceSheetItemTypeId = balanceSheetItemType.getId();
+        // Get all the transactionAccountList where balanceSheetItemType equals to balanceSheetItemTypeId
+        defaultTransactionAccountShouldBeFound("balanceSheetItemTypeId.equals=" + balanceSheetItemTypeId);
+
+        // Get all the transactionAccountList where balanceSheetItemType equals to (balanceSheetItemTypeId + 1)
+        defaultTransactionAccountShouldNotBeFound("balanceSheetItemTypeId.equals=" + (balanceSheetItemTypeId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -792,7 +816,7 @@ class TransactionAccountResourceIT {
         TransactionAccount partialUpdatedTransactionAccount = new TransactionAccount();
         partialUpdatedTransactionAccount.setId(transactionAccount.getId());
 
-        partialUpdatedTransactionAccount.accountName(UPDATED_ACCOUNT_NAME).openingBalance(UPDATED_OPENING_BALANCE);
+        partialUpdatedTransactionAccount.openingBalance(UPDATED_OPENING_BALANCE);
 
         restTransactionAccountMockMvc
             .perform(
@@ -806,7 +830,7 @@ class TransactionAccountResourceIT {
         List<TransactionAccount> transactionAccountList = transactionAccountRepository.findAll();
         assertThat(transactionAccountList).hasSize(databaseSizeBeforeUpdate);
         TransactionAccount testTransactionAccount = transactionAccountList.get(transactionAccountList.size() - 1);
-        assertThat(testTransactionAccount.getAccountName()).isEqualTo(UPDATED_ACCOUNT_NAME);
+        assertThat(testTransactionAccount.getAccountName()).isEqualTo(DEFAULT_ACCOUNT_NAME);
         assertThat(testTransactionAccount.getAccountNumber()).isEqualTo(DEFAULT_ACCOUNT_NUMBER);
         assertThat(testTransactionAccount.getOpeningBalance()).isEqualByComparingTo(UPDATED_OPENING_BALANCE);
     }

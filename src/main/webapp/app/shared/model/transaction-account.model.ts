@@ -1,5 +1,6 @@
 import { ITransactionAccountType } from 'app/shared/model/transaction-account-type.model';
 import { ITransactionCurrency } from 'app/shared/model/transaction-currency.model';
+import { IBalanceSheetItemType } from 'app/shared/model/balance-sheet-item-type.model';
 
 export interface ITransactionAccount {
   id?: number;
@@ -9,6 +10,7 @@ export interface ITransactionAccount {
   parentAccount?: ITransactionAccount | null;
   transactionAccountType?: ITransactionAccountType;
   transactionCurrency?: ITransactionCurrency;
+  balanceSheetItemType?: IBalanceSheetItemType | null;
 }
 
 export const defaultValue: Readonly<ITransactionAccount> = {};

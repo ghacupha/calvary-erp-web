@@ -1,0 +1,46 @@
+{
+  "changelogDate": "20230722195450",
+  "dto": "mapstruct",
+  "entityTableName": "balance_sheet_item_type",
+  "fields": [
+    {
+      "fieldName": "itemSequence",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "itemNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "shortDescription",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "BalanceSheetItemType",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "id": false,
+      "otherEntityField": "accountName",
+      "otherEntityName": "transactionAccount",
+      "otherEntityRelationshipName": "balanceSheetItemType",
+      "ownerSide": true,
+      "relationshipName": "transactionAccount",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "itemNumber",
+      "otherEntityName": "balanceSheetItemType",
+      "relationshipName": "parentItem",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

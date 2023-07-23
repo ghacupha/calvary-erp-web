@@ -16,6 +16,8 @@
         "dealer": "Dealer",
         "transactionAccountType": "Transaction Account Type",
         "transactionCurrency": "Transaction Currency",
+        "balanceSheetItemType": "Balance Sheet Item Type",
+        "balanceSheetItemValue": "Balance Sheet Item Value",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

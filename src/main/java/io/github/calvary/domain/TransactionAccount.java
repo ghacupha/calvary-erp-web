@@ -39,7 +39,10 @@ public class TransactionAccount implements Serializable {
     private BigDecimal openingBalance;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "parentAccount", "transactionAccountType", "transactionCurrency" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "parentAccount", "transactionAccountType", "transactionCurrency", "balanceSheetItemType" },
+        allowSetters = true
+    )
     private TransactionAccount parentAccount;
 
     @ManyToOne(optional = false)
@@ -49,6 +52,11 @@ public class TransactionAccount implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     private TransactionCurrency transactionCurrency;
+
+    @JsonIgnoreProperties(value = { "transactionAccount", "parentItem" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "transactionAccount")
+    @org.springframework.data.annotation.Transient
+    private BalanceSheetItemType balanceSheetItemType;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -140,6 +148,25 @@ public class TransactionAccount implements Serializable {
 
     public TransactionAccount transactionCurrency(TransactionCurrency transactionCurrency) {
         this.setTransactionCurrency(transactionCurrency);
+        return this;
+    }
+
+    public BalanceSheetItemType getBalanceSheetItemType() {
+        return this.balanceSheetItemType;
+    }
+
+    public void setBalanceSheetItemType(BalanceSheetItemType balanceSheetItemType) {
+        if (this.balanceSheetItemType != null) {
+            this.balanceSheetItemType.setTransactionAccount(null);
+        }
+        if (balanceSheetItemType != null) {
+            balanceSheetItemType.setTransactionAccount(this);
+        }
+        this.balanceSheetItemType = balanceSheetItemType;
+    }
+
+    public TransactionAccount balanceSheetItemType(BalanceSheetItemType balanceSheetItemType) {
+        this.setBalanceSheetItemType(balanceSheetItemType);
         return this;
     }
 

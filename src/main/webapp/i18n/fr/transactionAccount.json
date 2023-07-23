@@ -24,7 +24,8 @@
       "openingBalance": "Opening Balance",
       "parentAccount": "Parent Account",
       "transactionAccountType": "Transaction Account Type",
-      "transactionCurrency": "Transaction Currency"
+      "transactionCurrency": "Transaction Currency",
+      "balanceSheetItemType": "Balance Sheet Item Type"
     }
   }
 }

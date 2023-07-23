@@ -58,7 +58,10 @@ public class TransactionEntry implements Serializable {
 
     @ManyToOne(optional = false)
     @NotNull
-    @JsonIgnoreProperties(value = { "parentAccount", "transactionAccountType", "transactionCurrency" }, allowSetters = true)
+    @JsonIgnoreProperties(
+        value = { "parentAccount", "transactionAccountType", "transactionCurrency", "balanceSheetItemType" },
+        allowSetters = true
+    )
     private TransactionAccount transactionAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)

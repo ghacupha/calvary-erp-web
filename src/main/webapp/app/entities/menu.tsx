@@ -34,6 +34,12 @@ const EntitiesMenu = () => {
       <MenuItem icon="asterisk" to="/transaction-currency">
         <Translate contentKey="global.menu.entities.transactionCurrency" />
       </MenuItem>
+      <MenuItem icon="asterisk" to="/balance-sheet-item-type">
+        <Translate contentKey="global.menu.entities.balanceSheetItemType" />
+      </MenuItem>
+      <MenuItem icon="asterisk" to="/balance-sheet-item-value">
+        <Translate contentKey="global.menu.entities.balanceSheetItemValue" />
+      </MenuItem>
       {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
     </>
   );

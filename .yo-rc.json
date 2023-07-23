@@ -26,7 +26,9 @@
       "DealerType",
       "Dealer",
       "TransactionAccountType",
-      "TransactionCurrency"
+      "TransactionCurrency",
+      "BalanceSheetItemType",
+      "BalanceSheetItemValue"
     ],
     "entitySuffix": "",
     "gradleEnterpriseHost": null,
@@ -34,7 +36,7 @@
     "jhipsterVersion": "8.0.0-beta.2",
     "jwtSecretKey": "OTg3MzljNTU4ZjZlODQzOTkwZTViYzk5OTk5MjMxMDdiYWQzOGQyNWMwZmUwYzdlZmNjYzkyNDhlODYzN2EyZTg0NzgzZTMyZGQyMjAxNWViOGYyN2FjNGZkNjJmODNhZTgxNmQ2NmMxMDQ5YzI3NzY3ODE5OTQ3MmNmMTAwOGM=",
     "languages": ["en", "fr"],
-    "lastLiquibaseTimestamp": 1689784854000,
+    "lastLiquibaseTimestamp": 1690095695000,
     "messageBroker": "kafka",
     "microfrontend": false,
     "microfrontends": [],

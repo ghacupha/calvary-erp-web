@@ -922,7 +922,13 @@ class TransactionEntryResourceIT {
         TransactionEntry partialUpdatedTransactionEntry = new TransactionEntry();
         partialUpdatedTransactionEntry.setId(transactionEntry.getId());
 
-        partialUpdatedTransactionEntry.wasDeleted(UPDATED_WAS_DELETED).wasApproved(UPDATED_WAS_APPROVED);
+        partialUpdatedTransactionEntry
+            .entryAmount(UPDATED_ENTRY_AMOUNT)
+            .transactionEntryType(UPDATED_TRANSACTION_ENTRY_TYPE)
+            .description(UPDATED_DESCRIPTION)
+            .wasProposed(UPDATED_WAS_PROPOSED)
+            .wasPosted(UPDATED_WAS_POSTED)
+            .wasDeleted(UPDATED_WAS_DELETED);
 
         restTransactionEntryMockMvc
             .perform(
@@ -936,13 +942,13 @@ class TransactionEntryResourceIT {
         List<TransactionEntry> transactionEntryList = transactionEntryRepository.findAll();
         assertThat(transactionEntryList).hasSize(databaseSizeBeforeUpdate);
         TransactionEntry testTransactionEntry = transactionEntryList.get(transactionEntryList.size() - 1);
-        assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(DEFAULT_ENTRY_AMOUNT);
-        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(DEFAULT_TRANSACTION_ENTRY_TYPE);
-        assertThat(testTransactionEntry.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(DEFAULT_WAS_PROPOSED);
-        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(DEFAULT_WAS_POSTED);
+        assertThat(testTransactionEntry.getEntryAmount()).isEqualByComparingTo(UPDATED_ENTRY_AMOUNT);
+        assertThat(testTransactionEntry.getTransactionEntryType()).isEqualTo(UPDATED_TRANSACTION_ENTRY_TYPE);
+        assertThat(testTransactionEntry.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testTransactionEntry.getWasProposed()).isEqualTo(UPDATED_WAS_PROPOSED);
+        assertThat(testTransactionEntry.getWasPosted()).isEqualTo(UPDATED_WAS_POSTED);
         assertThat(testTransactionEntry.getWasDeleted()).isEqualTo(UPDATED_WAS_DELETED);
-        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(UPDATED_WAS_APPROVED);
+        assertThat(testTransactionEntry.getWasApproved()).isEqualTo(DEFAULT_WAS_APPROVED);
     }
 
     @Test

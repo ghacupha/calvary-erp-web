@@ -8,7 +8,11 @@ import io.github.calvary.repository.search.TransactionAccountSearchRepository;
 import io.github.calvary.service.TransactionAccountService;
 import io.github.calvary.service.dto.TransactionAccountDTO;
 import io.github.calvary.service.mapper.TransactionAccountMapper;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -89,6 +93,20 @@ public class TransactionAccountServiceImpl implements TransactionAccountService 
 
     public Page<TransactionAccountDTO> findAllWithEagerRelationships(Pageable pageable) {
         return transactionAccountRepository.findAllWithEagerRelationships(pageable).map(transactionAccountMapper::toDto);
+    }
+
+    /**
+     *  Get all the transactionAccounts where BalanceSheetItemType is {@code null}.
+     *  @return the list of entities.
+     */
+    @Transactional(readOnly = true)
+    public List<TransactionAccountDTO> findAllWhereBalanceSheetItemTypeIsNull() {
+        log.debug("Request to get all transactionAccounts where BalanceSheetItemType is null");
+        return StreamSupport
+            .stream(transactionAccountRepository.findAll().spliterator(), false)
+            .filter(transactionAccount -> transactionAccount.getBalanceSheetItemType() == null)
+            .map(transactionAccountMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override

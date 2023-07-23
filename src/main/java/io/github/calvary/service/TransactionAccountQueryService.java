@@ -135,6 +135,15 @@ public class TransactionAccountQueryService extends QueryService<TransactionAcco
                         )
                     );
             }
+            if (criteria.getBalanceSheetItemTypeId() != null) {
+                specification =
+                    specification.and(
+                        buildSpecification(
+                            criteria.getBalanceSheetItemTypeId(),
+                            root -> root.join(TransactionAccount_.balanceSheetItemType, JoinType.LEFT).get(BalanceSheetItemType_.id)
+                        )
+                    );
+            }
         }
         return specification;
     }

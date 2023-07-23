@@ -1,6 +1,7 @@
 package io.github.calvary.service;
 
 import io.github.calvary.service.dto.TransactionAccountDTO;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +41,13 @@ public interface TransactionAccountService {
      * @return the list of entities.
      */
     Page<TransactionAccountDTO> findAll(Pageable pageable);
+
+    /**
+     * Get all the TransactionAccountDTO where BalanceSheetItemType is {@code null}.
+     *
+     * @return the {@link List} of entities.
+     */
+    List<TransactionAccountDTO> findAllWhereBalanceSheetItemTypeIsNull();
 
     /**
      * Get all the transactionAccounts with eager load of many-to-many relationships.

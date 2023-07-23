@@ -58,6 +58,8 @@ public class CacheConfiguration {
             createCache(cm, io.github.calvary.domain.Dealer.class.getName());
             createCache(cm, io.github.calvary.domain.TransactionAccountType.class.getName());
             createCache(cm, io.github.calvary.domain.TransactionCurrency.class.getName());
+            createCache(cm, io.github.calvary.domain.BalanceSheetItemType.class.getName());
+            createCache(cm, io.github.calvary.domain.BalanceSheetItemValue.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

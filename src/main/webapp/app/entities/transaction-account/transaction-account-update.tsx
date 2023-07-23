@@ -13,6 +13,8 @@ import { ITransactionAccountType } from 'app/shared/model/transaction-account-ty
 import { getEntities as getTransactionAccountTypes } from 'app/entities/transaction-account-type/transaction-account-type.reducer';
 import { ITransactionCurrency } from 'app/shared/model/transaction-currency.model';
 import { getEntities as getTransactionCurrencies } from 'app/entities/transaction-currency/transaction-currency.reducer';
+import { IBalanceSheetItemType } from 'app/shared/model/balance-sheet-item-type.model';
+import { getEntities as getBalanceSheetItemTypes } from 'app/entities/balance-sheet-item-type/balance-sheet-item-type.reducer';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-account.reducer';
 
@@ -27,6 +29,7 @@ export const TransactionAccountUpdate = () => {
   const transactionAccounts = useAppSelector(state => state.transactionAccount.entities);
   const transactionAccountTypes = useAppSelector(state => state.transactionAccountType.entities);
   const transactionCurrencies = useAppSelector(state => state.transactionCurrency.entities);
+  const balanceSheetItemTypes = useAppSelector(state => state.balanceSheetItemType.entities);
   const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity);
   const loading = useAppSelector(state => state.transactionAccount.loading);
   const updating = useAppSelector(state => state.transactionAccount.updating);
@@ -46,6 +49,7 @@ export const TransactionAccountUpdate = () => {
     dispatch(getTransactionAccounts({}));
     dispatch(getTransactionAccountTypes({}));
     dispatch(getTransactionCurrencies({}));
+    dispatch(getBalanceSheetItemTypes({}));
   }, []);
 
   useEffect(() => {
