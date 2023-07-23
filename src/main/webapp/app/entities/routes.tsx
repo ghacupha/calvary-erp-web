@@ -5,7 +5,6 @@ import ErrorBoundaryRoutes from 'app/shared/error/error-boundary-routes';
 
 import TransactionAccount from './transaction-account';
 import TransactionEntry from './transaction-entry';
-import AccountTransaction from '../erp/account-transaction';
 import EventType from './event-type';
 import AccountingEvent from './accounting-event';
 import DealerType from './dealer-type';
