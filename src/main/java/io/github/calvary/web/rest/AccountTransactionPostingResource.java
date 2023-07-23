@@ -2,7 +2,7 @@ package io.github.calvary.web.rest;
 
 import io.github.calvary.repository.AccountTransactionRepository;
 import io.github.calvary.service.AccountTransactionService;
-import io.github.calvary.erp.PostingProcessor;
+import io.github.calvary.erp.AccountTransactionPostingProcessor;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
@@ -29,9 +29,9 @@ public class AccountTransactionPostingResource {
 
     private final AccountTransactionRepository accountTransactionRepository;
     private final AccountTransactionService accountTransactionService;
-    private final PostingProcessor postingProcessor;
+    private final AccountTransactionPostingProcessor postingProcessor;
 
-    public AccountTransactionPostingResource(AccountTransactionRepository accountTransactionRepository, AccountTransactionService accountTransactionService, PostingProcessor postingProcessor) {
+    public AccountTransactionPostingResource(AccountTransactionRepository accountTransactionRepository, AccountTransactionService accountTransactionService, AccountTransactionPostingProcessor postingProcessor) {
         this.accountTransactionRepository = accountTransactionRepository;
         this.accountTransactionService = accountTransactionService;
         this.postingProcessor = postingProcessor;

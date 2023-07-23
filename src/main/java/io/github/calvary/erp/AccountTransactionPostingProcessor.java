@@ -8,6 +8,7 @@ import io.github.calvary.service.*;
 import io.github.calvary.service.criteria.TransactionEntryCriteria;
 import io.github.calvary.service.dto.AccountTransactionDTO;
 import io.github.calvary.service.dto.TransactionCurrencyDTO;
+import io.github.calvary.service.dto.TransactionEntryDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tech.jhipster.service.filter.LongFilter;
@@ -17,25 +18,27 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @Service
-public class PostingProcessor {
+public class AccountTransactionPostingProcessor implements PostingProcessorService<AccountTransactionDTO> {
 
     private final TransactionAccountService transactionAccountService;
     private final TransactionCurrencyService transactionCurrencyService;
     private final TransactionEntryService transactionEntryService;
     private final TransactionEntryQueryService transactionEntryQueryService;
     private final AccountTransactionService accountTransactionService;
+    private final PostingProcessorService<TransactionEntryDTO> transactionEntryPostingService;
 
     private static final String ENTITY_NAME = "accountTransaction";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public PostingProcessor(TransactionAccountService transactionAccountService, TransactionCurrencyService transactionCurrencyService, TransactionEntryService transactionEntryService, TransactionEntryQueryService transactionEntryQueryService, AccountTransactionService accountTransactionService) {
+    public AccountTransactionPostingProcessor(TransactionAccountService transactionAccountService, TransactionCurrencyService transactionCurrencyService, TransactionEntryService transactionEntryService, TransactionEntryQueryService transactionEntryQueryService, AccountTransactionService accountTransactionService, PostingProcessorService<TransactionEntryDTO> transactionEntryPostingService) {
         this.transactionAccountService = transactionAccountService;
         this.transactionCurrencyService = transactionCurrencyService;
         this.transactionEntryService = transactionEntryService;
         this.transactionEntryQueryService = transactionEntryQueryService;
         this.accountTransactionService = accountTransactionService;
+        this.transactionEntryPostingService = transactionEntryPostingService;
     }
 
     public AccountTransactionDTO post(AccountTransactionDTO accountTransaction) {
@@ -60,6 +63,7 @@ public class PostingProcessor {
         if (transactionBalanced(accountTransaction)) {
             transactionEntryQueryService.findByCriteria(getTransactionEntryCriteria(accountTransaction))
                 .stream()
+                .peek(transactionEntryPostingService::post)
                 .peek(entry -> entry.setWasPosted(Boolean.TRUE))
                 .forEach(transactionEntryService::save);
             accountTransaction.setWasPosted(Boolean.TRUE);

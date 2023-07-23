@@ -107,3 +107,7 @@ management:
   health:
     mail:
       enabled: false
+
+queue:
+  transaction-entry:
+    topic: 'transaction-entry-topic'
