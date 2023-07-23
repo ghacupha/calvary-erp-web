@@ -17,7 +17,7 @@ import java.util.Map;
 @ConfigurationProperties(prefix = "spring.kafka.producer")
 public class TransactionEntryProducerConfig {
 
-    @Value("${kafka.bootstrap-servers}")
+    @Value("${queue.kafka.bootstrap-servers}")
     private String bootstrapServers;
 
     // Set Kafka producer properties

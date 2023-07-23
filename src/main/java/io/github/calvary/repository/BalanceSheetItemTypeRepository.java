@@ -3,6 +3,9 @@ package io.github.calvary.repository;
 import io.github.calvary.domain.BalanceSheetItemType;
 import java.util.List;
 import java.util.Optional;
+
+import io.github.calvary.domain.TransactionAccount;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
@@ -42,4 +45,6 @@ public interface BalanceSheetItemTypeRepository
         "select balanceSheetItemType from BalanceSheetItemType balanceSheetItemType left join fetch balanceSheetItemType.transactionAccount left join fetch balanceSheetItemType.parentItem where balanceSheetItemType.id =:id"
     )
     Optional<BalanceSheetItemType> findOneWithToOneRelationships(@Param("id") Long id);
+
+    Optional<BalanceSheetItemType> findBalanceSheetItemTypeByTransactionAccountEquals(@NotNull TransactionAccount transactionAccount);
 }
