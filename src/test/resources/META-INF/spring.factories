@@ -1,4 +1,0 @@
-org.springframework.test.context.ContextCustomizerFactory = io.github.calvary.\
-    config.TestContainersSpringContextCustomizerFactory,io.github.calvary.\
-    config.SqlTestContainersSpringContextCustomizerFactory,io.github.calvary.\
-    config.KafkaTestContainersSpringContextCustomizerFactory

@@ -1,0 +1,33 @@
+{
+  "calvaryErpApp": {
+    "transactionEntry": {
+      "home": {
+        "title": "Transaction Entries",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Δημιουργήστε ένα νέο Transaction Entry",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Transaction Entry",
+        "search": "Αναζήτηση για Transaction Entry",
+        "notFound": "No Transaction Entries found"
+      },
+      "created": "Ένα νέο Transaction Entry έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Transaction Entry έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Transaction Entry έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Transaction Entry {{ id }};"
+      },
+      "detail": {
+        "title": "Transaction Entry"
+      },
+      "id": "ID",
+      "entryAmount": "Entry Amount",
+      "transactionEntryType": "Transaction Entry Type",
+      "description": "Description",
+      "wasProposed": "Was Proposed",
+      "wasPosted": "Was Posted",
+      "wasDeleted": "Was Deleted",
+      "wasApproved": "Was Approved",
+      "transactionAccount": "Transaction Account",
+      "accountTransaction": "Account Transaction"
+    }
+  }
+}

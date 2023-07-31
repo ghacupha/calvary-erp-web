@@ -1,0 +1,27 @@
+{
+  "calvaryErpApp": {
+    "accountingEvent": {
+      "home": {
+        "title": "Accounting Events",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Δημιουργήστε ένα νέο Accounting Event",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Accounting Event",
+        "search": "Αναζήτηση για Accounting Event",
+        "notFound": "No Accounting Events found"
+      },
+      "created": "Ένα νέο Accounting Event έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Accounting Event έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Accounting Event έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Accounting Event {{ id }};"
+      },
+      "detail": {
+        "title": "Accounting Event"
+      },
+      "id": "ID",
+      "eventDate": "Event Date",
+      "eventType": "Event Type",
+      "dealer": "Dealer"
+    }
+  }
+}

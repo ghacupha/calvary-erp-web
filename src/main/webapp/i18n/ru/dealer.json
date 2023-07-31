@@ -1,0 +1,26 @@
+{
+  "calvaryErpApp": {
+    "dealer": {
+      "home": {
+        "title": "Dealers",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Dealer",
+        "createOrEditLabel": "Создать или отредактировать Dealer",
+        "search": "Найти Dealer",
+        "notFound": "Dealers не найдено"
+      },
+      "created": "Новый Dealer создан с идентификатором {{ param }}",
+      "updated": "Dealer обновлен с идентификатором {{ param }}",
+      "deleted": "Dealer удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Dealer {{ id }}?"
+      },
+      "detail": {
+        "title": "Dealer"
+      },
+      "id": "ID",
+      "name": "Name",
+      "dealerType": "Dealer Type"
+    }
+  }
+}

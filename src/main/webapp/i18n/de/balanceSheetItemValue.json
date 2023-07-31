@@ -1,0 +1,28 @@
+{
+  "calvaryErpApp": {
+    "balanceSheetItemValue": {
+      "home": {
+        "title": "Balance Sheet Item Values",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Balance Sheet Item Value erstellen",
+        "createOrEditLabel": "Balance Sheet Item Value erstellen oder bearbeiten",
+        "search": "Suche nach Balance Sheet Item Value",
+        "notFound": "Keine Balance Sheet Item Values gefunden"
+      },
+      "created": "Balance Sheet Item Value erstellt mit ID {{ param }}",
+      "updated": "Balance Sheet Item Value aktualisiert mit ID {{ param }}",
+      "deleted": "Balance Sheet Item Value gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Balance Sheet Item Value {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Balance Sheet Item Value"
+      },
+      "id": "ID",
+      "shortDescription": "Short Description",
+      "effectiveDate": "Effective Date",
+      "itemAmount": "Item Amount",
+      "itemType": "Item Type"
+    }
+  }
+}

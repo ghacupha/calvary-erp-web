@@ -1,0 +1,31 @@
+{
+  "calvaryErpApp": {
+    "transactionAccount": {
+      "home": {
+        "title": "Transaction Accounts",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Transaction Account erstellen",
+        "createOrEditLabel": "Transaction Account erstellen oder bearbeiten",
+        "search": "Suche nach Transaction Account",
+        "notFound": "Keine Transaction Accounts gefunden"
+      },
+      "created": "Transaction Account erstellt mit ID {{ param }}",
+      "updated": "Transaction Account aktualisiert mit ID {{ param }}",
+      "deleted": "Transaction Account gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Transaction Account {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Transaction Account"
+      },
+      "id": "ID",
+      "accountName": "Account Name",
+      "accountNumber": "Account Number",
+      "openingBalance": "Opening Balance",
+      "parentAccount": "Parent Account",
+      "transactionAccountType": "Transaction Account Type",
+      "transactionCurrency": "Transaction Currency",
+      "balanceSheetItemType": "Balance Sheet Item Type"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "calvaryErpApp": {
+    "accountTransaction": {
+      "home": {
+        "title": "Account Transactions",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Δημιουργήστε ένα νέο Account Transaction",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Account Transaction",
+        "search": "Αναζήτηση για Account Transaction",
+        "notFound": "No Account Transactions found"
+      },
+      "created": "Ένα νέο Account Transaction έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Account Transaction έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Account Transaction έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Account Transaction {{ id }};"
+      },
+      "detail": {
+        "title": "Account Transaction"
+      },
+      "id": "ID",
+      "transactionDate": "Transaction Date",
+      "description": "Description",
+      "referenceNumber": "Reference Number",
+      "wasProposed": "Was Proposed",
+      "wasPosted": "Was Posted",
+      "wasDeleted": "Was Deleted",
+      "wasApproved": "Was Approved",
+      "transactionEntry": "Transaction Entry"
+    }
+  }
+}

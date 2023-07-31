@@ -1,0 +1,25 @@
+{
+  "calvaryErpApp": {
+    "eventType": {
+      "home": {
+        "title": "Event Types",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Event Type",
+        "createOrEditLabel": "Crear o editar Event Type",
+        "search": "Buscar Event Type",
+        "notFound": "Ningún Event Types encontrado"
+      },
+      "created": "Un nuevo Event Type ha sido creado con el identificador {{ param }}",
+      "updated": "Un Event Type ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Event Type ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Event Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Event Type"
+      },
+      "id": "ID",
+      "name": "Name"
+    }
+  }
+}

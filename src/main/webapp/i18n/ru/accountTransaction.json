@@ -1,0 +1,32 @@
+{
+  "calvaryErpApp": {
+    "accountTransaction": {
+      "home": {
+        "title": "Account Transactions",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Account Transaction",
+        "createOrEditLabel": "Создать или отредактировать Account Transaction",
+        "search": "Найти Account Transaction",
+        "notFound": "Account Transactions не найдено"
+      },
+      "created": "Новый Account Transaction создан с идентификатором {{ param }}",
+      "updated": "Account Transaction обновлен с идентификатором {{ param }}",
+      "deleted": "Account Transaction удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Account Transaction {{ id }}?"
+      },
+      "detail": {
+        "title": "Account Transaction"
+      },
+      "id": "ID",
+      "transactionDate": "Transaction Date",
+      "description": "Description",
+      "referenceNumber": "Reference Number",
+      "wasProposed": "Was Proposed",
+      "wasPosted": "Was Posted",
+      "wasDeleted": "Was Deleted",
+      "wasApproved": "Was Approved",
+      "transactionEntry": "Transaction Entry"
+    }
+  }
+}

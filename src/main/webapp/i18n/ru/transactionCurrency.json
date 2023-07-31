@@ -1,0 +1,26 @@
+{
+  "calvaryErpApp": {
+    "transactionCurrency": {
+      "home": {
+        "title": "Transaction Currencies",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Transaction Currency",
+        "createOrEditLabel": "Создать или отредактировать Transaction Currency",
+        "search": "Найти Transaction Currency",
+        "notFound": "Transaction Currencies не найдено"
+      },
+      "created": "Новый Transaction Currency создан с идентификатором {{ param }}",
+      "updated": "Transaction Currency обновлен с идентификатором {{ param }}",
+      "deleted": "Transaction Currency удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Transaction Currency {{ id }}?"
+      },
+      "detail": {
+        "title": "Transaction Currency"
+      },
+      "id": "ID",
+      "name": "Name",
+      "code": "Code"
+    }
+  }
+}

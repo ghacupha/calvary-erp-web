@@ -1,0 +1,25 @@
+{
+  "calvaryErpApp": {
+    "transactionAccountType": {
+      "home": {
+        "title": "TransactionAccountTypes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Genera un nuovo Transaction Account Type",
+        "createOrEditLabel": "Genera o modifica un Transaction Account Type",
+        "search": "Cerca Transaction Account Type",
+        "notFound": "No Transaction Account Types found"
+      },
+      "created": "&Egrave; stato generato un nuovo Transaction Account Type con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Transaction Account Type identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Transaction Account Type con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Transaction Account Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Transaction Account Type"
+      },
+      "id": "ID",
+      "name": "Name"
+    }
+  }
+}

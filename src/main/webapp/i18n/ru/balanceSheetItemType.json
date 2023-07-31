@@ -1,0 +1,29 @@
+{
+  "calvaryErpApp": {
+    "balanceSheetItemType": {
+      "home": {
+        "title": "Balance Sheet Item Types",
+        "refreshListLabel": "Обновить список",
+        "createLabel": "Создать новый Balance Sheet Item Type",
+        "createOrEditLabel": "Создать или отредактировать Balance Sheet Item Type",
+        "search": "Найти Balance Sheet Item Type",
+        "notFound": "Balance Sheet Item Types не найдено"
+      },
+      "created": "Новый Balance Sheet Item Type создан с идентификатором {{ param }}",
+      "updated": "Balance Sheet Item Type обновлен с идентификатором {{ param }}",
+      "deleted": "Balance Sheet Item Type удален с идентификатором {{ param }}",
+      "delete": {
+        "question": "Вы уверены что хотите удалить Balance Sheet Item Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Balance Sheet Item Type"
+      },
+      "id": "ID",
+      "itemSequence": "Item Sequence",
+      "itemNumber": "Item Number",
+      "shortDescription": "Short Description",
+      "transactionAccount": "Transaction Account",
+      "parentItem": "Parent Item"
+    }
+  }
+}

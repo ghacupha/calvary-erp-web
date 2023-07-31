@@ -1,0 +1,26 @@
+{
+  "calvaryErpApp": {
+    "dealer": {
+      "home": {
+        "title": "Dealers",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Δημιουργήστε ένα νέο Dealer",
+        "createOrEditLabel": "Δημιουργήστε η επεξεργαστείτε ένα Dealer",
+        "search": "Αναζήτηση για Dealer",
+        "notFound": "No Dealers found"
+      },
+      "created": "Ένα νέο Dealer έχει δημιουργηθεί με αναγνωριστικό {{ param }}",
+      "updated": "Ένα Dealer έχει ενημερωθεί με αναγνωριστικό {{ param }}",
+      "deleted": "Ένα Dealer έχει διαγραφτεί με αναγνωριστικό {{ param }}",
+      "delete": {
+        "question": "Είστε βέβαιοι όταν θέλετε να διαγράψετε το ακόλουθο Dealer {{ id }};"
+      },
+      "detail": {
+        "title": "Dealer"
+      },
+      "id": "ID",
+      "name": "Name",
+      "dealerType": "Dealer Type"
+    }
+  }
+}

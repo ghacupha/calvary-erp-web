@@ -1,0 +1,33 @@
+{
+  "calvaryErpApp": {
+    "transactionEntry": {
+      "home": {
+        "title": "Transaction Entries",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Transaction Entry",
+        "createOrEditLabel": "Crear o editar Transaction Entry",
+        "search": "Buscar Transaction Entry",
+        "notFound": "Ningún Transaction Entries encontrado"
+      },
+      "created": "Un nuevo Transaction Entry ha sido creado con el identificador {{ param }}",
+      "updated": "Un Transaction Entry ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Transaction Entry ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Transaction Entry {{ id }}?"
+      },
+      "detail": {
+        "title": "Transaction Entry"
+      },
+      "id": "ID",
+      "entryAmount": "Entry Amount",
+      "transactionEntryType": "Transaction Entry Type",
+      "description": "Description",
+      "wasProposed": "Was Proposed",
+      "wasPosted": "Was Posted",
+      "wasDeleted": "Was Deleted",
+      "wasApproved": "Was Approved",
+      "transactionAccount": "Transaction Account",
+      "accountTransaction": "Account Transaction"
+    }
+  }
+}
