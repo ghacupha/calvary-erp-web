@@ -56,7 +56,7 @@ export const AccountTransactionDeleteDialog = () => {
           <Translate contentKey="entity.action.cancel">Cancel</Translate>
         </Button>
         <Button id="jhi-confirm-delete-accountTransaction" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmPosting}>
-          <FontAwesomeIcon icon="warning" />
+          <FontAwesomeIcon icon="signs-post" />
           &nbsp;
           <Translate contentKey="entity.action.post">Posting</Translate>
         </Button>

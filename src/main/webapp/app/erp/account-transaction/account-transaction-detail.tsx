@@ -97,7 +97,7 @@ export const AccountTransactionDetail = () => {
           </span>
         </Button>
         <Button tag={Link} to={`/account-transaction/${accountTransactionEntity.id}/post`}replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
+          <FontAwesomeIcon icon="signs-post" />{' '}
           <span className="d-none d-md-inline">
             <Translate contentKey="entity.action.post">Post</Translate>
           </span>

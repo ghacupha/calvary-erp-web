@@ -279,7 +279,7 @@ export const AccountTransaction = () => {
                       size="sm"
                       data-cy="entityDeleteButton"
                     >
-                      <FontAwesomeIcon icon="receipt" />{' '}
+                      <FontAwesomeIcon icon="signs-post" />{' '}
                       <span className="d-none d-md-inline">
                           <Translate contentKey="entity.action.post">Posting</Translate>
                         </span>
