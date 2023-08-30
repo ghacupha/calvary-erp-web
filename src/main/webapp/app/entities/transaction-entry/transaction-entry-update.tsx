@@ -15,6 +15,7 @@ import { getEntities as getAccountTransactions } from 'app/entities/account-tran
 import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';
+import AutocompleteSearch from 'app/erp/auto-complete-search';
 
 export const TransactionEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -31,6 +32,11 @@ export const TransactionEntryUpdate = () => {
   const updating = useAppSelector(state => state.transactionEntry.updating);
   const updateSuccess = useAppSelector(state => state.transactionEntry.updateSuccess);
   const transactionEntryTypesValues = Object.keys(TransactionEntryTypes);
+  const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
+
+  const handleAccountSelect = (account: ITransactionAccount) => {
+    setSelectedAccount(account);
+  };
 
   const handleClose = () => {
     navigate('/transaction-entry' + location.search);
@@ -162,7 +168,7 @@ export const TransactionEntryUpdate = () => {
                 check
                 type="checkbox"
               />
-              <ValidatedField
+              {/*<ValidatedField
                 id="transaction-entry-transactionAccount"
                 name="transactionAccount"
                 data-cy="transactionAccount"
@@ -178,10 +184,12 @@ export const TransactionEntryUpdate = () => {
                       </option>
                     ))
                   : null}
-              </ValidatedField>
-              <FormText>
-                <Translate contentKey="entity.validation.required">This field is required.</Translate>
-              </FormText>
+              </ValidatedField>*/}
+              <AutocompleteSearch
+                entity="transaction-accounts"
+                selectedAccount={selectedAccount}
+                onSelectAccount={handleAccountSelect} />
+
               <ValidatedField
                 id="transaction-entry-accountTransaction"
                 name="accountTransaction"
