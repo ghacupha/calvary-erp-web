@@ -34,8 +34,10 @@ export const TransactionEntryUpdate = () => {
   const transactionEntryTypesValues = Object.keys(TransactionEntryTypes);
   const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
 
-  const handleAccountSelect = (account: ITransactionAccount) => {
-    setSelectedAccount(account);
+  const handleAccountSelect = (account: ITransactionAccount | null) => {
+    if (account) {
+      setSelectedAccount(account);
+    }
   };
 
   const handleClose = () => {
@@ -188,7 +190,8 @@ export const TransactionEntryUpdate = () => {
               <AutocompleteSearch
                 entity="transaction-accounts"
                 selectedAccount={selectedAccount}
-                onSelectAccount={handleAccountSelect} />
+                onSelectAccount={handleAccountSelect}
+                />
 
               <ValidatedField
                 id="transaction-entry-accountTransaction"
