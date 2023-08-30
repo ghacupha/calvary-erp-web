@@ -62,11 +62,14 @@ export const TransactionEntryUpdate = () => {
   }, [updateSuccess]);
 
   const saveEntity = values => {
+    const findTransactionAccountById = id => transactionAccounts.find(it => it.id === id);
+    const findAccountTransactionById = id => accountTransactions.find(it => it.id === id);
+
     const entity = {
       ...transactionEntryEntity,
       ...values,
-      transactionAccount: transactionAccounts.find(it => it.id.toString() === values.transactionAccount.toString()),
-      accountTransaction: accountTransactions.find(it => it.id.toString() === values.accountTransaction.toString()),
+      transactionAccount: findTransactionAccountById(values.transactionAccount),
+      accountTransaction: findAccountTransactionById(values.accountTransaction),
     };
 
     if (isNew) {
@@ -75,6 +78,7 @@ export const TransactionEntryUpdate = () => {
       dispatch(updateEntity(entity));
     }
   };
+
 
   const defaultValues = () =>
     isNew
@@ -170,25 +174,7 @@ export const TransactionEntryUpdate = () => {
                 check
                 type="checkbox"
               />
-              {/*<ValidatedField
-                id="transaction-entry-transactionAccount"
-                name="transactionAccount"
-                data-cy="transactionAccount"
-                label={translate('calvaryErpApp.transactionEntry.transactionAccount')}
-                type="select"
-                required
-              >
-                <option value="" key="0" />
-                {transactionAccounts
-                  ? transactionAccounts.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.accountName}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>*/}
               <AutocompleteSearch
-                entity="transaction-accounts"
                 selectedAccount={selectedAccount}
                 onSelectAccount={handleAccountSelect}
                 />
