@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { translate } from 'react-jhipster';
+import { getEntity } from 'app/entities/transaction-account/transaction-account.reducer';
+import { useDispatch } from 'react-redux';
+import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 const apiSearchUrl = 'api/_search/transaction-accounts';
+const apIUrl = `api/transaction-accounts`;
 
 interface AutocompleteSearchProps {
   selectedAccount: ITransactionAccount | null;
@@ -13,6 +17,7 @@ interface AutocompleteSearchProps {
 
 const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ selectedAccount, onSelectAccount }) => {
   const [selectedOption, setSelectedOption] = useState<ITransactionAccount | null>(null);
+  const dispatch = useAppDispatch();
 
   const loadOptions = async (inputValue: string) => {
     const requestUrl = `${apiSearchUrl}?query=${inputValue}`;
@@ -28,23 +33,25 @@ const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ selectedAccount
     }
   };
 
-  const handleOptionSelect = (option: { value: ITransactionAccount; label: string }) => {
-    setSelectedOption(option.value);
-    if (option.value) {
-      onSelectAccount(option.value);
-      selectedAccount = selectedOption;
+  useEffect(() => {
+    if (selectedOption) {
+      dispatch(getEntity(selectedOption.id));
     }
-  };
+  }, [selectedOption]);
 
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
-      border: state.isFocused ? '2px solid #3498db' : '2px solid #ced4da', // Example border style
-      boxShadow: state.isFocused ? '0 0 3px rgba(52, 152, 219, 0.5)' : 'none', // Example box shadow
+      border: state.isFocused ? '2px solid #3498db' : '2px solid #ced4da',
+      boxShadow: state.isFocused ? '0 0 3px rgba(52, 152, 219, 0.5)' : 'none',
       '&:hover': {
-        border: '2px solid #3498db',
-      },
-    }),
+        border: '2px solid #3498db'
+      }
+    })
+  };
+
+  const handleOptionSelect = (option: { value: ITransactionAccount; label: string }) => {
+    setSelectedOption(option.value); // Set the selected option in the state
   };
 
   return (
@@ -55,8 +62,8 @@ const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ selectedAccount
       placeholder={translate('calvaryErp.transactionEntry.transactionAccountPlaceholder')}
       styles={customStyles}
     />
-
   );
 };
 
 export default AutocompleteSearch;
+
