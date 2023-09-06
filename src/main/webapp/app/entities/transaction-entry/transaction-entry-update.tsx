@@ -34,9 +34,11 @@ export const TransactionEntryUpdate = () => {
   const transactionEntryTypesValues = Object.keys(TransactionEntryTypes);
   const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
 
+  const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity); // picking selected entity from store
+
   const handleAccountSelect = (account: ITransactionAccount | null) => {
     if (account) {
-      setSelectedAccount(account);
+      setSelectedAccount(account); // setting selectedAccount to view on the form
     }
   };
 
@@ -68,7 +70,7 @@ export const TransactionEntryUpdate = () => {
     const entity = {
       ...transactionEntryEntity,
       ...values,
-      transactionAccount: findTransactionAccountById(values.transactionAccount),
+      transactionAccount: transactionAccountEntity, // use account selected from the store to persist
       accountTransaction: findAccountTransactionById(values.accountTransaction),
     };
 
@@ -175,8 +177,7 @@ export const TransactionEntryUpdate = () => {
                 type="checkbox"
               />
               <AutocompleteSearch
-                /* selectedAccount={selectedAccount} */
-                onSelectAccount={handleAccountSelect}
+                onSelectAccount={handleAccountSelect} // callback for entity selection
                 />
 
               <ValidatedField

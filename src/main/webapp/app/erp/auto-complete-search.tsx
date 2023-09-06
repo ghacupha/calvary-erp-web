@@ -4,14 +4,11 @@ import axios from 'axios';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { translate } from 'react-jhipster';
 import { getEntity } from 'app/entities/transaction-account/transaction-account.reducer';
-import { useDispatch } from 'react-redux';
-import { useAppDispatch, useAppSelector } from 'app/config/store';
+import { useAppDispatch } from 'app/config/store';
 
 const apiSearchUrl = 'api/_search/transaction-accounts';
-const apIUrl = `api/transaction-accounts`;
 
 interface AutocompleteSearchProps {
-  // selectedAccount: ITransactionAccount | null;
   onSelectAccount: (account: ITransactionAccount) => void;
 }
 
@@ -47,14 +44,14 @@ const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ onSelectAccount
   const handleOptionSelect = (option: { value: ITransactionAccount; label: string }) => {
     setSelectedAccount(option.value);
 
-    dispatch(getEntity(selectedAccount.id));
+    onSelectAccount(selectedAccount);
   };
 
-  // useEffect(() => {
-  //   if (selectedAccount) {
-  //     dispatch(getEntity(selectedAccount.id));
-  //   }
-  // }, [selectedAccount]);
+  useEffect(() => {
+    if (selectedAccount) {
+      dispatch(getEntity(selectedAccount.id));
+    }
+  }, [selectedAccount]);
 
   return (
     <AsyncSelect
