@@ -15,7 +15,7 @@ import { getEntities as getAccountTransactions } from 'app/entities/account-tran
 import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';
-import AutocompleteSearch from 'app/erp/auto-complete-search';
+import AutocompleteSearchTransactionAccount from 'app/erp/auto-complete-search-transaction-account';
 
 export const TransactionEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -176,7 +176,7 @@ export const TransactionEntryUpdate = () => {
                 check
                 type="checkbox"
               />
-              <AutocompleteSearch
+              <AutocompleteSearchTransactionAccount
                 onSelectAccount={handleAccountSelect} // callback for entity selection
                 />
 

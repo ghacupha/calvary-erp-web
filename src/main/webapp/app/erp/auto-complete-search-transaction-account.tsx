@@ -8,11 +8,11 @@ import { useAppDispatch } from 'app/config/store';
 
 const apiSearchUrl = 'api/_search/transaction-accounts';
 
-interface AutocompleteSearchProps {
+interface AutocompleteSearchTransactionAccountProps {
   onSelectAccount: (account: ITransactionAccount) => void;
 }
 
-const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ onSelectAccount }) => {
+const AutocompleteSearchTransactionAccount: React.FC<AutocompleteSearchTransactionAccountProps> = ({ onSelectAccount }) => {
   const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
   const dispatch = useAppDispatch();
 
@@ -64,5 +64,5 @@ const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ onSelectAccount
   );
 };
 
-export default AutocompleteSearch;
+export default AutocompleteSearchTransactionAccount;
 
