@@ -84,7 +84,7 @@ export const TransactionEntryUpdate = () => {
     isNew
       ? {}
       : {
-          transactionEntryType: 'DEBIT',
+          transactionEntryType: 'CREDIT',
           ...transactionEntryEntity,
           transactionAccount: transactionEntryEntity?.transactionAccount?.id,
           accountTransaction: transactionEntryEntity?.accountTransaction?.id,
@@ -175,7 +175,7 @@ export const TransactionEntryUpdate = () => {
                 type="checkbox"
               />
               <AutocompleteSearch
-                selectedAccount={selectedAccount}
+                /* selectedAccount={selectedAccount} */
                 onSelectAccount={handleAccountSelect}
                 />
 

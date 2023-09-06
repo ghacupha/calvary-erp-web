@@ -11,12 +11,12 @@ const apiSearchUrl = 'api/_search/transaction-accounts';
 const apIUrl = `api/transaction-accounts`;
 
 interface AutocompleteSearchProps {
-  selectedAccount: ITransactionAccount | null;
+  // selectedAccount: ITransactionAccount | null;
   onSelectAccount: (account: ITransactionAccount) => void;
 }
 
-const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ selectedAccount, onSelectAccount }) => {
-  const [selectedOption, setSelectedOption] = useState<ITransactionAccount | null>(null);
+const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ onSelectAccount }) => {
+  const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
   const dispatch = useAppDispatch();
 
   const loadOptions = async (inputValue: string) => {
@@ -33,12 +33,6 @@ const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ selectedAccount
     }
   };
 
-  useEffect(() => {
-    if (selectedOption) {
-      dispatch(getEntity(selectedOption.id));
-    }
-  }, [selectedOption]);
-
   const customStyles = {
     control: (provided, state) => ({
       ...provided,
@@ -51,14 +45,22 @@ const AutocompleteSearch: React.FC<AutocompleteSearchProps> = ({ selectedAccount
   };
 
   const handleOptionSelect = (option: { value: ITransactionAccount; label: string }) => {
-    setSelectedOption(option.value); // Set the selected option in the state
+    setSelectedAccount(option.value);
+
+    dispatch(getEntity(selectedAccount.id));
   };
+
+  // useEffect(() => {
+  //   if (selectedAccount) {
+  //     dispatch(getEntity(selectedAccount.id));
+  //   }
+  // }, [selectedAccount]);
 
   return (
     <AsyncSelect
-      value={selectedOption ? { value: selectedOption, label: selectedOption.accountName } : null}
+      value={selectedAccount ? { value: selectedAccount, label: selectedAccount.accountName } : null}
       onChange={handleOptionSelect}
-      loadOptions={loadOptions} // This is a function to load options asynchronously
+      loadOptions={loadOptions}
       placeholder={translate('calvaryErp.transactionEntry.transactionAccountPlaceholder')}
       styles={customStyles}
     />
