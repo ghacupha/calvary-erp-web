@@ -54,13 +54,16 @@ const AutocompleteSearchTransactionAccount: React.FC<AutocompleteSearchTransacti
   }, [selectedAccount]);
 
   return (
-    <AsyncSelect
-      value={selectedAccount ? { value: selectedAccount, label: selectedAccount.accountName } : null}
-      onChange={handleOptionSelect}
-      loadOptions={loadOptions}
-      placeholder={translate('calvaryErp.transactionEntry.transactionAccountPlaceholder')}
-      styles={customStyles}
-    />
+    <div>
+      <div> Account </div>
+      <AsyncSelect
+        value={selectedAccount ? { value: selectedAccount, label: selectedAccount.accountName } : null}
+        onChange={handleOptionSelect}
+        loadOptions={loadOptions}
+        placeholder={translate('calvaryErp.transactionEntry.transactionAccountPlaceholder')}
+        styles={customStyles}
+      />
+    </div>
   );
 };
 

@@ -16,6 +16,7 @@ import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';
 import AutocompleteSearchTransactionAccount from 'app/erp/auto-complete-search-transaction-account';
+import SearchAccountTransaction from 'app/erp/auto-complete/search-account-transaction';
 
 export const TransactionEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -33,12 +34,20 @@ export const TransactionEntryUpdate = () => {
   const updateSuccess = useAppSelector(state => state.transactionEntry.updateSuccess);
   const transactionEntryTypesValues = Object.keys(TransactionEntryTypes);
   const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<IAccountTransaction | null>(null);
 
   const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity); // picking selected entity from store
+  const accountTransactionEntity = useAppSelector(state => state.accountTransaction.entity); // picking selected entity from store
 
   const handleAccountSelect = (account: ITransactionAccount | null) => {
     if (account) {
       setSelectedAccount(account); // setting selectedAccount to view on the form
+    }
+  };
+
+  const handleTransactionSelect = (transaction: IAccountTransaction | null) => {
+    if (transaction) {
+      setSelectedTransaction(transaction);
     }
   };
 
@@ -64,14 +73,11 @@ export const TransactionEntryUpdate = () => {
   }, [updateSuccess]);
 
   const saveEntity = values => {
-    const findTransactionAccountById = id => transactionAccounts.find(it => it.id === id);
-    const findAccountTransactionById = id => accountTransactions.find(it => it.id === id);
-
     const entity = {
       ...transactionEntryEntity,
       ...values,
       transactionAccount: transactionAccountEntity, // use account selected from the store to persist
-      accountTransaction: findAccountTransactionById(values.accountTransaction),
+      accountTransaction: accountTransactionEntity,
     };
 
     if (isNew) {
@@ -177,25 +183,12 @@ export const TransactionEntryUpdate = () => {
                 type="checkbox"
               />
               <AutocompleteSearchTransactionAccount
-                onSelectAccount={handleAccountSelect} // callback for entity selection
+                onSelectAccount={handleAccountSelect}
                 />
 
-              <ValidatedField
-                id="transaction-entry-accountTransaction"
-                name="accountTransaction"
-                data-cy="accountTransaction"
-                label={translate('calvaryErpApp.transactionEntry.accountTransaction')}
-                type="select"
-              >
-                <option value="" key="0" />
-                {accountTransactions
-                  ? accountTransactions.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.referenceNumber}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+              <SearchAccountTransaction
+                onSelectTransaction={handleTransactionSelect}
+              />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-entry" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

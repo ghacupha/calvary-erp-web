@@ -52,6 +52,7 @@
       "id": "ID",
       "entryAmount": "Entry Amount",
       "transactionAccountPlaceholder": "Enter Transaction Account",
+      "accountTransactionPlaceholder": "Enter Transaction Reference",
       "transactionEntryType": "Transaction Entry Type",
       "description": "Description",
       "wasProposed": "Was Proposed",
