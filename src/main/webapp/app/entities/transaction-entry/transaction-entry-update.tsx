@@ -36,7 +36,8 @@ export const TransactionEntryUpdate = () => {
   const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
   const [selectedTransaction, setSelectedTransaction] = useState<IAccountTransaction | null>(null);
 
-  const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity); // picking selected entity from store
+  const selectedTransactionAccountEntity = useAppSelector(state => state.selectedTransactionAccount.selected);
+  // const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity); // picking selected entity from store
   const accountTransactionEntity = useAppSelector(state => state.accountTransaction.entity); // picking selected entity from store
 
   const handleAccountSelect = (account: ITransactionAccount | null) => {
@@ -76,7 +77,7 @@ export const TransactionEntryUpdate = () => {
     const entity = {
       ...transactionEntryEntity,
       ...values,
-      transactionAccount: transactionAccountEntity, // use account selected from the store to persist
+      transactionAccount: selectedTransactionAccountEntity, // use account selected from the store to persist
       accountTransaction: accountTransactionEntity,
     };
 

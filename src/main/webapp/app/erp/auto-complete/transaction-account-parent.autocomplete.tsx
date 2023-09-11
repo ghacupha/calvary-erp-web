@@ -5,14 +5,15 @@ import { ITransactionAccount } from 'app/shared/model/transaction-account.model'
 import { translate } from 'react-jhipster';
 import { getEntity } from 'app/entities/transaction-account/transaction-account.reducer';
 import { useAppDispatch } from 'app/config/store';
+import { getTransactionAccountEntity } from 'app/erp/auto-complete/search-account-transaction.reducer';
 
 const apiSearchUrl = 'api/_search/transaction-accounts';
 
-interface AutocompleteSearchTransactionAccountProps {
+interface AutoCompleteParentTransactionAccountProps {
   onSelectAccount: (account: ITransactionAccount) => void;
 }
 
-const AutocompleteSearchTransactionAccount: React.FC<AutocompleteSearchTransactionAccountProps> = ({ onSelectAccount }) => {
+const AutoCompleteParentTransactionAccount: React.FC<AutoCompleteParentTransactionAccountProps> = ({ onSelectAccount }) => {
   const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
   const dispatch = useAppDispatch();
 
@@ -49,7 +50,7 @@ const AutocompleteSearchTransactionAccount: React.FC<AutocompleteSearchTransacti
 
   useEffect(() => {
     if (selectedAccount) {
-      dispatch(getEntity(selectedAccount.id));
+      dispatch(getTransactionAccountEntity(selectedAccount.id));
     }
   }, [selectedAccount]);
 
@@ -67,5 +68,5 @@ const AutocompleteSearchTransactionAccount: React.FC<AutocompleteSearchTransacti
   );
 };
 
-export default AutocompleteSearchTransactionAccount;
+export default AutocompleParentTransactionAccount;
 

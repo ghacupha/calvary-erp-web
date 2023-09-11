@@ -14,6 +14,7 @@ import settings from 'app/modules/account/settings/settings.reducer';
 import passwordReset from 'app/modules/account/password-reset/password-reset.reducer';
 import entitiesReducers from 'app/entities/reducers';
 import erpEntitiesReducers from "app/erp/erp-reducers";
+import selectedTransactionAccount from "app/erp/auto-complete/search-account-transaction.reducer";
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const rootReducer: ReducersMapObject = {
@@ -28,6 +29,7 @@ const rootReducer: ReducersMapObject = {
   password,
   settings,
   loadingBar,
+  selectedTransactionAccount,
   ...erpEntitiesReducers,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   ...entitiesReducers,

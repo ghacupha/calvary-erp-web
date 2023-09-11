@@ -17,6 +17,7 @@ import { IBalanceSheetItemType } from 'app/shared/model/balance-sheet-item-type.
 import { getEntities as getBalanceSheetItemTypes } from 'app/entities/balance-sheet-item-type/balance-sheet-item-type.reducer';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-account.reducer';
+import AutocompleteSearchTransactionAccount from 'app/erp/auto-complete-search-transaction-account';
 
 export const TransactionAccountUpdate = () => {
   const dispatch = useAppDispatch();
@@ -34,6 +35,16 @@ export const TransactionAccountUpdate = () => {
   const loading = useAppSelector(state => state.transactionAccount.loading);
   const updating = useAppSelector(state => state.transactionAccount.updating);
   const updateSuccess = useAppSelector(state => state.transactionAccount.updateSuccess);
+
+  const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
+
+  const selectedTransactionAccountEntity = useAppSelector(state => state.transactionAccount.selected);
+
+  const handleAccountSelect = (account: ITransactionAccount | null) => {
+    if (account) {
+      setSelectedAccount(account); // setting selectedAccount to view on the form
+    }
+  };
 
   const handleClose = () => {
     navigate('/transaction-account' + location.search);
@@ -62,7 +73,7 @@ export const TransactionAccountUpdate = () => {
     const entity = {
       ...transactionAccountEntity,
       ...values,
-      parentAccount: transactionAccounts.find(it => it.id.toString() === values.parentAccount.toString()),
+      parentAccount: selectedTransactionAccountEntity,
       transactionAccountType: transactionAccountTypes.find(it => it.id.toString() === values.transactionAccountType.toString()),
       transactionCurrency: transactionCurrencies.find(it => it.id.toString() === values.transactionCurrency.toString()),
     };
@@ -134,22 +145,26 @@ export const TransactionAccountUpdate = () => {
                 data-cy="openingBalance"
                 type="text"
               />
-              <ValidatedField
-                id="transaction-account-parentAccount"
-                name="parentAccount"
-                data-cy="parentAccount"
-                label={translate('calvaryErpApp.transactionAccount.parentAccount')}
-                type="select"
-              >
-                <option value="" key="0" />
-                {transactionAccounts
-                  ? transactionAccounts.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.accountName}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+
+              {/*<ValidatedField*/}
+              {/*  id="transaction-account-parentAccount"*/}
+              {/*  name="parentAccount"*/}
+              {/*  data-cy="parentAccount"*/}
+              {/*  label={translate('calvaryErpApp.transactionAccount.parentAccount')}*/}
+              {/*  type="select"*/}
+              {/*>*/}
+              {/*  <option value="" key="0" />*/}
+              {/*  {transactionAccounts*/}
+              {/*    ? transactionAccounts.map(otherEntity => (*/}
+              {/*        <option value={otherEntity.id} key={otherEntity.id}>*/}
+              {/*          {otherEntity.accountName}*/}
+              {/*        </option>*/}
+              {/*      ))*/}
+              {/*    : null}*/}
+              {/*</ValidatedField>*/}
+
+              <AutocompleteSearchTransactionAccount onSelectAccount={handleAccountSelect} />
+
               <ValidatedField
                 id="transaction-account-transactionAccountType"
                 name="transactionAccountType"
