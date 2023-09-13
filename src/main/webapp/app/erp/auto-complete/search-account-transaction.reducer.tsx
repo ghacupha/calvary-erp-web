@@ -20,30 +20,8 @@ import {
   searchEntities,
   updateEntity
 } from 'app/entities/transaction-account/transaction-account.reducer';
-
-export interface SelectiveEntityState<T> {
-  loading: boolean;
-  errorMessage: string | null;
-  entities: ReadonlyArray<T>;
-  entity: T;
-  links?: any;
-  updating: boolean;
-  totalItems?: number;
-  updateSuccess: boolean;
-  selected: T;
-}
-
-
-const initialState: SelectiveEntityState<ITransactionAccount> = {
-  loading: false,
-  errorMessage: null,
-  entities: [],
-  entity: defaultValue,
-  updating: false,
-  totalItems: 0,
-  updateSuccess: false,
-  selected: defaultValue,
-};
+import { initialState } from 'app/shared/reducers/authentication';
+import { SelectedEntityState } from 'app/erp/auto-complete/auto-complete-reducer.utils';
 
 const apiUrl = 'api/transaction-accounts';
 const apiSearchUrl = 'api/_search/transaction-accounts';
@@ -59,7 +37,7 @@ export const getSelectedEntity = createAsyncThunk(
 
 // slice
 
-const createSelectiveEntitySlice = <T, Reducers extends SliceCaseReducers<SelectiveEntityState<T>>>({
+const createSelectedEntitySlice = <T, Reducers extends SliceCaseReducers<SelectedEntityState<T>>>({
                                                                                                              name = '',
                                                                                                              initialState,
                                                                                                              reducers,
@@ -67,9 +45,9 @@ const createSelectiveEntitySlice = <T, Reducers extends SliceCaseReducers<Select
                                                                                                              skipRejectionHandling,
                                                                                                            }: {
   name: string;
-  initialState: SelectiveEntityState<T>;
-  reducers?: ValidateSliceCaseReducers<SelectiveEntityState<T>, Reducers>;
-  extraReducers?: (builder: ActionReducerMapBuilder<SelectiveEntityState<T>>) => void;
+  initialState: SelectedEntityState<T>;
+  reducers?: ValidateSliceCaseReducers<SelectedEntityState<T>, Reducers>;
+  extraReducers?: (builder: ActionReducerMapBuilder<SelectedEntityState<T>>) => void;
   skipRejectionHandling?: boolean;
 }) => {
   return createSlice({
@@ -103,7 +81,7 @@ const createSelectiveEntitySlice = <T, Reducers extends SliceCaseReducers<Select
   });
 };
 
-export const selectedTransactionAccountSlice = createSelectiveEntitySlice({
+export const selectedTransactionAccountSlice = createSelectedEntitySlice({
   name: 'selectedTransactionAccount',
   initialState,
   extraReducers(builder) {
@@ -116,6 +94,7 @@ export const selectedTransactionAccountSlice = createSelectiveEntitySlice({
         state.updating = false;
         state.updateSuccess = true;
         state.entity = {};
+        state.selected = {};
       })
       .addMatcher(isFulfilled(getEntities, searchEntities), (state, action) => {
         const { data, headers } = action.payload;
