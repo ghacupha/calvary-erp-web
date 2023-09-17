@@ -39,6 +39,15 @@ export const getEntity = createAsyncThunk(
   { serializeError: serializeAxiosError }
 );
 
+export const getSelectedEntity = createAsyncThunk(
+  'transactionAccountSelected/fetch_entity',
+  async (id: string | number) => {
+    const requestUrl = `${apiUrl}/${id}`;
+    return axios.get<ITransactionAccount>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
+
 export const createEntity = createAsyncThunk(
   'transactionAccount/create_entity',
   async (entity: ITransactionAccount, thunkAPI) => {
@@ -90,6 +99,10 @@ export const TransactionAccountSlice = createEntitySlice({
       .addCase(getEntity.fulfilled, (state, action) => {
         state.loading = false;
         state.entity = action.payload.data;
+      })
+      .addCase(getSelectedEntity.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selected = action.payload.data;
       })
       .addCase(deleteEntity.fulfilled, state => {
         state.updating = false;

@@ -146,23 +146,6 @@ export const TransactionAccountUpdate = () => {
                 type="text"
               />
 
-              {/*<ValidatedField*/}
-              {/*  id="transaction-account-parentAccount"*/}
-              {/*  name="parentAccount"*/}
-              {/*  data-cy="parentAccount"*/}
-              {/*  label={translate('calvaryErpApp.transactionAccount.parentAccount')}*/}
-              {/*  type="select"*/}
-              {/*>*/}
-              {/*  <option value="" key="0" />*/}
-              {/*  {transactionAccounts*/}
-              {/*    ? transactionAccounts.map(otherEntity => (*/}
-              {/*        <option value={otherEntity.id} key={otherEntity.id}>*/}
-              {/*          {otherEntity.accountName}*/}
-              {/*        </option>*/}
-              {/*      ))*/}
-              {/*    : null}*/}
-              {/*</ValidatedField>*/}
-
               <AutocompleteSearchTransactionAccount onSelectAccount={handleAccountSelect} />
 
               <ValidatedField

@@ -3,7 +3,7 @@ import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
 import { translate } from 'react-jhipster';
-import { getEntity } from 'app/entities/transaction-account/transaction-account.reducer';
+import { getEntity, getSelectedEntity } from 'app/entities/transaction-account/transaction-account.reducer';
 import { useAppDispatch } from 'app/config/store';
 
 const apiSearchUrl = 'api/_search/transaction-accounts';
@@ -49,7 +49,7 @@ const AutocompleteSearchTransactionAccount: React.FC<AutocompleteSearchTransacti
 
   useEffect(() => {
     if (selectedAccount) {
-      dispatch(getEntity(selectedAccount.id));
+      dispatch(getSelectedEntity(selectedAccount.id));
     }
   }, [selectedAccount]);
 
