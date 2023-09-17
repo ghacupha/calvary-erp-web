@@ -4,14 +4,12 @@ import { Button, Row, Col, FormText } from 'reactstrap';
 import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { IDealerType } from 'app/shared/model/dealer-type.model';
 import { getEntities as getDealerTypes } from 'app/entities/dealer-type/dealer-type.reducer';
-import { IDealer } from 'app/shared/model/dealer.model';
 import { getEntity, updateEntity, createEntity, reset } from './dealer.reducer';
+import DealerTypeAutocomplete from 'app/erp/auto-complete/dealer-type.autocomplete';
 
 export const DealerUpdate = () => {
   const dispatch = useAppDispatch();
@@ -26,6 +24,9 @@ export const DealerUpdate = () => {
   const loading = useAppSelector(state => state.dealer.loading);
   const updating = useAppSelector(state => state.dealer.updating);
   const updateSuccess = useAppSelector(state => state.dealer.updateSuccess);
+  const dealerTypeEntitySelected = useAppSelector(state => state.dealerType.selected);
+
+  const [selectedDealerType, setSelectedDealerType] = useState<IDealerType>(null);
 
   const handleClose = () => {
     navigate('/dealer' + location.search);
@@ -41,6 +42,12 @@ export const DealerUpdate = () => {
     dispatch(getDealerTypes({}));
   }, []);
 
+  const handleDealerTypeSelectEvent = (selectedDealerType) => {
+    if (selectedDealerType) {
+      setSelectedDealerType(selectedDealerType)
+    }
+  }
+
   useEffect(() => {
     if (updateSuccess) {
       handleClose();
@@ -51,7 +58,8 @@ export const DealerUpdate = () => {
     const entity = {
       ...dealerEntity,
       ...values,
-      dealerType: dealerTypes.find(it => it.id.toString() === values.dealerType.toString()),
+      dealerType: dealerTypeEntitySelected
+      // dealerType: dealerTypes.find(it => it.id.toString() === values.dealerType.toString()),
     };
 
     if (isNew) {
@@ -104,7 +112,7 @@ export const DealerUpdate = () => {
                   required: { value: true, message: translate('entity.validation.required') },
                 }}
               />
-              <ValidatedField
+              {/*<ValidatedField
                 id="dealer-dealerType"
                 name="dealerType"
                 data-cy="dealerType"
@@ -120,7 +128,10 @@ export const DealerUpdate = () => {
                       </option>
                     ))
                   : null}
-              </ValidatedField>
+              </ValidatedField>*/}
+
+              <DealerTypeAutocomplete onSelectDealerType={handleDealerTypeSelectEvent} />
+
               <FormText>
                 <Translate contentKey="entity.validation.required">This field is required.</Translate>
               </FormText>
