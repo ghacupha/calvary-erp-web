@@ -14,6 +14,7 @@ const initialState: EntityState<IBalanceSheetItemType> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  selected: defaultValue,
 };
 
 const apiUrl = 'api/balance-sheet-item-types';

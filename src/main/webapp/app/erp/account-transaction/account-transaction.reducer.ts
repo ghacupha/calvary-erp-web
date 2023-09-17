@@ -12,6 +12,7 @@ const initialState: EntityState<IAccountTransaction> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  selected: defaultValue,
 };
 
 const postingUrl = 'api/post/account-transactions';

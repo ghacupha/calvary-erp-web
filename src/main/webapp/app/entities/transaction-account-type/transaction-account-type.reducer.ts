@@ -12,6 +12,7 @@ const initialState: EntityState<ITransactionAccountType> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  selected: defaultValue,
 };
 
 const apiUrl = 'api/transaction-account-types';

@@ -12,6 +12,7 @@ const initialState: EntityState<IEventType> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  selected: defaultValue,
 };
 
 const apiUrl = 'api/event-types';

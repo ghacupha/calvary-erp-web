@@ -12,6 +12,7 @@ const initialState: EntityState<IDealer> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
+  selected: defaultValue,
 };
 
 const apiUrl = 'api/dealers';
