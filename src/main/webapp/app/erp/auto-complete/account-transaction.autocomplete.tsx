@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import axios from 'axios';
 import { translate } from 'react-jhipster';
-import { getEntity } from 'app/entities/account-transaction/account-transaction.reducer';
+import { getEntity } from 'app/erp/account-transaction/account-transaction.reducer';
 import { useAppDispatch } from 'app/config/store';
 import { IAccountTransaction } from 'app/shared/model/account-transaction.model';
 
 const apiSearchUrl = 'api/_search/account-transactions';
 
-interface SearchAccountTransactionProps {
+interface AccountTransactionAutocompleteProps {
   onSelectTransaction: (account: IAccountTransaction) => void;
 }
 
-const SearchAccountTransaction: React.FC<SearchAccountTransactionProps> = ({ onSelectTransaction }) => {
+const AccountTransactionAutocomplete: React.FC<AccountTransactionAutocompleteProps> = ({ onSelectTransaction }) => {
   const [selectedTransaction, setSelectedTransaction] = useState<IAccountTransaction | null>(null);
   const dispatch = useAppDispatch();
 
@@ -36,9 +36,9 @@ const SearchAccountTransaction: React.FC<SearchAccountTransactionProps> = ({ onS
       border: state.isFocused ? '2px solid #3498db' : '2px solid #ced4da',
       boxShadow: state.isFocused ? '0 0 3px rgba(52, 152, 219, 0.5)' : 'none',
       '&:hover': {
-        border: '2px solid #3498db'
-      }
-    })
+        border: '2px solid #3498db',
+      },
+    }),
   };
 
   const handleOptionSelect = (option: { value: IAccountTransaction; label: string }) => {
@@ -67,4 +67,4 @@ const SearchAccountTransaction: React.FC<SearchAccountTransactionProps> = ({ onS
   );
 };
 
-export default SearchAccountTransaction;
+export default AccountTransactionAutocomplete;

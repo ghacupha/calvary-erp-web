@@ -16,6 +16,7 @@ import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';
 import AutocompleteSearchTransactionAccount from '../auto-complete/transaction-account.autocomplete';
+import AccountTransactionAutocomplete from '../auto-complete/account-transaction.autocomplete';
 
 export const TransactionEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -33,17 +34,25 @@ export const TransactionEntryUpdate = () => {
   const updateSuccess = useAppSelector(state => state.transactionEntry.updateSuccess);
   const transactionEntryTypesValues = Object.keys(TransactionEntryTypes);
 
+  const accountTransactionSelected = useAppSelector(state => state.accountTransaction.entity);
   const transactionAccountSelected = useAppSelector(state => state.transactionAccount.entity);
 
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount>(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<IAccountTransaction>(null);
 
   const handleClose = () => {
     navigate('/transaction-entry' + location.search);
   };
 
-  const handleAccountSelection = pickedAccount => {
+  const handleAccountSelectedEvent = pickedAccount => {
     if (pickedAccount) {
       setSelectedAccount(pickedAccount);
+    }
+  };
+
+  const handleTransactionSelectedEvent = pickedTransaction => {
+    if (pickedTransaction) {
+      setSelectedTransaction(pickedTransaction);
     }
   };
 
@@ -69,7 +78,7 @@ export const TransactionEntryUpdate = () => {
       ...transactionEntryEntity,
       ...values,
       transactionAccount: transactionAccountSelected,
-      accountTransaction: accountTransactions.find(it => it.id.toString() === values.accountTransaction.toString()),
+      accountTransaction: accountTransactionSelected,
     };
 
     if (isNew) {
@@ -160,41 +169,8 @@ export const TransactionEntryUpdate = () => {
                 check
                 type="checkbox"
               />
-              {/* <ValidatedField
-                id="transaction-entry-transactionAccount"
-                name="transactionAccount"
-                data-cy="transactionAccount"
-                label="Transaction Account"
-                type="select"
-                required
-              >
-                <option value="" key="0" />
-                {transactionAccounts
-                  ? transactionAccounts.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.accountName}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <FormText>This field is required.</FormText> */}
-              <AutocompleteSearchTransactionAccount onSelectAccount={handleAccountSelection} />
-              <ValidatedField
-                id="transaction-entry-accountTransaction"
-                name="accountTransaction"
-                data-cy="accountTransaction"
-                label="Account Transaction"
-                type="select"
-              >
-                <option value="" key="0" />
-                {accountTransactions
-                  ? accountTransactions.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.referenceNumber}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+              <AutocompleteSearchTransactionAccount onSelectAccount={handleAccountSelectedEvent} />
+              <AccountTransactionAutocomplete onSelectTransaction={handleTransactionSelectedEvent} />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-entry" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
