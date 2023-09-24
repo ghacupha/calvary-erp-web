@@ -5,7 +5,7 @@ import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction
 export interface ITransactionEntry {
   id?: number;
   entryAmount?: number | null;
-  transactionEntryType?: keyof typeof TransactionEntryTypes;
+  transactionEntryType?: TransactionEntryTypes;
   description?: string | null;
   wasProposed?: boolean | null;
   wasPosted?: boolean | null;

@@ -1,6 +1,6 @@
 # calvary-erp
 
-This application was generated using JHipster 8.0.0-beta.2, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2](https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2).
+This application was generated using JHipster 7.9.4, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.9.4](https://www.jhipster.tech/documentation-archive/v7.9.4).
 
 ## Project Structure
 
@@ -92,7 +92,7 @@ For further instructions on how to develop with JHipster, have a look at [Using 
 JHipster Control Center can help you manage and control your application(s). You can start a local control center server (accessible on http://localhost:7419) with:
 
 ```
-docker compose -f src/main/docker/jhipster-control-center.yml up
+docker-compose -f src/main/docker/jhipster-control-center.yml up
 ```
 
 ## Building for production
@@ -147,30 +147,23 @@ For more information, refer to the [Running tests page][].
 Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
 
 ```
-docker compose -f src/main/docker/sonar.yml up -d
+docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
-Note: we have turned off forced authentication redirect for UI in [src/main/docker/sonar.yml](src/main/docker/sonar.yml) for out of the box experience while trying out SonarQube, for real use cases turn it back on.
+Note: we have turned off authentication in [src/main/docker/sonar.yml](src/main/docker/sonar.yml) for out of the box experience while trying out SonarQube, for real use cases turn it back on.
 
 You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
 
 Then, run a Sonar analysis:
 
 ```
-./mvnw -Pprod clean verify sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
+./mvnw -Pprod clean verify sonar:sonar
 ```
 
 If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
 
 ```
-./mvnw initialize sonar:sonar -Dsonar.login=admin -Dsonar.password=admin
-```
-
-Additionally, Instead of passing `sonar.password` and `sonar.login` as CLI arguments, these parameters can be configured from [sonar-project.properties](sonar-project.properties) as shown below:
-
-```
-sonar.login=admin
-sonar.password=admin
+./mvnw initialize sonar:sonar
 ```
 
 For more information, refer to the [Code quality page][].
@@ -182,13 +175,13 @@ You can use Docker to improve your JHipster development experience. A number of 
 For example, to start a postgresql database in a docker container, run:
 
 ```
-docker compose -f src/main/docker/postgresql.yml up -d
+docker-compose -f src/main/docker/postgresql.yml up -d
 ```
 
 To stop it and remove the container, run:
 
 ```
-docker compose -f src/main/docker/postgresql.yml down
+docker-compose -f src/main/docker/postgresql.yml down
 ```
 
 You can also fully dockerize your application and all the services that it depends on.
@@ -207,7 +200,7 @@ npm run java:docker:arm64
 Then run:
 
 ```
-docker compose -f src/main/docker/app.yml up -d
+docker-compose -f src/main/docker/app.yml up -d
 ```
 
 When running Docker Desktop on MacOS Big Sur or later, consider enabling experimental `Use the new Virtualization framework` for better processing performance ([disk access performance is worse](https://github.com/docker/roadmap/issues/7)).
@@ -218,46 +211,18 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
-## Building a Comprehensive Accounting System for a Church: A Deep Dive into the Reporting Module and Project Objectives
-
-### Introduction:
-
-In the ever-changing landscape of modern technology, organizations are increasingly adopting advanced systems to streamline their operations and enhance efficiency. This article delves into the technical aspects of a project aimed at developing a sophisticated ERP-like accounting system for a church. The project's primary focus is on the implementation of a robust reporting module that provides accurate and up-to-date financial information to the church's stakeholders.
-
-##### Project Objectives and Goals:
-
-The main objectives of this project are twofold: first, to develop an all-encompassing accounting system that adheres to the cardinal rule of double-entry accounting, and second, to create a flexible and reliable reporting module. The system should cater to the specific requirements of a church, addressing their unique needs for managing finances, tracking contributions, authorizing expenses, and generating accurate financial statements.
-
-`Double-Entry Accounting Compliance:`
-The foundation of this accounting system lies in its adherence to the double-entry accounting principle. Each financial transaction is meticulously recorded in a manner that ensures that debits equal credits, thus maintaining the financial equilibrium. By enforcing this rule throughout the system, the church can have confidence in the accuracy and reliability of its financial records.
-
-`Flexible and Comprehensive Reporting:`
-The reporting module is designed to be both flexible and comprehensive, providing users with access to a wide array of financial reports. This includes standard financial statements like the balance sheet, profit and loss statement, and trial balance. Moreover, it encompasses specialized reports such as the cash flow statement, designed to depict the movement of cash over specific periods. The reporting framework enables users to customize the reports based on various criteria and timeframes, empowering them to gain valuable insights into the church's financial health.
-
-##### Technical Aspects of the Reporting Module:
-
-The reporting module is powered by a combination of front-end technologies and back-end data processing. On the front-end, the system utilizes ReactJS, offering enhanced flexibility and real-time data visualization capabilities through the Redux system. React Query or Axios facilitates seamless communication with the backend through APIs.
-
-On the back-end, Java with the JHipster platform takes center stage. JHipster offers a standardized and best-practice implementation of the system, generating services, repositories, and API resources based on entity definitions. The integration with Hibernate allows for effective data management and synchronization between the application and the database.
-
-The reporting module functions through a message queue system, which offers numerous benefits. It decouples the report generation process from immediate transaction processing, ensuring data consistency and efficient resource allocation. Consumers subscribed to the message queue process transactions in a sequential and orderly manner, updating the reports in real-time without affecting immediate system performance.
-
-#### Conclusion:
-
-The comprehensive accounting system being developed for the church encompasses a robust reporting module that meets the unique needs of a faith-based organization. By enforcing the double-entry accounting principle, maintaining data accuracy, and offering flexible reporting options, the system ensures that church administrators, auditors, and stakeholders have access to reliable and real-time financial information. By harnessing the power of ReactJS, Java, and the message queue system, this project aims to create an integrated ERP-like solution that simplifies financial management, streamlines operations, and empowers the church to make informed decisions that align with its mission and goals.
-
-[JHipster Homepage and latest documentation]: https://www.jhipster.tech
-[JHipster 8.0.0-beta.2 archive]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2
-[Using JHipster in development]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2/development/
-[Using Docker and Docker-Compose]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2/docker-compose
-[Using JHipster in production]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2/production/
-[Running tests page]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2/running-tests/
-[Code quality page]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2/code-quality/
-[Setting up Continuous Integration]: https://www.jhipster.tech/documentation-archive/v8.0.0-beta.2/setting-up-ci/
-[Node.js]: https://nodejs.org/
-[NPM]: https://www.npmjs.com/
-[Webpack]: https://webpack.github.io/
-[BrowserSync]: https://www.browsersync.io/
-[Jest]: https://facebook.github.io/jest/
-[Leaflet]: https://leafletjs.com/
-[DefinitelyTyped]: https://definitelytyped.org/
+[jhipster homepage and latest documentation]: https://www.jhipster.tech
+[jhipster 7.9.4 archive]: https://www.jhipster.tech/documentation-archive/v7.9.4
+[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.9.4/development/
+[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.9.4/docker-compose
+[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.9.4/production/
+[running tests page]: https://www.jhipster.tech/documentation-archive/v7.9.4/running-tests/
+[code quality page]: https://www.jhipster.tech/documentation-archive/v7.9.4/code-quality/
+[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.9.4/setting-up-ci/
+[node.js]: https://nodejs.org/
+[npm]: https://www.npmjs.com/
+[webpack]: https://webpack.github.io/
+[browsersync]: https://www.browsersync.io/
+[jest]: https://facebook.github.io/jest/
+[leaflet]: https://leafletjs.com/
+[definitelytyped]: https://definitelytyped.org/

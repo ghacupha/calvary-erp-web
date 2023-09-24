@@ -76,7 +76,6 @@ export interface EntityState<T> {
   updating: boolean;
   totalItems?: number;
   updateSuccess: boolean;
-  selected: T;
 }
 
 /**

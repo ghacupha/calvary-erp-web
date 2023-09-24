@@ -1,5 +1,4 @@
 import React from 'react';
-import { Translate } from 'react-jhipster';
 
 import MenuItem from 'app/shared/layout/menus/menu-item';
 
@@ -7,38 +6,38 @@ const EntitiesMenu = () => {
   return (
     <>
       {/* prettier-ignore */}
+      <MenuItem icon="asterisk" to="/accounting-event">
+        Accounting Event
+      </MenuItem>
       <MenuItem icon="asterisk" to="/transaction-account">
-        <Translate contentKey="global.menu.entities.transactionAccount" />
+        Transaction Account
       </MenuItem>
       <MenuItem icon="asterisk" to="/transaction-entry">
-        <Translate contentKey="global.menu.entities.transactionEntry" />
+        Transaction Entry
       </MenuItem>
       <MenuItem icon="asterisk" to="/account-transaction">
-        <Translate contentKey="global.menu.entities.accountTransaction" />
+        Account Transaction
       </MenuItem>
       <MenuItem icon="asterisk" to="/event-type">
-        <Translate contentKey="global.menu.entities.eventType" />
-      </MenuItem>
-      <MenuItem icon="asterisk" to="/accounting-event">
-        <Translate contentKey="global.menu.entities.accountingEvent" />
+        Event Type
       </MenuItem>
       <MenuItem icon="asterisk" to="/dealer-type">
-        <Translate contentKey="global.menu.entities.dealerType" />
+        Dealer Type
       </MenuItem>
       <MenuItem icon="asterisk" to="/dealer">
-        <Translate contentKey="global.menu.entities.dealer" />
+        Dealer
       </MenuItem>
       <MenuItem icon="asterisk" to="/transaction-account-type">
-        <Translate contentKey="global.menu.entities.transactionAccountType" />
+        Transaction Account Type
       </MenuItem>
       <MenuItem icon="asterisk" to="/transaction-currency">
-        <Translate contentKey="global.menu.entities.transactionCurrency" />
+        Transaction Currency
       </MenuItem>
       <MenuItem icon="asterisk" to="/balance-sheet-item-type">
-        <Translate contentKey="global.menu.entities.balanceSheetItemType" />
+        Balance Sheet Item Type
       </MenuItem>
       <MenuItem icon="asterisk" to="/balance-sheet-item-value">
-        <Translate contentKey="global.menu.entities.balanceSheetItemValue" />
+        Balance Sheet Item Value
       </MenuItem>
       {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
     </>

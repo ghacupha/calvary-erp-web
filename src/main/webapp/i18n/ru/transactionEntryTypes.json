@@ -1,9 +1,0 @@
-{
-  "calvaryErpApp": {
-    "TransactionEntryTypes": {
-      "null": "",
-      "DEBIT": "DEBIT",
-      "CREDIT": "CREDIT"
-    }
-  }
-}

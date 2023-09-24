@@ -4,7 +4,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { serializeAxiosError } from './reducer.utils';
 
 import { AppThunk } from 'app/config/store';
-import { setLocale } from 'app/shared/reducers/locale';
 
 const AUTH_TOKEN_KEY = 'jhi-authenticationToken';
 
@@ -25,14 +24,8 @@ export type AuthenticationState = Readonly<typeof initialState>;
 
 // Actions
 
-export const getSession = (): AppThunk => async (dispatch, getState) => {
-  await dispatch(getAccount());
-
-  const { account } = getState().authentication;
-  if (account && account.langKey) {
-    const langKey = Storage.session.get('locale', account.langKey);
-    await dispatch(setLocale(langKey));
-  }
+export const getSession = (): AppThunk => (dispatch, getState) => {
+  dispatch(getAccount());
 };
 
 export const getAccount = createAsyncThunk('authentication/get_account', async () => axios.get<any>('api/account'), {

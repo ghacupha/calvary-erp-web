@@ -4,7 +4,7 @@ import axios from 'axios';
 import { translate } from 'react-jhipster';
 import { useAppDispatch } from 'app/config/store';
 import { IDealerType } from 'app/shared/model/dealer-type.model';
-import { getSelectedEntity } from 'app/entities/dealer-type/dealer-type.reducer';
+import { getEntity } from 'app/entities/dealer-type/dealer-type.reducer';
 
 const apiSearchUrl = 'api/_search/dealer-types';
 
@@ -36,9 +36,9 @@ const DealerTypeAutocomplete: React.FC<DealerTypeAutocompleteProps> = ({ onSelec
       border: state.isFocused ? '2px solid #3498db' : '2px solid #ced4da',
       boxShadow: state.isFocused ? '0 0 3px rgba(52, 152, 219, 0.5)' : 'none',
       '&:hover': {
-        border: '2px solid #3498db'
-      }
-    })
+        border: '2px solid #3498db',
+      },
+    }),
   };
 
   const handleOptionSelect = (option: { value: IDealerType; label: string }) => {
@@ -49,7 +49,7 @@ const DealerTypeAutocomplete: React.FC<DealerTypeAutocompleteProps> = ({ onSelec
 
   useEffect(() => {
     if (selectedDealerType) {
-      dispatch(getSelectedEntity(selectedDealerType.id));
+      dispatch(getEntity(selectedDealerType.id));
     }
   }, [selectedDealerType]);
 
@@ -69,4 +69,3 @@ const DealerTypeAutocomplete: React.FC<DealerTypeAutocompleteProps> = ({ onSelec
 };
 
 export default DealerTypeAutocomplete;
-

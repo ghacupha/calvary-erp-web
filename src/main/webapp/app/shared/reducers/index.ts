@@ -1,7 +1,6 @@
 import { ReducersMapObject, combineReducers } from '@reduxjs/toolkit';
 import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar';
 
-import locale from './locale';
 import authentication from './authentication';
 import applicationProfile from './application-profile';
 
@@ -13,12 +12,10 @@ import password from 'app/modules/account/password/password.reducer';
 import settings from 'app/modules/account/settings/settings.reducer';
 import passwordReset from 'app/modules/account/password-reset/password-reset.reducer';
 import entitiesReducers from 'app/entities/reducers';
-import erpEntitiesReducers from "app/erp/erp-reducers";
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const rootReducer: ReducersMapObject = {
   authentication,
-  locale,
   applicationProfile,
   administration,
   userManagement,
@@ -28,7 +25,6 @@ const rootReducer: ReducersMapObject = {
   password,
   settings,
   loadingBar,
-  ...erpEntitiesReducers,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   ...entitiesReducers,
 };

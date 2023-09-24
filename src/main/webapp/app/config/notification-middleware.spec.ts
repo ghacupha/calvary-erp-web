@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 import * as toastify from 'react-toastify'; // synthetic default import doesn't work here due to mocking.
 import sinon from 'sinon';
-import { TranslatorContext } from 'react-jhipster';
 
 import notificationMiddleware from './notification-middleware';
 
@@ -97,9 +96,11 @@ describe('Notification Middleware', () => {
     error: {
       isAxiosError: true,
       response: {
-        data: '',
-        config: {
-          url: 'api/authenticate',
+        data: {
+          title: 'Unauthorized',
+          status: 401,
+          path: '/api/authenticate',
+          message: 'error.http.401',
         },
         status: 401,
       },
@@ -151,10 +152,6 @@ describe('Notification Middleware', () => {
 
   const makeStore = () => applyMiddleware(notificationMiddleware)(createStore)(() => null);
 
-  beforeAll(() => {
-    TranslatorContext.registerTranslations('en', {});
-  });
-
   beforeEach(() => {
     store = makeStore();
     sinon.spy(toastify.toast, 'error');
@@ -193,19 +190,19 @@ describe('Notification Middleware', () => {
   it('should trigger an error toast message and return error for 400 response code', () => {
     expect(store.dispatch(VALIDATION_ERROR).error.response.data.message).toEqual('error.validation');
     const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
-    expect(toastMsg).toContain('error.Size');
+    expect(toastMsg).toContain('Error on field "MinField"');
   });
 
   it('should trigger an error toast message and return error for 404 response code', () => {
     expect(store.dispatch(NOT_FOUND_ERROR).error.response.data.message).toEqual('Not found');
     const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
-    expect(toastMsg).toContain('error.url.not.found');
+    expect(toastMsg).toContain('Not found');
   });
 
   it('should trigger an error toast message and return error for 0 response code', () => {
     expect(store.dispatch(NO_SERVER_ERROR).error.response.status).toEqual(0);
     const toastMsg = (toastify.toast as any).error.getCall(0).args[0];
-    expect(toastMsg).toContain('error.server.not.reachable');
+    expect(toastMsg).toContain('Server not reachable');
   });
 
   it('should trigger an error toast message and return error for headers containing errors', () => {

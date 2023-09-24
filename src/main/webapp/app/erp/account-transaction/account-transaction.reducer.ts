@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
+
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IAccountTransaction, defaultValue } from 'app/shared/model/account-transaction.model';
@@ -12,10 +13,8 @@ const initialState: EntityState<IAccountTransaction> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
-  selected: defaultValue,
 };
 
-const postingUrl = 'api/post/account-transactions';
 const apiUrl = 'api/account-transactions';
 const apiSearchUrl = 'api/_search/account-transactions';
 
@@ -27,7 +26,7 @@ export const searchEntities = createAsyncThunk('accountTransaction/search_entity
 });
 
 export const getEntities = createAsyncThunk('accountTransaction/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
-  const requestUrl = `${apiUrl}?${sort ? `page=${page}&size=${size}&sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
   return axios.get<IAccountTransaction[]>(requestUrl);
 });
 
@@ -54,16 +53,6 @@ export const updateEntity = createAsyncThunk(
   'accountTransaction/update_entity',
   async (entity: IAccountTransaction, thunkAPI) => {
     const result = await axios.put<IAccountTransaction>(`${apiUrl}/${entity.id}`, cleanEntity(entity));
-    thunkAPI.dispatch(getEntities({}));
-    return result;
-  },
-  { serializeError: serializeAxiosError }
-);
-
-export const postTransaction = createAsyncThunk(
-  'accountTransaction/post_transaction',
-  async (entity: IAccountTransaction, thunkAPI) => {
-    const result = await axios.put<IAccountTransaction>(`${postingUrl}/${entity.id}`, cleanEntity(entity));
     thunkAPI.dispatch(getEntities({}));
     return result;
   },
@@ -117,7 +106,7 @@ export const AccountTransactionSlice = createEntitySlice({
           totalItems: parseInt(headers['x-total-count'], 10),
         };
       })
-      .addMatcher(isFulfilled(createEntity, updateEntity, postTransaction, partialUpdateEntity), (state, action) => {
+      .addMatcher(isFulfilled(createEntity, updateEntity, partialUpdateEntity), (state, action) => {
         state.updating = false;
         state.loading = false;
         state.updateSuccess = true;

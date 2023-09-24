@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk, isFulfilled, isPending, isRejected } from '@reduxjs/toolkit';
+
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { IQueryParams, createEntitySlice, EntityState, serializeAxiosError } from 'app/shared/reducers/reducer.utils';
 import { IAccountTransaction, defaultValue } from 'app/shared/model/account-transaction.model';
@@ -12,7 +13,6 @@ const initialState: EntityState<IAccountTransaction> = {
   updating: false,
   totalItems: 0,
   updateSuccess: false,
-  selected: defaultValue,
 };
 
 const apiUrl = 'api/account-transactions';
@@ -26,7 +26,7 @@ export const searchEntities = createAsyncThunk('accountTransaction/search_entity
 });
 
 export const getEntities = createAsyncThunk('accountTransaction/fetch_entity_list', async ({ page, size, sort }: IQueryParams) => {
-  const requestUrl = `${apiUrl}?${sort ? `page=${page}&size=${size}&sort=${sort}&` : ''}cacheBuster=${new Date().getTime()}`;
+  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}&` : '?'}cacheBuster=${new Date().getTime()}`;
   return axios.get<IAccountTransaction[]>(requestUrl);
 });
 

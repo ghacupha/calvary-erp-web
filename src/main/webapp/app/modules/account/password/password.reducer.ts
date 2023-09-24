@@ -47,13 +47,13 @@ export const PasswordSlice = createSlice({
         state.loading = false;
         state.updateSuccess = false;
         state.updateFailure = true;
-        state.errorMessage = 'password.messages.error';
+        state.errorMessage = 'An error has occurred! The password could not be changed.';
       })
       .addCase(savePassword.fulfilled, state => {
         state.loading = false;
         state.updateSuccess = true;
         state.updateFailure = false;
-        state.successMessage = 'password.messages.success';
+        state.successMessage = 'Password changed!';
       });
   },
 });

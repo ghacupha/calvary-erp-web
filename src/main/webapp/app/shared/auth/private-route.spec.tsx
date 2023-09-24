@@ -1,7 +1,6 @@
 import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { render } from '@testing-library/react';
-import { TranslatorContext } from 'react-jhipster';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
@@ -12,12 +11,6 @@ import PrivateRoute, { hasAnyAuthority } from './private-route';
 const TestComp = () => <div>Test</div>;
 
 describe('private-route component', () => {
-  beforeAll(() => {
-    TranslatorContext.registerTranslations('en', {
-      'error.http.403': 'You are not authorized to access this page.',
-    });
-  });
-
   const mockStore = configureStore([thunk]);
   const wrapper = (Elem: JSX.Element, authentication) => {
     const store = mockStore({ authentication });

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Translate, translate, ValidatedField } from 'react-jhipster';
+import { ValidatedField } from 'react-jhipster';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Row, Col, Form } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { type FieldError, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 export interface ILoginModalProps {
   showModal: boolean;
@@ -32,75 +32,61 @@ const LoginModal = (props: ILoginModalProps) => {
     <Modal isOpen={props.showModal} toggle={handleClose} backdrop="static" id="login-page" autoFocus={false}>
       <Form onSubmit={handleLoginSubmit}>
         <ModalHeader id="login-title" data-cy="loginTitle" toggle={handleClose}>
-          <Translate contentKey="login.title">Sign in</Translate>
+          Sign in
         </ModalHeader>
         <ModalBody>
           <Row>
             <Col md="12">
               {loginError ? (
                 <Alert color="danger" data-cy="loginError">
-                  <Translate contentKey="login.messages.error.authentication">
-                    <strong>Failed to sign in!</strong> Please check your credentials and try again.
-                  </Translate>
+                  <strong>Failed to sign in!</strong> Please check your credentials and try again.
                 </Alert>
               ) : null}
             </Col>
             <Col md="12">
               <ValidatedField
                 name="username"
-                label={translate('global.form.username.label')}
-                placeholder={translate('global.form.username.placeholder')}
+                label="Username"
+                placeholder="Your username"
                 required
                 autoFocus
                 data-cy="username"
                 validate={{ required: 'Username cannot be empty!' }}
                 register={register}
-                error={errors.username as FieldError}
+                error={errors.username}
                 isTouched={touchedFields.username}
               />
               <ValidatedField
                 name="password"
                 type="password"
-                label={translate('login.form.password')}
-                placeholder={translate('login.form.password.placeholder')}
+                label="Password"
+                placeholder="Your password"
                 required
                 data-cy="password"
                 validate={{ required: 'Password cannot be empty!' }}
                 register={register}
-                error={errors.password as FieldError}
+                error={errors.password}
                 isTouched={touchedFields.password}
               />
-              <ValidatedField
-                name="rememberMe"
-                type="checkbox"
-                check
-                label={translate('login.form.rememberme')}
-                value={true}
-                register={register}
-              />
+              <ValidatedField name="rememberMe" type="checkbox" check label="Remember me" value={true} register={register} />
             </Col>
           </Row>
           <div className="mt-1">&nbsp;</div>
           <Alert color="warning">
             <Link to="/account/reset/request" data-cy="forgetYourPasswordSelector">
-              <Translate contentKey="login.password.forgot">Did you forget your password?</Translate>
+              Did you forget your password?
             </Link>
           </Alert>
           <Alert color="warning">
-            <span>
-              <Translate contentKey="global.messages.info.register.noaccount">You don&apos;t have an account yet?</Translate>
-            </span>{' '}
-            <Link to="/account/register">
-              <Translate contentKey="global.messages.info.register.link">Register a new account</Translate>
-            </Link>
+            <span>You don&apos;t have an account yet?</span> <Link to="/account/register">Register a new account</Link>
           </Alert>
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={handleClose} tabIndex={1}>
-            <Translate contentKey="entity.action.cancel">Cancel</Translate>
+            Cancel
           </Button>{' '}
           <Button color="primary" type="submit" data-cy="submit">
-            <Translate contentKey="login.form.button">Sign in</Translate>
+            Sign in
           </Button>
         </ModalFooter>
       </Form>

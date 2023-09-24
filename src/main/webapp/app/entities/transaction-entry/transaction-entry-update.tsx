@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Button, Row, Col, FormText } from 'reactstrap';
-import { isNumber, Translate, translate, ValidatedField, ValidatedForm } from 'react-jhipster';
+import { isNumber, ValidatedField, ValidatedForm } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -15,8 +15,6 @@ import { getEntities as getAccountTransactions } from 'app/entities/account-tran
 import { ITransactionEntry } from 'app/shared/model/transaction-entry.model';
 import { TransactionEntryTypes } from 'app/shared/model/enumerations/transaction-entry-types.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-entry.reducer';
-import AutocompleteSearchTransactionAccount from 'app/erp/auto-complete-search-transaction-account';
-import SearchAccountTransaction from 'app/erp/auto-complete/search-account-transaction';
 
 export const TransactionEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -33,24 +31,6 @@ export const TransactionEntryUpdate = () => {
   const updating = useAppSelector(state => state.transactionEntry.updating);
   const updateSuccess = useAppSelector(state => state.transactionEntry.updateSuccess);
   const transactionEntryTypesValues = Object.keys(TransactionEntryTypes);
-  const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount | null>(null);
-  const [selectedTransaction, setSelectedTransaction] = useState<IAccountTransaction | null>(null);
-
-  const selectedTransactionAccountEntity = useAppSelector(state => state.transactionAccount.selected);
-  // const transactionAccountEntity = useAppSelector(state => state.transactionAccount.entity); // picking selected entity from store
-  const accountTransactionEntity = useAppSelector(state => state.accountTransaction.entity); // picking selected entity from store
-
-  const handleAccountSelect = (account: ITransactionAccount | null) => {
-    if (account) {
-      setSelectedAccount(account); // setting selectedAccount to view on the form
-    }
-  };
-
-  const handleTransactionSelect = (transaction: IAccountTransaction | null) => {
-    if (transaction) {
-      setSelectedTransaction(transaction);
-    }
-  };
 
   const handleClose = () => {
     navigate('/transaction-entry' + location.search);
@@ -77,8 +57,8 @@ export const TransactionEntryUpdate = () => {
     const entity = {
       ...transactionEntryEntity,
       ...values,
-      transactionAccount: selectedTransactionAccountEntity, // use account selected from the store to persist
-      accountTransaction: accountTransactionEntity,
+      transactionAccount: transactionAccounts.find(it => it.id.toString() === values.transactionAccount.toString()),
+      accountTransaction: accountTransactions.find(it => it.id.toString() === values.accountTransaction.toString()),
     };
 
     if (isNew) {
@@ -88,12 +68,11 @@ export const TransactionEntryUpdate = () => {
     }
   };
 
-
   const defaultValues = () =>
     isNew
       ? {}
       : {
-          transactionEntryType: 'CREDIT',
+          transactionEntryType: 'DEBIT',
           ...transactionEntryEntity,
           transactionAccount: transactionEntryEntity?.transactionAccount?.id,
           accountTransaction: transactionEntryEntity?.accountTransaction?.id,
@@ -104,7 +83,7 @@ export const TransactionEntryUpdate = () => {
       <Row className="justify-content-center">
         <Col md="8">
           <h2 id="calvaryErpApp.transactionEntry.home.createOrEditLabel" data-cy="TransactionEntryCreateUpdateHeading">
-            <Translate contentKey="calvaryErpApp.transactionEntry.home.createOrEditLabel">Create or edit a TransactionEntry</Translate>
+            Create or edit a Transaction Entry
           </h2>
         </Col>
       </Row>
@@ -115,24 +94,17 @@ export const TransactionEntryUpdate = () => {
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
               {!isNew ? (
-                <ValidatedField
-                  name="id"
-                  required
-                  readOnly
-                  id="transaction-entry-id"
-                  label={translate('global.field.id')}
-                  validate={{ required: true }}
-                />
+                <ValidatedField name="id" required readOnly id="transaction-entry-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.entryAmount')}
+                label="Entry Amount"
                 id="transaction-entry-entryAmount"
                 name="entryAmount"
                 data-cy="entryAmount"
                 type="text"
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.transactionEntryType')}
+                label="Transaction Entry Type"
                 id="transaction-entry-transactionEntryType"
                 name="transactionEntryType"
                 data-cy="transactionEntryType"
@@ -140,19 +112,13 @@ export const TransactionEntryUpdate = () => {
               >
                 {transactionEntryTypesValues.map(transactionEntryTypes => (
                   <option value={transactionEntryTypes} key={transactionEntryTypes}>
-                    {translate('calvaryErpApp.TransactionEntryTypes.' + transactionEntryTypes)}
+                    {transactionEntryTypes}
                   </option>
                 ))}
               </ValidatedField>
+              <ValidatedField label="Description" id="transaction-entry-description" name="description" data-cy="description" type="text" />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.description')}
-                id="transaction-entry-description"
-                name="description"
-                data-cy="description"
-                type="text"
-              />
-              <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.wasProposed')}
+                label="Was Proposed"
                 id="transaction-entry-wasProposed"
                 name="wasProposed"
                 data-cy="wasProposed"
@@ -160,7 +126,7 @@ export const TransactionEntryUpdate = () => {
                 type="checkbox"
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.wasPosted')}
+                label="Was Posted"
                 id="transaction-entry-wasPosted"
                 name="wasPosted"
                 data-cy="wasPosted"
@@ -168,7 +134,7 @@ export const TransactionEntryUpdate = () => {
                 type="checkbox"
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.wasDeleted')}
+                label="Was Deleted"
                 id="transaction-entry-wasDeleted"
                 name="wasDeleted"
                 data-cy="wasDeleted"
@@ -176,32 +142,56 @@ export const TransactionEntryUpdate = () => {
                 type="checkbox"
               />
               <ValidatedField
-                label={translate('calvaryErpApp.transactionEntry.wasApproved')}
+                label="Was Approved"
                 id="transaction-entry-wasApproved"
                 name="wasApproved"
                 data-cy="wasApproved"
                 check
                 type="checkbox"
               />
-              <AutocompleteSearchTransactionAccount
-                onSelectAccount={handleAccountSelect}
-                />
-
-              <SearchAccountTransaction
-                onSelectTransaction={handleTransactionSelect}
-              />
+              <ValidatedField
+                id="transaction-entry-transactionAccount"
+                name="transactionAccount"
+                data-cy="transactionAccount"
+                label="Transaction Account"
+                type="select"
+                required
+              >
+                <option value="" key="0" />
+                {transactionAccounts
+                  ? transactionAccounts.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.accountName}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>This field is required.</FormText>
+              <ValidatedField
+                id="transaction-entry-accountTransaction"
+                name="accountTransaction"
+                data-cy="accountTransaction"
+                label="Account Transaction"
+                type="select"
+              >
+                <option value="" key="0" />
+                {accountTransactions
+                  ? accountTransactions.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.referenceNumber}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-entry" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
-                <span className="d-none d-md-inline">
-                  <Translate contentKey="entity.action.back">Back</Translate>
-                </span>
+                <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
               <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
-                &nbsp;
-                <Translate contentKey="entity.action.save">Save</Translate>
+                &nbsp; Save
               </Button>
             </ValidatedForm>
           )}

@@ -1,11 +1,8 @@
-import { translate } from 'react-jhipster';
 import { toast } from 'react-toastify';
 import { isFulfilledAction, isRejectedAction } from 'app/shared/reducers/reducer.utils';
-import { AxiosError, AxiosHeaderValue } from 'axios';
 
 const addErrorAlert = (message, key?, data?) => {
-  key = key ? key : message;
-  toast.error(translate(key, data));
+  toast.error(message);
 };
 
 export default () => next => action => {
@@ -18,30 +15,25 @@ export default () => next => action => {
   if (isFulfilledAction(action) && payload && payload.headers) {
     const headers = payload?.headers;
     let alert: string | null = null;
-    let alertParams: string | null = null;
     headers &&
       Object.entries<string>(headers).forEach(([k, v]) => {
         if (k.toLowerCase().endsWith('app-alert')) {
           alert = v;
-        } else if (k.toLowerCase().endsWith('app-params')) {
-          alertParams = decodeURIComponent(v.replace(/\+/g, ' '));
         }
       });
     if (alert) {
-      const alertParam = alertParams;
-      toast.success(translate(alert, { param: alertParam }));
+      toast.success(alert);
     }
   }
 
   if (isRejectedAction(action) && error && error.isAxiosError) {
-    const axiosError = error as AxiosError;
-    if (axiosError.response) {
-      const response = axiosError.response;
-      const data = response.data as any;
+    if (error.response) {
+      const response = error.response;
+      const data = response.data;
       if (
         !(
           response.status === 401 &&
-          (axiosError.message === '' || response.config.url === 'api/account' || response.config.url === 'api/authenticate')
+          (error.message === '' || (data && data.path && (data.path.includes('/api/account') || data.path.includes('/api/authenticate'))))
         )
       ) {
         switch (response.status) {
@@ -54,15 +46,15 @@ export default () => next => action => {
             let errorHeader: string | null = null;
             let entityKey: string | null = null;
             response?.headers &&
-              Object.entries<AxiosHeaderValue>(response.headers).forEach(([k, v]) => {
+              Object.entries<string>(response.headers).forEach(([k, v]) => {
                 if (k.toLowerCase().endsWith('app-error')) {
-                  errorHeader = v as string;
+                  errorHeader = v;
                 } else if (k.toLowerCase().endsWith('app-params')) {
-                  entityKey = v as string;
+                  entityKey = v;
                 }
               });
             if (errorHeader) {
-              const entityName = translate('global.menu.entities.' + entityKey);
+              const entityName = entityKey;
               addErrorAlert(errorHeader, errorHeader, { entityName });
             } else if (data?.fieldErrors) {
               const fieldErrors = data.fieldErrors;
@@ -72,7 +64,7 @@ export default () => next => action => {
                 }
                 // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
                 const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-                const fieldName = translate(`calvaryErpApp.${fieldError.objectName}.${convertedField}`);
+                const fieldName = convertedField.charAt(0).toUpperCase() + convertedField.slice(1);
                 addErrorAlert(`Error on field "${fieldName}"`, `error.${fieldError.message}`, { fieldName });
               }
             } else if (typeof data === 'string' && data !== '') {
@@ -94,7 +86,7 @@ export default () => next => action => {
             }
         }
       }
-    } else if (axiosError.config && axiosError.config.url === 'api/account' && axiosError.config.method === 'get') {
+    } else if (error.config && error.config.url === 'api/account' && error.config.method === 'get') {
       /* eslint-disable no-console */
       console.log('Authentication Error: Trying to access url api/account with GET.');
     } else {

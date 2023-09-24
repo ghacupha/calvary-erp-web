@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Translate } from 'react-jhipster';
+
 import { Table, Badge, Col, Row, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -41,15 +41,12 @@ export const HealthPage = () => {
   return (
     <div>
       <h2 id="health-page-heading" data-cy="healthPageHeading">
-        <Translate contentKey="health.title">Health Checks</Translate>
+        Health Checks
       </h2>
       <p>
         <Button onClick={fetchSystemHealth} color={isFetching ? 'btn btn-danger' : 'btn btn-primary'} disabled={isFetching}>
           <FontAwesomeIcon icon="sync" />
-          &nbsp;
-          <Translate component="span" contentKey="health.refresh.button">
-            Refresh
-          </Translate>
+          &nbsp; Refresh
         </Button>
       </p>
       <Row>
@@ -57,15 +54,9 @@ export const HealthPage = () => {
           <Table bordered aria-describedby="health-page-heading">
             <thead>
               <tr>
-                <th>
-                  <Translate contentKey="health.table.service">Service Name</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="health.table.status">Status</Translate>
-                </th>
-                <th>
-                  <Translate contentKey="health.details.details">Details</Translate>
-                </th>
+                <th>Service name</th>
+                <th>Status</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody>

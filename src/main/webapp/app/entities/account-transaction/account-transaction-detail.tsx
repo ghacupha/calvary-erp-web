@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { Translate, TextFormat } from 'react-jhipster';
+import { TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -22,20 +22,14 @@ export const AccountTransactionDetail = () => {
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="accountTransactionDetailsHeading">
-          <Translate contentKey="calvaryErpApp.accountTransaction.detail.title">AccountTransaction</Translate>
-        </h2>
+        <h2 data-cy="accountTransactionDetailsHeading">Account Transaction</h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="id">
-              <Translate contentKey="global.field.id">ID</Translate>
-            </span>
+            <span id="id">ID</span>
           </dt>
           <dd>{accountTransactionEntity.id}</dd>
           <dt>
-            <span id="transactionDate">
-              <Translate contentKey="calvaryErpApp.accountTransaction.transactionDate">Transaction Date</Translate>
-            </span>
+            <span id="transactionDate">Transaction Date</span>
           </dt>
           <dd>
             {accountTransactionEntity.transactionDate ? (
@@ -43,54 +37,36 @@ export const AccountTransactionDetail = () => {
             ) : null}
           </dd>
           <dt>
-            <span id="description">
-              <Translate contentKey="calvaryErpApp.accountTransaction.description">Description</Translate>
-            </span>
+            <span id="description">Description</span>
           </dt>
           <dd>{accountTransactionEntity.description}</dd>
           <dt>
-            <span id="referenceNumber">
-              <Translate contentKey="calvaryErpApp.accountTransaction.referenceNumber">Reference Number</Translate>
-            </span>
+            <span id="referenceNumber">Reference Number</span>
           </dt>
           <dd>{accountTransactionEntity.referenceNumber}</dd>
           <dt>
-            <span id="wasProposed">
-              <Translate contentKey="calvaryErpApp.accountTransaction.wasProposed">Was Proposed</Translate>
-            </span>
+            <span id="wasProposed">Was Proposed</span>
           </dt>
           <dd>{accountTransactionEntity.wasProposed ? 'true' : 'false'}</dd>
           <dt>
-            <span id="wasPosted">
-              <Translate contentKey="calvaryErpApp.accountTransaction.wasPosted">Was Posted</Translate>
-            </span>
+            <span id="wasPosted">Was Posted</span>
           </dt>
           <dd>{accountTransactionEntity.wasPosted ? 'true' : 'false'}</dd>
           <dt>
-            <span id="wasDeleted">
-              <Translate contentKey="calvaryErpApp.accountTransaction.wasDeleted">Was Deleted</Translate>
-            </span>
+            <span id="wasDeleted">Was Deleted</span>
           </dt>
           <dd>{accountTransactionEntity.wasDeleted ? 'true' : 'false'}</dd>
           <dt>
-            <span id="wasApproved">
-              <Translate contentKey="calvaryErpApp.accountTransaction.wasApproved">Was Approved</Translate>
-            </span>
+            <span id="wasApproved">Was Approved</span>
           </dt>
           <dd>{accountTransactionEntity.wasApproved ? 'true' : 'false'}</dd>
         </dl>
         <Button tag={Link} to="/account-transaction" replace color="info" data-cy="entityDetailsBackButton">
-          <FontAwesomeIcon icon="arrow-left" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.back">Back</Translate>
-          </span>
+          <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
         <Button tag={Link} to={`/account-transaction/${accountTransactionEntity.id}/edit`} replace color="primary">
-          <FontAwesomeIcon icon="pencil-alt" />{' '}
-          <span className="d-none d-md-inline">
-            <Translate contentKey="entity.action.edit">Edit</Translate>
-          </span>
+          <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
     </Row>

@@ -2,7 +2,6 @@ import thunk from 'redux-thunk';
 import axios from 'axios';
 import sinon from 'sinon';
 import configureStore from 'redux-mock-store';
-import { TranslatorContext } from 'react-jhipster';
 
 import register, { handleRegister, reset } from './register.reducer';
 
@@ -14,10 +13,6 @@ describe('Creating account tests', () => {
     errorMessage: null,
     successMessage: null,
   };
-
-  beforeAll(() => {
-    TranslatorContext.registerTranslations('en', {});
-  });
 
   it('should return the initial state', () => {
     expect(register(undefined, { type: '' })).toEqual({
@@ -49,7 +44,7 @@ describe('Creating account tests', () => {
     ).toEqual({
       ...initialState,
       registrationSuccess: true,
-      successMessage: 'register.messages.success',
+      successMessage: 'Registration saved! Please check your email for confirmation.',
     });
   });
 
