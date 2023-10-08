@@ -7,6 +7,7 @@ import AccountTransaction from './account-transaction';
 import AccountTransactionDetail from './account-transaction-detail';
 import AccountTransactionUpdate from './account-transaction-update';
 import AccountTransactionDeleteDialog from './account-transaction-delete-dialog';
+import AccountTransactionPostDialog from './account-transaction-post-dialog';
 
 const AccountTransactionRoutes = () => (
   <ErrorBoundaryRoutes>
@@ -16,6 +17,7 @@ const AccountTransactionRoutes = () => (
       <Route index element={<AccountTransactionDetail />} />
       <Route path="edit" element={<AccountTransactionUpdate />} />
       <Route path="delete" element={<AccountTransactionDeleteDialog />} />
+      <Route path="post" element={<AccountTransactionPostDialog />} />
     </Route>
   </ErrorBoundaryRoutes>
 );

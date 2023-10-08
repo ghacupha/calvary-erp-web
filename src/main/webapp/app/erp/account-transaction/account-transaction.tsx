@@ -238,6 +238,15 @@ export const AccountTransaction = () => {
                       >
                         <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
+                      <Button
+                        tag={Link}
+                        to={`/account-transaction/${accountTransaction.id}/post?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        color="danger"
+                        size="sm"
+                        data-cy="entityDeleteButton"
+                      >
+                        <FontAwesomeIcon icon="signs-post" /> <span className="d-none d-md-inline">Posting</span>
+                      </Button>
                     </div>
                   </td>
                 </tr>

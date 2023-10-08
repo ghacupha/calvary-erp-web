@@ -17,6 +17,7 @@ const initialState: EntityState<IAccountTransaction> = {
 
 const apiUrl = 'api/account-transactions';
 const apiSearchUrl = 'api/_search/account-transactions';
+const postingUrl = 'api/post/account-transactions';
 
 // Actions
 
@@ -35,6 +36,16 @@ export const getEntity = createAsyncThunk(
   async (id: string | number) => {
     const requestUrl = `${apiUrl}/${id}`;
     return axios.get<IAccountTransaction>(requestUrl);
+  },
+  { serializeError: serializeAxiosError }
+);
+
+export const postTransaction = createAsyncThunk(
+  'accountTransaction/post_transaction',
+  async (entity: IAccountTransaction, thunkAPI) => {
+    const result = await axios.put<IAccountTransaction>(`${postingUrl}/${entity.id}`, cleanEntity(entity));
+    thunkAPI.dispatch(getEntities({}));
+    return result;
   },
   { serializeError: serializeAxiosError }
 );

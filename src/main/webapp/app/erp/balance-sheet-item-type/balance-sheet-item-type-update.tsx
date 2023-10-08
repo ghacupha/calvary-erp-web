@@ -9,10 +9,11 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { ITransactionAccount } from 'app/shared/model/transaction-account.model';
-import { getEntities as getTransactionAccounts } from 'app/entities/transaction-account/transaction-account.reducer';
-import { getEntities as getBalanceSheetItemTypes } from 'app/entities/balance-sheet-item-type/balance-sheet-item-type.reducer';
+import { getEntities as getTransactionAccounts } from 'app/erp/transaction-account/transaction-account.reducer';
+import { getEntities as getBalanceSheetItemTypes } from 'app/erp/balance-sheet-item-type/balance-sheet-item-type.reducer';
 import { IBalanceSheetItemType } from 'app/shared/model/balance-sheet-item-type.model';
 import { getEntity, updateEntity, createEntity, reset } from './balance-sheet-item-type.reducer';
+import AutocompleteSearchTransactionAccount from 'app/erp/auto-complete/transaction-account.autocomplete';
 
 export const BalanceSheetItemTypeUpdate = () => {
   const dispatch = useAppDispatch();
@@ -28,9 +29,18 @@ export const BalanceSheetItemTypeUpdate = () => {
   const loading = useAppSelector(state => state.balanceSheetItemType.loading);
   const updating = useAppSelector(state => state.balanceSheetItemType.updating);
   const updateSuccess = useAppSelector(state => state.balanceSheetItemType.updateSuccess);
+  const transactionAccountSelected = useAppSelector(state => state.transactionAccount.entity);
+
+  const [selectedAccount, setSelectedAccount] = useState<ITransactionAccount>(null);
 
   const handleClose = () => {
     navigate('/balance-sheet-item-type');
+  };
+
+  const handleAccountSelectedEvent = pickedAccount => {
+    if (pickedAccount) {
+      setSelectedAccount(pickedAccount);
+    }
   };
 
   useEffect(() => {
@@ -52,7 +62,7 @@ export const BalanceSheetItemTypeUpdate = () => {
     const entity = {
       ...balanceSheetItemTypeEntity,
       ...values,
-      transactionAccount: transactionAccounts.find(it => it.id.toString() === values.transactionAccount.toString()),
+      transactionAccount: transactionAccountSelected,
       parentItem: balanceSheetItemTypes.find(it => it.id.toString() === values.parentItem.toString()),
     };
 
@@ -118,7 +128,7 @@ export const BalanceSheetItemTypeUpdate = () => {
                 data-cy="shortDescription"
                 type="text"
               />
-              <ValidatedField
+              {/*<ValidatedField
                 id="balance-sheet-item-type-transactionAccount"
                 name="transactionAccount"
                 data-cy="transactionAccount"
@@ -134,7 +144,8 @@ export const BalanceSheetItemTypeUpdate = () => {
                       </option>
                     ))
                   : null}
-              </ValidatedField>
+              </ValidatedField>*/}
+              <AutocompleteSearchTransactionAccount onSelectAccount={handleAccountSelectedEvent} />
               <FormText>This field is required.</FormText>
               <ValidatedField
                 id="balance-sheet-item-type-parentItem"

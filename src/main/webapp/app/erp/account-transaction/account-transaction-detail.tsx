@@ -68,6 +68,10 @@ export const AccountTransactionDetail = () => {
         <Button tag={Link} to={`/account-transaction/${accountTransactionEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
+        &nbsp;
+        <Button tag={Link} to={`/account-transaction/${accountTransactionEntity.id}/post`} replace color="primary">
+          <FontAwesomeIcon icon="signs-post" /> <span className="d-none d-md-inline">Post</span>
+        </Button>
       </Col>
     </Row>
   );
