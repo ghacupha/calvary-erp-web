@@ -6,7 +6,7 @@ import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand } from './header-components';
-import { AdminMenu, EntitiesMenu, ERPMenu, AccountMenu } from '../menus';
+import { AdminMenu, EntitiesMenu, ERPMenu, AccountMenu, AboutMenu } from '../menus';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -23,7 +23,7 @@ const Header = (props: IHeaderProps) => {
   const renderDevRibbon = () =>
     props.isInProduction === false ? (
       <div className="ribbon dev">
-        <a href="">Development</a>
+        <a href="">development</a>
       </div>
     ) : null;
 
@@ -45,6 +45,7 @@ const Header = (props: IHeaderProps) => {
             {props.isAuthenticated && props.isDev && <EntitiesMenu />}
             {props.isAuthenticated && props.isAdmin && <AdminMenu showOpenAPI={props.isOpenAPIEnabled} />}
             <AccountMenu isAuthenticated={props.isAuthenticated} />
+            <AboutMenu />
           </Nav>
         </Collapse>
       </Navbar>

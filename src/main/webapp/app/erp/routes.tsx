@@ -31,7 +31,8 @@ export default () => {
         <Route path="transaction-account-type/*" element={<TransactionAccountType />} />
         <Route path="transaction-currency/*" element={<TransactionCurrency />} />
         <Route path="balance-sheet-item-type/*" element={<BalanceSheetItemType />} />
-        <Route path="balance-sheet-item-value/*" element={<BalanceSheetItemValue />} />
+        <Route path="erp-about/*" element={<BalanceSheetItemValue />} />
+        <Route path="/*" element={<BalanceSheetItemValue />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>
