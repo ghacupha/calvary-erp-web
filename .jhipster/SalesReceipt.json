@@ -1,0 +1,43 @@
+{
+  "changelogDate": "20231122202252",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "salesReceiptTitle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SalesReceipt",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "className",
+      "otherEntityName": "transactionClass",
+      "relationshipName": "transactionClass",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "dealer",
+      "relationshipName": "dealer",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "description",
+      "otherEntityName": "transactionItemEntry",
+      "otherEntityRelationshipName": "salesReceipt",
+      "ownerSide": true,
+      "relationshipName": "transactionItemEntry",
+      "relationshipType": "many-to-many",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceImpl"
+}

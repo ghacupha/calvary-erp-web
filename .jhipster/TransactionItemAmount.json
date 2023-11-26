@@ -1,0 +1,26 @@
+{
+  "changelogDate": "20231122202831",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "transactionItemAmount",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": 0
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TransactionItemAmount",
+  "pagination": "infinite-scroll",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityField": "itemName",
+      "otherEntityName": "transactionItem",
+      "relationshipName": "transactionItem",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": ["required"]
+    }
+  ],
+  "service": "serviceImpl"
+}

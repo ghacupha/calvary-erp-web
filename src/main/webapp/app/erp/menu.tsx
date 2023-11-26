@@ -39,7 +39,18 @@ const ERPMenuItems = () => {
       <MenuItem icon="asterisk" to="/balance-sheet-item-value">
         Balance Sheet Item Value
       </MenuItem>
-      {/* jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here */}
+      <MenuItem icon="asterisk" to="/sales-receipt">
+        Sales Receipt
+      </MenuItem>
+      <MenuItem icon="asterisk" to="/transaction-class">
+        Transaction Class
+      </MenuItem>
+      <MenuItem icon="asterisk" to="/transaction-item">
+        Transaction Item
+      </MenuItem>
+      <MenuItem icon="asterisk" to="/transaction-item-entry">
+        Transaction Item Entry
+      </MenuItem>
     </>
   );
 };

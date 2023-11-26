@@ -30,7 +30,12 @@
       "TransactionAccountType",
       "TransactionCurrency",
       "BalanceSheetItemType",
-      "BalanceSheetItemValue"
+      "BalanceSheetItemValue",
+      "TransactionClass",
+      "TransactionItem",
+      "SalesReceipt",
+      "TransactionItemAmount",
+      "TransactionItemEntry"
     ],
     "entitySuffix": "",
     "gradleEnterpriseHost": null,

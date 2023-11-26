@@ -1,0 +1,17 @@
+{
+  "changelogDate": "20231118180444",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "className",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "TransactionClass",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

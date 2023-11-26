@@ -14,6 +14,11 @@ import TransactionAccountType from './transaction-account-type';
 import TransactionCurrency from './transaction-currency';
 import BalanceSheetItemType from './balance-sheet-item-type';
 import BalanceSheetItemValue from './balance-sheet-item-value';
+import SalesReceipt from './sales-receipt';
+import TransactionClass from './transaction-class';
+import TransactionItem from './transaction-item';
+import TransactionItemAmount from './transaction-item-amount';
+import TransactionItemEntry from './transaction-item-entry';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -31,8 +36,12 @@ export default () => {
         <Route path="transaction-account-type/*" element={<TransactionAccountType />} />
         <Route path="transaction-currency/*" element={<TransactionCurrency />} />
         <Route path="balance-sheet-item-type/*" element={<BalanceSheetItemType />} />
-        <Route path="erp-about/*" element={<BalanceSheetItemValue />} />
-        <Route path="/*" element={<BalanceSheetItemValue />} />
+        <Route path="balance-sheet-item-value/*" element={<BalanceSheetItemValue />} />
+        <Route path="sales-receipt/*" element={<SalesReceipt />} />
+        <Route path="transaction-class/*" element={<TransactionClass />} />
+        <Route path="transaction-item/*" element={<TransactionItem />} />
+        <Route path="transaction-item-amount/*" element={<TransactionItemAmount />} />
+        <Route path="transaction-item-entry/*" element={<TransactionItemEntry />} />
         {/* jhipster-needle-add-route-path - JHipster will add routes here */}
       </ErrorBoundaryRoutes>
     </div>

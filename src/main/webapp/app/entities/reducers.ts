@@ -9,6 +9,11 @@ import transactionAccountType from 'app/entities/transaction-account-type/transa
 import transactionCurrency from 'app/entities/transaction-currency/transaction-currency.reducer';
 import balanceSheetItemType from 'app/entities/balance-sheet-item-type/balance-sheet-item-type.reducer';
 import balanceSheetItemValue from 'app/entities/balance-sheet-item-value/balance-sheet-item-value.reducer';
+import salesReceipt from 'app/entities/sales-receipt/sales-receipt.reducer';
+import transactionClass from 'app/entities/transaction-class/transaction-class.reducer';
+import transactionItem from 'app/entities/transaction-item/transaction-item.reducer';
+import transactionItemAmount from 'app/entities/transaction-item-amount/transaction-item-amount.reducer';
+import transactionItemEntry from 'app/entities/transaction-item-entry/transaction-item-entry.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const entitiesReducers = {
@@ -23,6 +28,11 @@ const entitiesReducers = {
   transactionCurrency,
   balanceSheetItemType,
   balanceSheetItemValue,
+  salesReceipt,
+  transactionClass,
+  transactionItem,
+  transactionItemAmount,
+  transactionItemEntry,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
 };
 
