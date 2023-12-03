@@ -95,6 +95,7 @@ export const DealerUpdate = () => {
                   required: { value: true, message: 'This field is required.' },
                 }}
               />
+              <ValidatedField label="Main Email" id="dealer-mainEmail" name="mainEmail" data-cy="mainEmail" type="text" />
               <ValidatedField id="dealer-dealerType" name="dealerType" data-cy="dealerType" label="Dealer Type" type="select" required>
                 <option value="" key="0" />
                 {dealerTypes

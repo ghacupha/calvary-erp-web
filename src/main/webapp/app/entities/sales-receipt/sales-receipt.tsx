@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Input, InputGroup, FormGroup, Form, Row, Col, Table } from 'reactstrap';
-import { translate, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { translate, TextFormat, getSortState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -161,17 +161,29 @@ export const SalesReceipt = () => {
                 <th className="hand" onClick={sort('id')}>
                   ID <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('salesReceiptTitle')}>
-                  Sales Receipt Title <FontAwesomeIcon icon="sort" />
-                </th>
                 <th className="hand" onClick={sort('description')}>
                   Description <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('transactionDate')}>
+                  Transaction Date <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('hasBeenEmailed')}>
+                  Has Been Emailed <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('hasBeenProposed')}>
+                  Has Been Proposed <FontAwesomeIcon icon="sort" />
+                </th>
+                <th className="hand" onClick={sort('shouldBeEmailed')}>
+                  Should Be Emailed <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   Transaction Class <FontAwesomeIcon icon="sort" />
                 </th>
                 <th>
                   Dealer <FontAwesomeIcon icon="sort" />
+                </th>
+                <th>
+                  Sales Receipt Title <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
@@ -184,8 +196,15 @@ export const SalesReceipt = () => {
                       {salesReceipt.id}
                     </Button>
                   </td>
-                  <td>{salesReceipt.salesReceiptTitle}</td>
                   <td>{salesReceipt.description}</td>
+                  <td>
+                    {salesReceipt.transactionDate ? (
+                      <TextFormat type="date" value={salesReceipt.transactionDate} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
+                  </td>
+                  <td>{salesReceipt.hasBeenEmailed ? 'true' : 'false'}</td>
+                  <td>{salesReceipt.hasBeenProposed ? 'true' : 'false'}</td>
+                  <td>{salesReceipt.shouldBeEmailed ? 'true' : 'false'}</td>
                   <td>
                     {salesReceipt.transactionClass ? (
                       <Link to={`/transaction-class/${salesReceipt.transactionClass.id}`}>{salesReceipt.transactionClass.className}</Link>
@@ -194,6 +213,15 @@ export const SalesReceipt = () => {
                     )}
                   </td>
                   <td>{salesReceipt.dealer ? <Link to={`/dealer/${salesReceipt.dealer.id}`}>{salesReceipt.dealer.name}</Link> : ''}</td>
+                  <td>
+                    {salesReceipt.salesReceiptTitle ? (
+                      <Link to={`/sales-receipt-title/${salesReceipt.salesReceiptTitle.id}`}>
+                        {salesReceipt.salesReceiptTitle.receiptTitle}
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/sales-receipt/${salesReceipt.id}`} color="info" size="sm" data-cy="entityDetailsButton">

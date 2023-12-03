@@ -1,0 +1,17 @@
+{
+  "changelogDate": "20231126190325",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "receiptTitle",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "unique"]
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "SalesReceiptTitle",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

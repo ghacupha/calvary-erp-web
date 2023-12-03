@@ -19,6 +19,7 @@ import TransactionClass from './transaction-class';
 import TransactionItem from './transaction-item';
 import TransactionItemAmount from './transaction-item-amount';
 import TransactionItemEntry from './transaction-item-entry';
+import SalesReceiptTitle from './sales-receipt-title';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 export default () => {
@@ -38,6 +39,7 @@ export default () => {
         <Route path="balance-sheet-item-type/*" element={<BalanceSheetItemType />} />
         <Route path="balance-sheet-item-value/*" element={<BalanceSheetItemValue />} />
         <Route path="sales-receipt/*" element={<SalesReceipt />} />
+        <Route path="sales-receipt-title/*" element={<SalesReceiptTitle />} />
         <Route path="transaction-class/*" element={<TransactionClass />} />
         <Route path="transaction-item/*" element={<TransactionItem />} />
         <Route path="transaction-item-amount/*" element={<TransactionItemAmount />} />

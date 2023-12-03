@@ -10,6 +10,7 @@ import transactionCurrency from 'app/erp/transaction-currency/transaction-curren
 import balanceSheetItemType from 'app/erp/balance-sheet-item-type/balance-sheet-item-type.reducer';
 import balanceSheetItemValue from 'app/erp/balance-sheet-item-value/balance-sheet-item-value.reducer';
 import salesReceipt from 'app/erp/sales-receipt/sales-receipt.reducer';
+import salesReceiptTitle from 'app/erp/sales-receipt-title/sales-receipt-title.reducer';
 import transactionClass from 'app/erp/transaction-class/transaction-class.reducer';
 import transactionItem from 'app/erp/transaction-item/transaction-item.reducer';
 import transactionItemAmount from 'app/erp/transaction-item-amount/transaction-item-amount.reducer';
@@ -29,6 +30,7 @@ const entitiesReducers = {
   balanceSheetItemType,
   balanceSheetItemValue,
   salesReceipt,
+  salesReceiptTitle,
   transactionClass,
   transactionItem,
   transactionItemAmount,

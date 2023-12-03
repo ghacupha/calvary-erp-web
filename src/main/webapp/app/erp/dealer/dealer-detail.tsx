@@ -32,6 +32,10 @@ export const DealerDetail = () => {
             <span id="name">Name</span>
           </dt>
           <dd>{dealerEntity.name}</dd>
+          <dt>
+            <span id="mainEmail">Main Email</span>
+          </dt>
+          <dd>{dealerEntity.mainEmail}</dd>
           <dt>Dealer Type</dt>
           <dd>{dealerEntity.dealerType ? dealerEntity.dealerType.name : ''}</dd>
         </dl>

@@ -42,6 +42,9 @@ const ERPMenuItems = () => {
       <MenuItem icon="asterisk" to="/sales-receipt">
         Sales Receipt
       </MenuItem>
+      <MenuItem icon="asterisk" to="/sales-receipt-title">
+        Sales Receipt Title
+      </MenuItem>
       <MenuItem icon="asterisk" to="/transaction-class">
         Transaction Class
       </MenuItem>

@@ -164,6 +164,9 @@ export const Dealer = () => {
                 <th className="hand" onClick={sort('name')}>
                   Name <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('mainEmail')}>
+                  Main Email <FontAwesomeIcon icon="sort" />
+                </th>
                 <th>
                   Dealer Type <FontAwesomeIcon icon="sort" />
                 </th>
@@ -179,6 +182,7 @@ export const Dealer = () => {
                     </Button>
                   </td>
                   <td>{dealer.name}</td>
+                  <td>{dealer.mainEmail}</td>
                   <td>{dealer.dealerType ? <Link to={`/dealer-type/${dealer.dealerType.id}`}>{dealer.dealerType.name}</Link> : ''}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">

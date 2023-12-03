@@ -9,10 +9,10 @@ import { ASC, DESC, ITEMS_PER_PAGE, SORT } from 'app/shared/util/pagination.cons
 import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IDealer } from 'app/shared/model/dealer.model';
-import { searchEntities, getEntities } from './dealer.reducer';
+import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
+import { searchEntities, getEntities } from './sales-receipt-title.reducer';
 
-export const Dealer = () => {
+export const SalesReceiptTitle = () => {
   const dispatch = useAppDispatch();
 
   const location = useLocation();
@@ -23,9 +23,9 @@ export const Dealer = () => {
     overridePaginationStateWithQueryParams(getSortState(location, ITEMS_PER_PAGE, 'id'), location.search)
   );
 
-  const dealerList = useAppSelector(state => state.dealer.entities);
-  const loading = useAppSelector(state => state.dealer.loading);
-  const totalItems = useAppSelector(state => state.dealer.totalItems);
+  const salesReceiptTitleList = useAppSelector(state => state.salesReceiptTitle.entities);
+  const loading = useAppSelector(state => state.salesReceiptTitle.loading);
+  const totalItems = useAppSelector(state => state.salesReceiptTitle.totalItems);
 
   const getAllEntities = () => {
     if (search) {
@@ -124,15 +124,20 @@ export const Dealer = () => {
 
   return (
     <div>
-      <h2 id="dealer-heading" data-cy="DealerHeading">
-        Dealers
+      <h2 id="sales-receipt-title-heading" data-cy="SalesReceiptTitleHeading">
+        Sales Receipt Titles
         <div className="d-flex justify-content-end">
           <Button className="me-2" color="info" onClick={handleSyncList} disabled={loading}>
             <FontAwesomeIcon icon="sync" spin={loading} /> Refresh list
           </Button>
-          <Link to="/dealer/new" className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+          <Link
+            to="/sales-receipt-title/new"
+            className="btn btn-primary jh-create-entity"
+            id="jh-create-entity"
+            data-cy="entityCreateButton"
+          >
             <FontAwesomeIcon icon="plus" />
-            &nbsp; Create a new Dealer
+            &nbsp; Create a new Sales Receipt Title
           </Link>
         </div>
       </h2>
@@ -154,44 +159,42 @@ export const Dealer = () => {
         </Col>
       </Row>
       <div className="table-responsive">
-        {dealerList && dealerList.length > 0 ? (
+        {salesReceiptTitleList && salesReceiptTitleList.length > 0 ? (
           <Table responsive>
             <thead>
               <tr>
                 <th className="hand" onClick={sort('id')}>
                   ID <FontAwesomeIcon icon="sort" />
                 </th>
-                <th className="hand" onClick={sort('name')}>
-                  Name <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('mainEmail')}>
-                  Main Email <FontAwesomeIcon icon="sort" />
-                </th>
-                <th>
-                  Dealer Type <FontAwesomeIcon icon="sort" />
+                <th className="hand" onClick={sort('receiptTitle')}>
+                  Receipt Title <FontAwesomeIcon icon="sort" />
                 </th>
                 <th />
               </tr>
             </thead>
             <tbody>
-              {dealerList.map((dealer, i) => (
+              {salesReceiptTitleList.map((salesReceiptTitle, i) => (
                 <tr key={`entity-${i}`} data-cy="entityTable">
                   <td>
-                    <Button tag={Link} to={`/dealer/${dealer.id}`} color="link" size="sm">
-                      {dealer.id}
+                    <Button tag={Link} to={`/sales-receipt-title/${salesReceiptTitle.id}`} color="link" size="sm">
+                      {salesReceiptTitle.id}
                     </Button>
                   </td>
-                  <td>{dealer.name}</td>
-                  <td>{dealer.mainEmail}</td>
-                  <td>{dealer.dealerType ? <Link to={`/dealer-type/${dealer.dealerType.id}`}>{dealer.dealerType.name}</Link> : ''}</td>
+                  <td>{salesReceiptTitle.receiptTitle}</td>
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`/dealer/${dealer.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                      <Button
+                        tag={Link}
+                        to={`/sales-receipt-title/${salesReceiptTitle.id}`}
+                        color="info"
+                        size="sm"
+                        data-cy="entityDetailsButton"
+                      >
                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/dealer/${dealer.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/sales-receipt-title/${salesReceiptTitle.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="primary"
                         size="sm"
                         data-cy="entityEditButton"
@@ -200,7 +203,7 @@ export const Dealer = () => {
                       </Button>
                       <Button
                         tag={Link}
-                        to={`/dealer/${dealer.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
+                        to={`/sales-receipt-title/${salesReceiptTitle.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
                         color="danger"
                         size="sm"
                         data-cy="entityDeleteButton"
@@ -214,11 +217,11 @@ export const Dealer = () => {
             </tbody>
           </Table>
         ) : (
-          !loading && <div className="alert alert-warning">No Dealers found</div>
+          !loading && <div className="alert alert-warning">No Sales Receipt Titles found</div>
         )}
       </div>
       {totalItems ? (
-        <div className={dealerList && dealerList.length > 0 ? '' : 'd-none'}>
+        <div className={salesReceiptTitleList && salesReceiptTitleList.length > 0 ? '' : 'd-none'}>
           <div className="justify-content-center d-flex">
             <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
           </div>
@@ -239,4 +242,4 @@ export const Dealer = () => {
   );
 };
 
-export default Dealer;
+export default SalesReceiptTitle;

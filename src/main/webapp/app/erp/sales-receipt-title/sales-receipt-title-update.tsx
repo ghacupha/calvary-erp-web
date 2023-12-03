@@ -8,12 +8,10 @@ import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateT
 import { mapIdList } from 'app/shared/util/entity-utils';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { IDealerType } from 'app/shared/model/dealer-type.model';
-import { getEntities as getDealerTypes } from 'app/entities/dealer-type/dealer-type.reducer';
-import { IDealer } from 'app/shared/model/dealer.model';
-import { getEntity, updateEntity, createEntity, reset } from './dealer.reducer';
+import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
+import { getEntity, updateEntity, createEntity, reset } from './sales-receipt-title.reducer';
 
-export const DealerUpdate = () => {
+export const SalesReceiptTitleUpdate = () => {
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
@@ -21,14 +19,13 @@ export const DealerUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  const dealerTypes = useAppSelector(state => state.dealerType.entities);
-  const dealerEntity = useAppSelector(state => state.dealer.entity);
-  const loading = useAppSelector(state => state.dealer.loading);
-  const updating = useAppSelector(state => state.dealer.updating);
-  const updateSuccess = useAppSelector(state => state.dealer.updateSuccess);
+  const salesReceiptTitleEntity = useAppSelector(state => state.salesReceiptTitle.entity);
+  const loading = useAppSelector(state => state.salesReceiptTitle.loading);
+  const updating = useAppSelector(state => state.salesReceiptTitle.updating);
+  const updateSuccess = useAppSelector(state => state.salesReceiptTitle.updateSuccess);
 
   const handleClose = () => {
-    navigate('/dealer' + location.search);
+    navigate('/sales-receipt-title' + location.search);
   };
 
   useEffect(() => {
@@ -37,8 +34,6 @@ export const DealerUpdate = () => {
     } else {
       dispatch(getEntity(id));
     }
-
-    dispatch(getDealerTypes({}));
   }, []);
 
   useEffect(() => {
@@ -49,9 +44,8 @@ export const DealerUpdate = () => {
 
   const saveEntity = values => {
     const entity = {
-      ...dealerEntity,
+      ...salesReceiptTitleEntity,
       ...values,
-      dealerType: dealerTypes.find(it => it.id.toString() === values.dealerType.toString()),
     };
 
     if (isNew) {
@@ -65,16 +59,15 @@ export const DealerUpdate = () => {
     isNew
       ? {}
       : {
-          ...dealerEntity,
-          dealerType: dealerEntity?.dealerType?.id,
+          ...salesReceiptTitleEntity,
         };
 
   return (
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="calvaryErpApp.dealer.home.createOrEditLabel" data-cy="DealerCreateUpdateHeading">
-            Create or edit a Dealer
+          <h2 id="calvaryErpApp.salesReceiptTitle.home.createOrEditLabel" data-cy="SalesReceiptTitleCreateUpdateHeading">
+            Create or edit a Sales Receipt Title
           </h2>
         </Col>
       </Row>
@@ -84,30 +77,20 @@ export const DealerUpdate = () => {
             <p>Loading...</p>
           ) : (
             <ValidatedForm defaultValues={defaultValues()} onSubmit={saveEntity}>
-              {!isNew ? <ValidatedField name="id" required readOnly id="dealer-id" label="ID" validate={{ required: true }} /> : null}
+              {!isNew ? (
+                <ValidatedField name="id" required readOnly id="sales-receipt-title-id" label="ID" validate={{ required: true }} />
+              ) : null}
               <ValidatedField
-                label="Name"
-                id="dealer-name"
-                name="name"
-                data-cy="name"
+                label="Receipt Title"
+                id="sales-receipt-title-receiptTitle"
+                name="receiptTitle"
+                data-cy="receiptTitle"
                 type="text"
                 validate={{
                   required: { value: true, message: 'This field is required.' },
                 }}
               />
-              <ValidatedField label="Main Email" id="dealer-mainEmail" name="mainEmail" data-cy="mainEmail" type="text" />
-              <ValidatedField id="dealer-dealerType" name="dealerType" data-cy="dealerType" label="Dealer Type" type="select" required>
-                <option value="" key="0" />
-                {dealerTypes
-                  ? dealerTypes.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.name}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <FormText>This field is required.</FormText>
-              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/dealer" replace color="info">
+              <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/sales-receipt-title" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
                 <span className="d-none d-md-inline">Back</span>
@@ -125,4 +108,4 @@ export const DealerUpdate = () => {
   );
 };
 
-export default DealerUpdate;
+export default SalesReceiptTitleUpdate;

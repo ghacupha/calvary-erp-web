@@ -3,12 +3,25 @@
   "dto": "mapstruct",
   "fields": [
     {
-      "fieldName": "salesReceiptTitle",
+      "fieldName": "description",
       "fieldType": "String"
     },
     {
-      "fieldName": "description",
-      "fieldType": "String"
+      "fieldName": "transactionDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "hasBeenEmailed",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "hasBeenProposed",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "shouldBeEmailed",
+      "fieldType": "Boolean"
     }
   ],
   "jpaMetamodelFiltering": true,
@@ -36,6 +49,13 @@
       "ownerSide": true,
       "relationshipName": "transactionItemEntry",
       "relationshipType": "many-to-many",
+      "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "receiptTitle",
+      "otherEntityName": "salesReceiptTitle",
+      "relationshipName": "salesReceiptTitle",
+      "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
     }
   ],

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import {} from 'react-jhipster';
+import { TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -29,13 +29,29 @@ export const SalesReceiptDetail = () => {
           </dt>
           <dd>{salesReceiptEntity.id}</dd>
           <dt>
-            <span id="salesReceiptTitle">Sales Receipt Title</span>
-          </dt>
-          <dd>{salesReceiptEntity.salesReceiptTitle}</dd>
-          <dt>
             <span id="description">Description</span>
           </dt>
           <dd>{salesReceiptEntity.description}</dd>
+          <dt>
+            <span id="transactionDate">Transaction Date</span>
+          </dt>
+          <dd>
+            {salesReceiptEntity.transactionDate ? (
+              <TextFormat value={salesReceiptEntity.transactionDate} type="date" format={APP_LOCAL_DATE_FORMAT} />
+            ) : null}
+          </dd>
+          <dt>
+            <span id="hasBeenEmailed">Has Been Emailed</span>
+          </dt>
+          <dd>{salesReceiptEntity.hasBeenEmailed ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="hasBeenProposed">Has Been Proposed</span>
+          </dt>
+          <dd>{salesReceiptEntity.hasBeenProposed ? 'true' : 'false'}</dd>
+          <dt>
+            <span id="shouldBeEmailed">Should Be Emailed</span>
+          </dt>
+          <dd>{salesReceiptEntity.shouldBeEmailed ? 'true' : 'false'}</dd>
           <dt>Transaction Class</dt>
           <dd>{salesReceiptEntity.transactionClass ? salesReceiptEntity.transactionClass.className : ''}</dd>
           <dt>Dealer</dt>
@@ -51,6 +67,8 @@ export const SalesReceiptDetail = () => {
                 ))
               : null}
           </dd>
+          <dt>Sales Receipt Title</dt>
+          <dd>{salesReceiptEntity.salesReceiptTitle ? salesReceiptEntity.salesReceiptTitle.receiptTitle : ''}</dd>
         </dl>
         <Button tag={Link} to="/sales-receipt" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

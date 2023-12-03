@@ -14,6 +14,8 @@ import { IDealer } from 'app/shared/model/dealer.model';
 import { getEntities as getDealers } from 'app/entities/dealer/dealer.reducer';
 import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
 import { getEntities as getTransactionItemEntries } from 'app/entities/transaction-item-entry/transaction-item-entry.reducer';
+import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
+import { getEntities as getSalesReceiptTitles } from 'app/entities/sales-receipt-title/sales-receipt-title.reducer';
 import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
 import { getEntity, updateEntity, createEntity, reset } from './sales-receipt.reducer';
 
@@ -28,6 +30,7 @@ export const SalesReceiptUpdate = () => {
   const transactionClasses = useAppSelector(state => state.transactionClass.entities);
   const dealers = useAppSelector(state => state.dealer.entities);
   const transactionItemEntries = useAppSelector(state => state.transactionItemEntry.entities);
+  const salesReceiptTitles = useAppSelector(state => state.salesReceiptTitle.entities);
   const salesReceiptEntity = useAppSelector(state => state.salesReceipt.entity);
   const loading = useAppSelector(state => state.salesReceipt.loading);
   const updating = useAppSelector(state => state.salesReceipt.updating);
@@ -47,6 +50,7 @@ export const SalesReceiptUpdate = () => {
     dispatch(getTransactionClasses({}));
     dispatch(getDealers({}));
     dispatch(getTransactionItemEntries({}));
+    dispatch(getSalesReceiptTitles({}));
   }, []);
 
   useEffect(() => {
@@ -62,6 +66,7 @@ export const SalesReceiptUpdate = () => {
       transactionItemEntries: mapIdList(values.transactionItemEntries),
       transactionClass: transactionClasses.find(it => it.id.toString() === values.transactionClass.toString()),
       dealer: dealers.find(it => it.id.toString() === values.dealer.toString()),
+      salesReceiptTitle: salesReceiptTitles.find(it => it.id.toString() === values.salesReceiptTitle.toString()),
     };
 
     if (isNew) {
@@ -79,6 +84,7 @@ export const SalesReceiptUpdate = () => {
           transactionClass: salesReceiptEntity?.transactionClass?.id,
           dealer: salesReceiptEntity?.dealer?.id,
           transactionItemEntries: salesReceiptEntity?.transactionItemEntries?.map(e => e.id.toString()),
+          salesReceiptTitle: salesReceiptEntity?.salesReceiptTitle?.id,
         };
 
   return (
@@ -99,14 +105,41 @@ export const SalesReceiptUpdate = () => {
               {!isNew ? (
                 <ValidatedField name="id" required readOnly id="sales-receipt-id" label="ID" validate={{ required: true }} />
               ) : null}
-              <ValidatedField
-                label="Sales Receipt Title"
-                id="sales-receipt-salesReceiptTitle"
-                name="salesReceiptTitle"
-                data-cy="salesReceiptTitle"
-                type="text"
-              />
               <ValidatedField label="Description" id="sales-receipt-description" name="description" data-cy="description" type="text" />
+              <ValidatedField
+                label="Transaction Date"
+                id="sales-receipt-transactionDate"
+                name="transactionDate"
+                data-cy="transactionDate"
+                type="date"
+                validate={{
+                  required: { value: true, message: 'This field is required.' },
+                }}
+              />
+              <ValidatedField
+                label="Has Been Emailed"
+                id="sales-receipt-hasBeenEmailed"
+                name="hasBeenEmailed"
+                data-cy="hasBeenEmailed"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label="Has Been Proposed"
+                id="sales-receipt-hasBeenProposed"
+                name="hasBeenProposed"
+                data-cy="hasBeenProposed"
+                check
+                type="checkbox"
+              />
+              <ValidatedField
+                label="Should Be Emailed"
+                id="sales-receipt-shouldBeEmailed"
+                name="shouldBeEmailed"
+                data-cy="shouldBeEmailed"
+                check
+                type="checkbox"
+              />
               <ValidatedField
                 id="sales-receipt-transactionClass"
                 name="transactionClass"
@@ -151,6 +184,24 @@ export const SalesReceiptUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
+              <ValidatedField
+                id="sales-receipt-salesReceiptTitle"
+                name="salesReceiptTitle"
+                data-cy="salesReceiptTitle"
+                label="Sales Receipt Title"
+                type="select"
+                required
+              >
+                <option value="" key="0" />
+                {salesReceiptTitles
+                  ? salesReceiptTitles.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.receiptTitle}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>This field is required.</FormText>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/sales-receipt" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

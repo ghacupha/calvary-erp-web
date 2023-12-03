@@ -7,6 +7,10 @@
       "fieldName": "name",
       "fieldType": "String",
       "fieldValidateRules": ["required", "unique"]
+    },
+    {
+      "fieldName": "mainEmail",
+      "fieldType": "String"
     }
   ],
   "jpaMetamodelFiltering": true,

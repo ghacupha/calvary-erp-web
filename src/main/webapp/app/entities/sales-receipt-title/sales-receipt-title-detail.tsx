@@ -7,9 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { useAppDispatch, useAppSelector } from 'app/config/store';
 
-import { getEntity } from './dealer.reducer';
+import { getEntity } from './sales-receipt-title.reducer';
 
-export const DealerDetail = () => {
+export const SalesReceiptTitleDetail = () => {
   const dispatch = useAppDispatch();
 
   const { id } = useParams<'id'>();
@@ -18,32 +18,26 @@ export const DealerDetail = () => {
     dispatch(getEntity(id));
   }, []);
 
-  const dealerEntity = useAppSelector(state => state.dealer.entity);
+  const salesReceiptTitleEntity = useAppSelector(state => state.salesReceiptTitle.entity);
   return (
     <Row>
       <Col md="8">
-        <h2 data-cy="dealerDetailsHeading">Dealer</h2>
+        <h2 data-cy="salesReceiptTitleDetailsHeading">Sales Receipt Title</h2>
         <dl className="jh-entity-details">
           <dt>
             <span id="id">ID</span>
           </dt>
-          <dd>{dealerEntity.id}</dd>
+          <dd>{salesReceiptTitleEntity.id}</dd>
           <dt>
-            <span id="name">Name</span>
+            <span id="receiptTitle">Receipt Title</span>
           </dt>
-          <dd>{dealerEntity.name}</dd>
-          <dt>
-            <span id="mainEmail">Main Email</span>
-          </dt>
-          <dd>{dealerEntity.mainEmail}</dd>
-          <dt>Dealer Type</dt>
-          <dd>{dealerEntity.dealerType ? dealerEntity.dealerType.name : ''}</dd>
+          <dd>{salesReceiptTitleEntity.receiptTitle}</dd>
         </dl>
-        <Button tag={Link} to="/dealer" replace color="info" data-cy="entityDetailsBackButton">
+        <Button tag={Link} to="/sales-receipt-title" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;
-        <Button tag={Link} to={`/dealer/${dealerEntity.id}/edit`} replace color="primary">
+        <Button tag={Link} to={`/sales-receipt-title/${salesReceiptTitleEntity.id}/edit`} replace color="primary">
           <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
         </Button>
       </Col>
@@ -51,4 +45,4 @@ export const DealerDetail = () => {
   );
 };
 
-export default DealerDetail;
+export default SalesReceiptTitleDetail;
