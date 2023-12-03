@@ -105,6 +105,24 @@ export const SalesReceiptUpdate = () => {
               {!isNew ? (
                 <ValidatedField name="id" required readOnly id="sales-receipt-id" label="ID" validate={{ required: true }} />
               ) : null}
+              <ValidatedField
+                id="sales-receipt-salesReceiptTitle"
+                name="salesReceiptTitle"
+                data-cy="salesReceiptTitle"
+                label="Sales Receipt Title"
+                type="select"
+                required
+              >
+                <option value="" key="0" />
+                {salesReceiptTitles
+                  ? salesReceiptTitles.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.receiptTitle}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>This field is required.</FormText>
               <ValidatedField label="Description" id="sales-receipt-description" name="description" data-cy="description" type="text" />
               <ValidatedField
                 label="Transaction Date"
@@ -184,24 +202,6 @@ export const SalesReceiptUpdate = () => {
                     ))
                   : null}
               </ValidatedField>
-              <ValidatedField
-                id="sales-receipt-salesReceiptTitle"
-                name="salesReceiptTitle"
-                data-cy="salesReceiptTitle"
-                label="Sales Receipt Title"
-                type="select"
-                required
-              >
-                <option value="" key="0" />
-                {salesReceiptTitles
-                  ? salesReceiptTitles.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.receiptTitle}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <FormText>This field is required.</FormText>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/sales-receipt" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
