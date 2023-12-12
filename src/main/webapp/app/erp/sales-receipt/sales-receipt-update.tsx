@@ -18,6 +18,10 @@ import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
 import { getEntities as getSalesReceiptTitles } from 'app/entities/sales-receipt-title/sales-receipt-title.reducer';
 import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
 import { getEntity, updateEntity, createEntity, reset } from './sales-receipt.reducer';
+import { createEntity as createReceiptEntry } from '../transaction-item-entry/transaction-item-entry.reducer';
+import TransactionItemEntryUpdate from 'app/erp/transaction-item-entry/transaction-item-entry-update';
+import TransactionItemEntryFormGroup from 'app/erp/sales-receipt/transaction-item-entry.form-group';
+import TransactionItemEntryList from 'app/erp/sales-receipt/transaction-item-entry-list.form-group';
 
 export const SalesReceiptUpdate = () => {
   const dispatch = useAppDispatch();
@@ -29,12 +33,14 @@ export const SalesReceiptUpdate = () => {
 
   const transactionClasses = useAppSelector(state => state.transactionClass.entities);
   const dealers = useAppSelector(state => state.dealer.entities);
-  const transactionItemEntries = useAppSelector(state => state.transactionItemEntry.entities);
+  // const transactionItemEntries = useAppSelector(state => state.transactionItemEntry.entities);
   const salesReceiptTitles = useAppSelector(state => state.salesReceiptTitle.entities);
   const salesReceiptEntity = useAppSelector(state => state.salesReceipt.entity);
   const loading = useAppSelector(state => state.salesReceipt.loading);
   const updating = useAppSelector(state => state.salesReceipt.updating);
   const updateSuccess = useAppSelector(state => state.salesReceipt.updateSuccess);
+
+  const [transactionItemEntries, setTransactionItemEntries] = useState([]); // Array to hold sales receipt entries
 
   const handleClose = () => {
     navigate('/sales-receipt' + location.search);
@@ -49,7 +55,7 @@ export const SalesReceiptUpdate = () => {
 
     dispatch(getTransactionClasses({}));
     dispatch(getDealers({}));
-    dispatch(getTransactionItemEntries({}));
+    // dispatch(getTransactionItemEntries({})); // todo see if we can get only related sales receipt items
     dispatch(getSalesReceiptTitles({}));
   }, []);
 
@@ -59,7 +65,23 @@ export const SalesReceiptUpdate = () => {
     }
   }, [updateSuccess]);
 
+  const handleNewEntry = newEntry => {
+    setTransactionItemEntries([...transactionItemEntries, newEntry]);
+  };
+
+  const handleRemoveEntry = index => {
+    // Function to remove an entry section from the form
+    // This updates the entries state to remove the entry at the specified index
+    // Send DELETE request to backend to remove the entry at index
+    // Update state by filtering out the removed entry
+  };
+
   const saveEntity = values => {
+    // Handle form submission:
+    // 1. Collect salesReceipt state data (main sales receipt details)
+    // 2. Collect entries state data (data from sales-receipt-entries)
+    // 3. Send data to the backend to update sales receipt and its entries
+
     const entity = {
       ...salesReceiptEntity,
       ...values,
@@ -86,6 +108,11 @@ export const SalesReceiptUpdate = () => {
           transactionItemEntries: salesReceiptEntity?.transactionItemEntries?.map(e => e.id.toString()),
           salesReceiptTitle: salesReceiptEntity?.salesReceiptTitle?.id,
         };
+
+  useEffect(() => {
+    // Fetch existing sales-receipt-entries from backend upon component mount
+    // Update state with fetched entries
+  }, []);
 
   return (
     <div>
@@ -185,6 +212,12 @@ export const SalesReceiptUpdate = () => {
                   : null}
               </ValidatedField>
               <FormText>This field is required.</FormText>
+              {/*<button onClick={handleAddEntry}>Add Entry</button>*/}
+              <div>
+                <TransactionItemEntryList transactionItemEntries={transactionItemEntries} />
+
+                <TransactionItemEntryFormGroup addNewEntry={handleNewEntry} />
+              </div>
               <ValidatedField
                 label="Transaction Item Entry"
                 id="sales-receipt-transactionItemEntry"
