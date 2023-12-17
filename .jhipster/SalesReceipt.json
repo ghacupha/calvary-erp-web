@@ -54,6 +54,12 @@
       "otherEntityRelationshipName": "salesReceipt",
       "relationshipName": "transactionItemEntry",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "transferItemEntry",
+      "otherEntityRelationshipName": "salesReceipt",
+      "relationshipName": "transferItemEntry",
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceImpl"

@@ -3,6 +3,7 @@ import { ITransactionClass } from 'app/shared/model/transaction-class.model';
 import { IDealer } from 'app/shared/model/dealer.model';
 import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
 import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
+import { ITransferItemEntry } from 'app/shared/model/transfer-item-entry.model';
 
 export interface ISalesReceipt {
   id?: number;
@@ -15,6 +16,7 @@ export interface ISalesReceipt {
   dealer?: IDealer;
   salesReceiptTitle?: ISalesReceiptTitle;
   transactionItemEntries?: ITransactionItemEntry[] | null;
+  transferItemEntries?: ITransferItemEntry[] | null;
 }
 
 export const defaultValue: Readonly<ISalesReceipt> = {

@@ -100,6 +100,16 @@ export const SalesReceiptUpdate = () => {
                 <ValidatedField name="id" required readOnly id="sales-receipt-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
+                label="Transaction Date"
+                id="sales-receipt-transactionDate"
+                name="transactionDate"
+                data-cy="transactionDate"
+                type="date"
+                validate={{
+                  required: { value: true, message: 'This field is required.' },
+                }}
+              />
+              <ValidatedField
                 id="sales-receipt-salesReceiptTitle"
                 name="salesReceiptTitle"
                 data-cy="salesReceiptTitle"
@@ -145,16 +155,6 @@ export const SalesReceiptUpdate = () => {
               </ValidatedField>
               <FormText>This field is required.</FormText>
               <ValidatedField label="Description" id="sales-receipt-description" name="description" data-cy="description" type="text" />
-              <ValidatedField
-                label="Transaction Date"
-                id="sales-receipt-transactionDate"
-                name="transactionDate"
-                data-cy="transactionDate"
-                type="date"
-                validate={{
-                  required: { value: true, message: 'This field is required.' },
-                }}
-              />
               <ValidatedField
                 label="Has Been Emailed"
                 id="sales-receipt-hasBeenEmailed"

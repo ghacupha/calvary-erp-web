@@ -36,7 +36,8 @@
       "SalesReceipt",
       "TransactionItemAmount",
       "TransactionItemEntry",
-      "SalesReceiptTitle"
+      "SalesReceiptTitle",
+      "TransferItemEntry"
     ],
     "entitySuffix": "",
     "gradleEnterpriseHost": null,

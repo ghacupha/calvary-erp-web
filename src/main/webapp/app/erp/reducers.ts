@@ -15,6 +15,7 @@ import transactionClass from 'app/erp/transaction-class/transaction-class.reduce
 import transactionItem from 'app/erp/transaction-item/transaction-item.reducer';
 import transactionItemAmount from 'app/erp/transaction-item-amount/transaction-item-amount.reducer';
 import transactionItemEntry from 'app/erp/transaction-item-entry/transaction-item-entry.reducer';
+import transferItemEntry from 'app/erp/transfer-item-entry/transfer-item-entry.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 const entitiesReducers = {
@@ -35,6 +36,7 @@ const entitiesReducers = {
   transactionItem,
   transactionItemAmount,
   transactionItemEntry,
+  transferItemEntry,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
 };
 
