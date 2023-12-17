@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
 import { ITransactionClass } from 'app/shared/model/transaction-class.model';
 import { IDealer } from 'app/shared/model/dealer.model';
-import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
 import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
+import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
 
 export interface ISalesReceipt {
   id?: number;
@@ -13,8 +13,8 @@ export interface ISalesReceipt {
   shouldBeEmailed?: boolean | null;
   transactionClass?: ITransactionClass | null;
   dealer?: IDealer;
-  transactionItemEntries?: ITransactionItemEntry[];
   salesReceiptTitle?: ISalesReceiptTitle;
+  transactionItemEntries?: ITransactionItemEntry[] | null;
 }
 
 export const defaultValue: Readonly<ISalesReceipt> = {

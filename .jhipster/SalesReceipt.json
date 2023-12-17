@@ -43,20 +43,17 @@
       "relationshipValidateRules": ["required"]
     },
     {
-      "otherEntityField": "description",
-      "otherEntityName": "transactionItemEntry",
-      "otherEntityRelationshipName": "salesReceipt",
-      "ownerSide": true,
-      "relationshipName": "transactionItemEntry",
-      "relationshipType": "many-to-many",
-      "relationshipValidateRules": ["required"]
-    },
-    {
       "otherEntityField": "receiptTitle",
       "otherEntityName": "salesReceiptTitle",
       "relationshipName": "salesReceiptTitle",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityName": "transactionItemEntry",
+      "otherEntityRelationshipName": "salesReceipt",
+      "relationshipName": "transactionItemEntry",
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceImpl"

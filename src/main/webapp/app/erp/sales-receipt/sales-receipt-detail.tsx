@@ -28,6 +28,10 @@ export const SalesReceiptDetail = () => {
             <span id="id">ID</span>
           </dt>
           <dd>{salesReceiptEntity.id}</dd>
+
+          <dt>Sales Receipt Title</dt>
+          <dd>{salesReceiptEntity.salesReceiptTitle ? salesReceiptEntity.salesReceiptTitle.receiptTitle : ''}</dd>
+
           <dt>
             <span id="description">Description</span>
           </dt>
@@ -56,19 +60,6 @@ export const SalesReceiptDetail = () => {
           <dd>{salesReceiptEntity.transactionClass ? salesReceiptEntity.transactionClass.className : ''}</dd>
           <dt>Dealer</dt>
           <dd>{salesReceiptEntity.dealer ? salesReceiptEntity.dealer.name : ''}</dd>
-          <dt>Transaction Item Entry</dt>
-          <dd>
-            {salesReceiptEntity.transactionItemEntries
-              ? salesReceiptEntity.transactionItemEntries.map((val, i) => (
-                  <span key={val.id}>
-                    <a>{val.description}</a>
-                    {salesReceiptEntity.transactionItemEntries && i === salesReceiptEntity.transactionItemEntries.length - 1 ? '' : ', '}
-                  </span>
-                ))
-              : null}
-          </dd>
-          <dt>Sales Receipt Title</dt>
-          <dd>{salesReceiptEntity.salesReceiptTitle ? salesReceiptEntity.salesReceiptTitle.receiptTitle : ''}</dd>
         </dl>
         <Button tag={Link} to="/sales-receipt" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

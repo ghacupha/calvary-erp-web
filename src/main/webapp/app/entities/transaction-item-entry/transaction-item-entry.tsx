@@ -197,6 +197,9 @@ export const TransactionItemEntry = () => {
                   <th>
                     Transaction Item <FontAwesomeIcon icon="sort" />
                   </th>
+                  <th>
+                    Sales Receipt <FontAwesomeIcon icon="sort" />
+                  </th>
                   <th />
                 </tr>
               </thead>
@@ -215,6 +218,13 @@ export const TransactionItemEntry = () => {
                         <Link to={`/transaction-item/${transactionItemEntry.transactionItem.id}`}>
                           {transactionItemEntry.transactionItem.itemName}
                         </Link>
+                      ) : (
+                        ''
+                      )}
+                    </td>
+                    <td>
+                      {transactionItemEntry.salesReceipt ? (
+                        <Link to={`/sales-receipt/${transactionItemEntry.salesReceipt.id}`}>{transactionItemEntry.salesReceipt.id}</Link>
                       ) : (
                         ''
                       )}

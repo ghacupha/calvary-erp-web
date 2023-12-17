@@ -22,6 +22,12 @@
       "relationshipName": "transactionItem",
       "relationshipType": "many-to-one",
       "relationshipValidateRules": ["required"]
+    },
+    {
+      "otherEntityField": "id",
+      "otherEntityName": "salesReceipt",
+      "relationshipName": "salesReceipt",
+      "relationshipType": "many-to-one"
     }
   ],
   "service": "serviceImpl"

@@ -161,6 +161,11 @@ export const SalesReceipt = () => {
                 <th className="hand" onClick={sort('id')}>
                   ID <FontAwesomeIcon icon="sort" />
                 </th>
+
+                <th>
+                  Sales Receipt Title <FontAwesomeIcon icon="sort" />
+                </th>
+
                 <th className="hand" onClick={sort('description')}>
                   Description <FontAwesomeIcon icon="sort" />
                 </th>
@@ -182,9 +187,7 @@ export const SalesReceipt = () => {
                 <th>
                   Dealer <FontAwesomeIcon icon="sort" />
                 </th>
-                <th>
-                  Sales Receipt Title <FontAwesomeIcon icon="sort" />
-                </th>
+
                 <th />
               </tr>
             </thead>
@@ -196,6 +199,17 @@ export const SalesReceipt = () => {
                       {salesReceipt.id}
                     </Button>
                   </td>
+
+                  <td>
+                    {salesReceipt.salesReceiptTitle ? (
+                      <Link to={`/sales-receipt-title/${salesReceipt.salesReceiptTitle.id}`}>
+                        {salesReceipt.salesReceiptTitle.receiptTitle}
+                      </Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
+
                   <td>{salesReceipt.description}</td>
                   <td>
                     {salesReceipt.transactionDate ? (
@@ -213,15 +227,7 @@ export const SalesReceipt = () => {
                     )}
                   </td>
                   <td>{salesReceipt.dealer ? <Link to={`/dealer/${salesReceipt.dealer.id}`}>{salesReceipt.dealer.name}</Link> : ''}</td>
-                  <td>
-                    {salesReceipt.salesReceiptTitle ? (
-                      <Link to={`/sales-receipt-title/${salesReceipt.salesReceiptTitle.id}`}>
-                        {salesReceipt.salesReceiptTitle.receiptTitle}
-                      </Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
+
                   <td className="text-end">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`/sales-receipt/${salesReceipt.id}`} color="info" size="sm" data-cy="entityDetailsButton">

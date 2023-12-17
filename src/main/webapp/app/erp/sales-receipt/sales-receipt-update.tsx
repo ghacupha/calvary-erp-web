@@ -12,16 +12,10 @@ import { ITransactionClass } from 'app/shared/model/transaction-class.model';
 import { getEntities as getTransactionClasses } from 'app/entities/transaction-class/transaction-class.reducer';
 import { IDealer } from 'app/shared/model/dealer.model';
 import { getEntities as getDealers } from 'app/entities/dealer/dealer.reducer';
-import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
-import { getEntities as getTransactionItemEntries } from 'app/entities/transaction-item-entry/transaction-item-entry.reducer';
 import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
 import { getEntities as getSalesReceiptTitles } from 'app/entities/sales-receipt-title/sales-receipt-title.reducer';
 import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
 import { getEntity, updateEntity, createEntity, reset } from './sales-receipt.reducer';
-import { createEntity as createReceiptEntry } from '../transaction-item-entry/transaction-item-entry.reducer';
-import TransactionItemEntryUpdate from 'app/erp/transaction-item-entry/transaction-item-entry-update';
-import TransactionItemEntryFormGroup from 'app/erp/sales-receipt/transaction-item-entry.form-group';
-import TransactionItemEntryList from 'app/erp/sales-receipt/transaction-item-entry-list.form-group';
 
 export const SalesReceiptUpdate = () => {
   const dispatch = useAppDispatch();
@@ -33,14 +27,11 @@ export const SalesReceiptUpdate = () => {
 
   const transactionClasses = useAppSelector(state => state.transactionClass.entities);
   const dealers = useAppSelector(state => state.dealer.entities);
-  // const transactionItemEntries = useAppSelector(state => state.transactionItemEntry.entities);
   const salesReceiptTitles = useAppSelector(state => state.salesReceiptTitle.entities);
   const salesReceiptEntity = useAppSelector(state => state.salesReceipt.entity);
   const loading = useAppSelector(state => state.salesReceipt.loading);
   const updating = useAppSelector(state => state.salesReceipt.updating);
   const updateSuccess = useAppSelector(state => state.salesReceipt.updateSuccess);
-
-  const [transactionItemEntries, setTransactionItemEntries] = useState([]); // Array to hold sales receipt entries
 
   const handleClose = () => {
     navigate('/sales-receipt' + location.search);
@@ -55,7 +46,6 @@ export const SalesReceiptUpdate = () => {
 
     dispatch(getTransactionClasses({}));
     dispatch(getDealers({}));
-    // dispatch(getTransactionItemEntries({})); // todo see if we can get only related sales receipt items
     dispatch(getSalesReceiptTitles({}));
   }, []);
 
@@ -65,27 +55,10 @@ export const SalesReceiptUpdate = () => {
     }
   }, [updateSuccess]);
 
-  const handleNewEntry = newEntry => {
-    setTransactionItemEntries([...transactionItemEntries, newEntry]);
-  };
-
-  const handleRemoveEntry = index => {
-    // Function to remove an entry section from the form
-    // This updates the entries state to remove the entry at the specified index
-    // Send DELETE request to backend to remove the entry at index
-    // Update state by filtering out the removed entry
-  };
-
   const saveEntity = values => {
-    // Handle form submission:
-    // 1. Collect salesReceipt state data (main sales receipt details)
-    // 2. Collect entries state data (data from sales-receipt-entries)
-    // 3. Send data to the backend to update sales receipt and its entries
-
     const entity = {
       ...salesReceiptEntity,
       ...values,
-      transactionItemEntries: mapIdList(values.transactionItemEntries),
       transactionClass: transactionClasses.find(it => it.id.toString() === values.transactionClass.toString()),
       dealer: dealers.find(it => it.id.toString() === values.dealer.toString()),
       salesReceiptTitle: salesReceiptTitles.find(it => it.id.toString() === values.salesReceiptTitle.toString()),
@@ -105,14 +78,8 @@ export const SalesReceiptUpdate = () => {
           ...salesReceiptEntity,
           transactionClass: salesReceiptEntity?.transactionClass?.id,
           dealer: salesReceiptEntity?.dealer?.id,
-          transactionItemEntries: salesReceiptEntity?.transactionItemEntries?.map(e => e.id.toString()),
           salesReceiptTitle: salesReceiptEntity?.salesReceiptTitle?.id,
         };
-
-  useEffect(() => {
-    // Fetch existing sales-receipt-entries from backend upon component mount
-    // Update state with fetched entries
-  }, []);
 
   return (
     <div>
@@ -145,6 +112,33 @@ export const SalesReceiptUpdate = () => {
                   ? salesReceiptTitles.map(otherEntity => (
                       <option value={otherEntity.id} key={otherEntity.id}>
                         {otherEntity.receiptTitle}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <FormText>This field is required.</FormText>
+              <ValidatedField
+                id="sales-receipt-transactionClass"
+                name="transactionClass"
+                data-cy="transactionClass"
+                label="Transaction Class"
+                type="select"
+              >
+                <option value="" key="0" />
+                {transactionClasses
+                  ? transactionClasses.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.className}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
+              <ValidatedField id="sales-receipt-dealer" name="dealer" data-cy="dealer" label="Dealer" type="select" required>
+                <option value="" key="0" />
+                {dealers
+                  ? dealers.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.name}
                       </option>
                     ))
                   : null}
@@ -185,56 +179,6 @@ export const SalesReceiptUpdate = () => {
                 check
                 type="checkbox"
               />
-              <ValidatedField
-                id="sales-receipt-transactionClass"
-                name="transactionClass"
-                data-cy="transactionClass"
-                label="Transaction Class"
-                type="select"
-              >
-                <option value="" key="0" />
-                {transactionClasses
-                  ? transactionClasses.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.className}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <ValidatedField id="sales-receipt-dealer" name="dealer" data-cy="dealer" label="Dealer" type="select" required>
-                <option value="" key="0" />
-                {dealers
-                  ? dealers.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.name}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
-              <FormText>This field is required.</FormText>
-              {/*<button onClick={handleAddEntry}>Add Entry</button>*/}
-              <div>
-                <TransactionItemEntryList transactionItemEntries={transactionItemEntries} />
-
-                <TransactionItemEntryFormGroup addNewEntry={handleNewEntry} />
-              </div>
-              <ValidatedField
-                label="Transaction Item Entry"
-                id="sales-receipt-transactionItemEntry"
-                data-cy="transactionItemEntry"
-                type="select"
-                multiple
-                name="transactionItemEntries"
-              >
-                <option value="" key="0" />
-                {transactionItemEntries
-                  ? transactionItemEntries.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.description}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/sales-receipt" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

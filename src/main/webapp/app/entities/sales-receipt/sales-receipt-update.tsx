@@ -12,8 +12,6 @@ import { ITransactionClass } from 'app/shared/model/transaction-class.model';
 import { getEntities as getTransactionClasses } from 'app/entities/transaction-class/transaction-class.reducer';
 import { IDealer } from 'app/shared/model/dealer.model';
 import { getEntities as getDealers } from 'app/entities/dealer/dealer.reducer';
-import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
-import { getEntities as getTransactionItemEntries } from 'app/entities/transaction-item-entry/transaction-item-entry.reducer';
 import { ISalesReceiptTitle } from 'app/shared/model/sales-receipt-title.model';
 import { getEntities as getSalesReceiptTitles } from 'app/entities/sales-receipt-title/sales-receipt-title.reducer';
 import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
@@ -29,7 +27,6 @@ export const SalesReceiptUpdate = () => {
 
   const transactionClasses = useAppSelector(state => state.transactionClass.entities);
   const dealers = useAppSelector(state => state.dealer.entities);
-  const transactionItemEntries = useAppSelector(state => state.transactionItemEntry.entities);
   const salesReceiptTitles = useAppSelector(state => state.salesReceiptTitle.entities);
   const salesReceiptEntity = useAppSelector(state => state.salesReceipt.entity);
   const loading = useAppSelector(state => state.salesReceipt.loading);
@@ -49,7 +46,6 @@ export const SalesReceiptUpdate = () => {
 
     dispatch(getTransactionClasses({}));
     dispatch(getDealers({}));
-    dispatch(getTransactionItemEntries({}));
     dispatch(getSalesReceiptTitles({}));
   }, []);
 
@@ -63,7 +59,6 @@ export const SalesReceiptUpdate = () => {
     const entity = {
       ...salesReceiptEntity,
       ...values,
-      transactionItemEntries: mapIdList(values.transactionItemEntries),
       transactionClass: transactionClasses.find(it => it.id.toString() === values.transactionClass.toString()),
       dealer: dealers.find(it => it.id.toString() === values.dealer.toString()),
       salesReceiptTitle: salesReceiptTitles.find(it => it.id.toString() === values.salesReceiptTitle.toString()),
@@ -83,7 +78,6 @@ export const SalesReceiptUpdate = () => {
           ...salesReceiptEntity,
           transactionClass: salesReceiptEntity?.transactionClass?.id,
           dealer: salesReceiptEntity?.dealer?.id,
-          transactionItemEntries: salesReceiptEntity?.transactionItemEntries?.map(e => e.id.toString()),
           salesReceiptTitle: salesReceiptEntity?.salesReceiptTitle?.id,
         };
 
@@ -167,23 +161,6 @@ export const SalesReceiptUpdate = () => {
                   : null}
               </ValidatedField>
               <FormText>This field is required.</FormText>
-              <ValidatedField
-                label="Transaction Item Entry"
-                id="sales-receipt-transactionItemEntry"
-                data-cy="transactionItemEntry"
-                type="select"
-                multiple
-                name="transactionItemEntries"
-              >
-                <option value="" key="0" />
-                {transactionItemEntries
-                  ? transactionItemEntries.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.description}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
               <ValidatedField
                 id="sales-receipt-salesReceiptTitle"
                 name="salesReceiptTitle"

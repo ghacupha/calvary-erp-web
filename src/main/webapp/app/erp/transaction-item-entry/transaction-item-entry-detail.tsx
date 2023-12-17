@@ -38,6 +38,8 @@ export const TransactionItemEntryDetail = () => {
           <dd>{transactionItemEntryEntity.itemAmount}</dd>
           <dt>Transaction Item</dt>
           <dd>{transactionItemEntryEntity.transactionItem ? transactionItemEntryEntity.transactionItem.itemName : ''}</dd>
+          <dt>Sales Receipt</dt>
+          <dd>{transactionItemEntryEntity.salesReceipt ? transactionItemEntryEntity.salesReceipt.id : ''}</dd>
         </dl>
         <Button tag={Link} to="/transaction-item-entry" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

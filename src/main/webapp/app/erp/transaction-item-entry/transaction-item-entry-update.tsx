@@ -10,9 +10,10 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { ITransactionItem } from 'app/shared/model/transaction-item.model';
 import { getEntities as getTransactionItems } from 'app/entities/transaction-item/transaction-item.reducer';
+import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
+import { getEntities as getSalesReceipts } from 'app/entities/sales-receipt/sales-receipt.reducer';
 import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-item-entry.reducer';
-import TransactionItemAutocomplete from 'app/erp/auto-complete/transaction-items.autocomplete';
 
 export const TransactionItemEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -22,25 +23,15 @@ export const TransactionItemEntryUpdate = () => {
   const { id } = useParams<'id'>();
   const isNew = id === undefined;
 
-  // const transactionItems = useAppSelector(state => state.transactionItem.entities);
+  const transactionItems = useAppSelector(state => state.transactionItem.entities);
+  const salesReceipts = useAppSelector(state => state.salesReceipt.entities);
   const transactionItemEntryEntity = useAppSelector(state => state.transactionItemEntry.entity);
   const loading = useAppSelector(state => state.transactionItemEntry.loading);
   const updating = useAppSelector(state => state.transactionItemEntry.updating);
   const updateSuccess = useAppSelector(state => state.transactionItemEntry.updateSuccess);
 
-  const transactionItemSelected = useAppSelector(state => state.transactionItem.entity);
-
-  const [transactionItem, setTransactionItem] = useState<ITransactionItem>();
-
   const handleClose = () => {
-    // TODO Navigate to current parent instance
     navigate('/transaction-item-entry');
-  };
-
-  const handleTransactionItemSelectedEvent = pickedItem => {
-    if (pickedItem) {
-      // setTransactionItem(pickedItem);
-    }
   };
 
   useEffect(() => {
@@ -49,6 +40,7 @@ export const TransactionItemEntryUpdate = () => {
     }
 
     dispatch(getTransactionItems({}));
+    dispatch(getSalesReceipts({}));
   }, []);
 
   useEffect(() => {
@@ -61,7 +53,8 @@ export const TransactionItemEntryUpdate = () => {
     const entity = {
       ...transactionItemEntryEntity,
       ...values,
-      transactionItem: transactionItemSelected,
+      transactionItem: transactionItems.find(it => it.id.toString() === values.transactionItem.toString()),
+      salesReceipt: salesReceipts.find(it => it.id.toString() === values.salesReceipt.toString()),
     };
 
     if (isNew) {
@@ -77,6 +70,7 @@ export const TransactionItemEntryUpdate = () => {
       : {
           ...transactionItemEntryEntity,
           transactionItem: transactionItemEntryEntity?.transactionItem?.id,
+          salesReceipt: transactionItemEntryEntity?.salesReceipt?.id,
         };
 
   return (
@@ -98,20 +92,22 @@ export const TransactionItemEntryUpdate = () => {
                 <ValidatedField name="id" required readOnly id="transaction-item-entry-id" label="ID" validate={{ required: true }} />
               ) : null}
               <ValidatedField
-                label="Description"
-                id="transaction-item-entry-description"
-                name="description"
-                data-cy="description"
-                type="text"
-              />
+                id="transaction-item-entry-salesReceipt"
+                name="salesReceipt"
+                data-cy="salesReceipt"
+                label="Sales Receipt"
+                type="select"
+              >
+                <option value="" key="0" />
+                {salesReceipts
+                  ? salesReceipts.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.id}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <ValidatedField
-                label="Item Amount"
-                id="transaction-item-entry-itemAmount"
-                name="itemAmount"
-                data-cy="itemAmount"
-                type="text"
-              />
-              {/*<ValidatedField
                 id="transaction-item-entry-transactionItem"
                 name="transactionItem"
                 data-cy="transactionItem"
@@ -127,9 +123,22 @@ export const TransactionItemEntryUpdate = () => {
                       </option>
                     ))
                   : null}
-              </ValidatedField>*/}
-              <TransactionItemAutocomplete onSelectEntity={handleTransactionItemSelectedEvent} />
+              </ValidatedField>
               <FormText>This field is required.</FormText>
+              <ValidatedField
+                label="Description"
+                id="transaction-item-entry-description"
+                name="description"
+                data-cy="description"
+                type="text"
+              />
+              <ValidatedField
+                label="Item Amount"
+                id="transaction-item-entry-itemAmount"
+                name="itemAmount"
+                data-cy="itemAmount"
+                type="text"
+              />
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-item-entry" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

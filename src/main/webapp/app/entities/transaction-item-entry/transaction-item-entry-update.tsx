@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from 'app/config/store';
 
 import { ITransactionItem } from 'app/shared/model/transaction-item.model';
 import { getEntities as getTransactionItems } from 'app/entities/transaction-item/transaction-item.reducer';
+import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
+import { getEntities as getSalesReceipts } from 'app/entities/sales-receipt/sales-receipt.reducer';
 import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-item-entry.reducer';
 
@@ -22,6 +24,7 @@ export const TransactionItemEntryUpdate = () => {
   const isNew = id === undefined;
 
   const transactionItems = useAppSelector(state => state.transactionItem.entities);
+  const salesReceipts = useAppSelector(state => state.salesReceipt.entities);
   const transactionItemEntryEntity = useAppSelector(state => state.transactionItemEntry.entity);
   const loading = useAppSelector(state => state.transactionItemEntry.loading);
   const updating = useAppSelector(state => state.transactionItemEntry.updating);
@@ -37,6 +40,7 @@ export const TransactionItemEntryUpdate = () => {
     }
 
     dispatch(getTransactionItems({}));
+    dispatch(getSalesReceipts({}));
   }, []);
 
   useEffect(() => {
@@ -50,6 +54,7 @@ export const TransactionItemEntryUpdate = () => {
       ...transactionItemEntryEntity,
       ...values,
       transactionItem: transactionItems.find(it => it.id.toString() === values.transactionItem.toString()),
+      salesReceipt: salesReceipts.find(it => it.id.toString() === values.salesReceipt.toString()),
     };
 
     if (isNew) {
@@ -65,6 +70,7 @@ export const TransactionItemEntryUpdate = () => {
       : {
           ...transactionItemEntryEntity,
           transactionItem: transactionItemEntryEntity?.transactionItem?.id,
+          salesReceipt: transactionItemEntryEntity?.salesReceipt?.id,
         };
 
   return (
@@ -117,6 +123,22 @@ export const TransactionItemEntryUpdate = () => {
                   : null}
               </ValidatedField>
               <FormText>This field is required.</FormText>
+              <ValidatedField
+                id="transaction-item-entry-salesReceipt"
+                name="salesReceipt"
+                data-cy="salesReceipt"
+                label="Sales Receipt"
+                type="select"
+              >
+                <option value="" key="0" />
+                {salesReceipts
+                  ? salesReceipts.map(otherEntity => (
+                      <option value={otherEntity.id} key={otherEntity.id}>
+                        {otherEntity.id}
+                      </option>
+                    ))
+                  : null}
+              </ValidatedField>
               <Button tag={Link} id="cancel-save" data-cy="entityCreateCancelButton" to="/transaction-item-entry" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
