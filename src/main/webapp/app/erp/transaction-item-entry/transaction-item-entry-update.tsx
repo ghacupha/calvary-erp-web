@@ -14,6 +14,7 @@ import { ISalesReceipt } from 'app/shared/model/sales-receipt.model';
 import { getEntities as getSalesReceipts } from 'app/entities/sales-receipt/sales-receipt.reducer';
 import { ITransactionItemEntry } from 'app/shared/model/transaction-item-entry.model';
 import { getEntity, updateEntity, createEntity, reset } from './transaction-item-entry.reducer';
+import AutocompleteSearchSalesReceipt from 'app/erp/auto-complete/sales-receipt.autocomplete';
 
 export const TransactionItemEntryUpdate = () => {
   const dispatch = useAppDispatch();
@@ -25,13 +26,22 @@ export const TransactionItemEntryUpdate = () => {
 
   const transactionItems = useAppSelector(state => state.transactionItem.entities);
   const salesReceipts = useAppSelector(state => state.salesReceipt.entities);
+  const salesReceiptSelected = useAppSelector(state => state.salesReceipt.entity);
   const transactionItemEntryEntity = useAppSelector(state => state.transactionItemEntry.entity);
   const loading = useAppSelector(state => state.transactionItemEntry.loading);
   const updating = useAppSelector(state => state.transactionItemEntry.updating);
   const updateSuccess = useAppSelector(state => state.transactionItemEntry.updateSuccess);
 
+  const [selectedSalesReceipt, setSelectedSalesReceipt] = useState<ISalesReceipt>(null);
+
   const handleClose = () => {
     navigate('/transaction-item-entry');
+  };
+
+  const handleAccountSelectedEvent = pickedAccount => {
+    if (pickedAccount) {
+      setSelectedSalesReceipt(pickedAccount);
+    }
   };
 
   useEffect(() => {
@@ -54,7 +64,7 @@ export const TransactionItemEntryUpdate = () => {
       ...transactionItemEntryEntity,
       ...values,
       transactionItem: transactionItems.find(it => it.id.toString() === values.transactionItem.toString()),
-      salesReceipt: salesReceipts.find(it => it.id.toString() === values.salesReceipt.toString()),
+      salesReceipt: salesReceiptSelected,
     };
 
     if (isNew) {
@@ -70,7 +80,7 @@ export const TransactionItemEntryUpdate = () => {
       : {
           ...transactionItemEntryEntity,
           transactionItem: transactionItemEntryEntity?.transactionItem?.id,
-          salesReceipt: transactionItemEntryEntity?.salesReceipt?.id,
+          salesReceipt: salesReceiptSelected,
         };
 
   return (
@@ -91,22 +101,7 @@ export const TransactionItemEntryUpdate = () => {
               {!isNew ? (
                 <ValidatedField name="id" required readOnly id="transaction-item-entry-id" label="ID" validate={{ required: true }} />
               ) : null}
-              <ValidatedField
-                id="transaction-item-entry-salesReceipt"
-                name="salesReceipt"
-                data-cy="salesReceipt"
-                label="Sales Receipt"
-                type="select"
-              >
-                <option value="" key="0" />
-                {salesReceipts
-                  ? salesReceipts.map(otherEntity => (
-                      <option value={otherEntity.id} key={otherEntity.id}>
-                        {otherEntity.id}
-                      </option>
-                    ))
-                  : null}
-              </ValidatedField>
+              <AutocompleteSearchSalesReceipt onSelectEntity={handleAccountSelectedEvent} />
               <ValidatedField
                 id="transaction-item-entry-transactionItem"
                 name="transactionItem"
